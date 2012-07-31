@@ -1,3 +1,4 @@
+#include "llvm/Support/CommandLine.h"
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Frontend/CompilerInstance.h"
@@ -9,14 +10,24 @@
 
 using namespace clang;
 using namespace clang::tooling;
+using namespace llvm;
+
+class ASTPrinterOptions {
+public:
+  ASTPrinterOptions() : EnableLoc(false) {}
+
+  bool EnableLoc;
+};
 
 class ASTPrinter : public ASTConsumer, public RecursiveASTVisitor<ASTPrinter> {
 public:
   typedef RecursiveASTVisitor<ASTPrinter> VisitorBase;
 
   explicit ASTPrinter(
-      raw_ostream &OS, const SourceManager &SM, const LangOptions& LO)
-    : OS(OS), SM(SM), PP(LO), Indent(0), LastLocFilename(""), LastLocLine(~0U)
+      raw_ostream &OS, const SourceManager &SM, const LangOptions &LO,
+      const ASTPrinterOptions &Options)
+    : OS(OS), SM(SM), PP(LO), Indent(0), LastLocFilename(""), LastLocLine(~0U),
+      Options(Options)
   {}
 
   virtual bool HandleTopLevelDecl(DeclGroupRef D) {
@@ -99,6 +110,9 @@ public:
   }
 
   void PrintLocation(SourceLocation Loc) {
+    if (!Options.EnableLoc)
+      return;
+
     // Based on StmtDumper::DumpLocation
     SourceLocation SpellingLoc = SM.getSpellingLoc(Loc);
     PresumedLoc PLoc = SM.getPresumedLoc(SpellingLoc);
@@ -120,6 +134,9 @@ public:
   }
 
   void PrintSourceRange(SourceRange R) {
+    if (!Options.EnableLoc)
+      return;
+
     OS << " <";
     PrintLocation(R.getBegin());
     if (R.getBegin() != R.getEnd()) {
@@ -136,27 +153,42 @@ private:
   unsigned Indent;
   const char *LastLocFilename;
   unsigned LastLocLine;
+  const ASTPrinterOptions &Options;
 };
 
 class ASTPrinterAction : public ASTFrontendAction {
 public:
+  ASTPrinterAction(const ASTPrinterOptions &Options) : Options(Options) {}
+
   virtual ASTConsumer *CreateASTConsumer(
       CompilerInstance &CI, StringRef InFile) {
     return new ASTPrinter(llvm::outs(),
-        CI.getSourceManager(), CI.getLangOpts());
+        CI.getSourceManager(), CI.getLangOpts(), Options);
   }
+
+private:
+  const ASTPrinterOptions &Options;
 };
 
-bool runTool(int argc, const char *argv[], FrontendAction *ToolAction) {
+bool runTool(cl::list<std::string> Argv, FrontendAction *ToolAction) {
   std::vector<std::string> CommandLine;
-  CommandLine.push_back(argv[0]);
+  CommandLine.push_back("clang-tool");
   CommandLine.push_back("-fsyntax-only");
-  for (int i = 1; i < argc; ++i)
-    CommandLine.push_back(argv[i]);
+  for (int i = 0; i < Argv.size(); ++i)
+    CommandLine.push_back(Argv[i]);
   FileManager Files((FileSystemOptions()));
   ToolInvocation Invocation(CommandLine, ToolAction, &Files);
   return Invocation.run();
 }
+
+cl::opt<bool> EnableLoc(
+    "l",
+    cl::desc("Enable source locations"),
+    cl::Optional);
+
+cl::list<std::string> Argv(
+    cl::Positional,
+    cl::desc("Compiler arguments"));
 
 int main(int argc, const char *argv[]) {
 #if 0
@@ -165,7 +197,10 @@ int main(int argc, const char *argv[]) {
   return Tool.run(newFrontendActionFactory<ASTPrinterAction>());
 #else
   //runToolOnCode(new ASTPrinterAction, argv[1]);
-  runTool(argc, argv, new ASTPrinterAction);
+  cl::ParseCommandLineOptions(argc, argv);
+  ASTPrinterOptions Options;
+  Options.EnableLoc = EnableLoc;
+  runTool(Argv, new ASTPrinterAction(Options));
   return 0;
 #endif
 }
