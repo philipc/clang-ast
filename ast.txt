@@ -1,0 +1,242 @@
+DeclGroup = Decl*
+(FIXME: need to mention DeclGroupRef?)
+
+Decl = TranslationUnitDecl
+     | NamedDecl
+     | LinkageSpecDecl
+     | ObjCPropertyImplDecl
+     | FileScopeAsmDecl
+     | AccessSpecDecl
+     | FriendDecl
+     | FriendTemplateDecl
+     | StaticAssertDecl
+     | BlockDecl
+     | ClassScopeFunctionSpecializationDecl
+     | ImportDecl
+
+NamedDecl = NamespaceDecl
+          | UsingDirectiveDecl
+          | NamespaceAliasDecl
+          | LabelDecl(Identifier)
+          | TypeDecl
+          | ValueDecl(Identifier, Type)
+          | TemplateDecl
+          | UsingDecl
+          | UsingShadowDecl
+          | ObjCMethodDecl
+          | ObjCContainerDecl
+          | ObjCPropertyDecl
+          | ObjCCompatibleAliasDecl
+
+TypeDecl = TypedefNameDecl
+         | UnresolvedUsingTypenameDecl
+         | TagDecl
+         | TemplateTypeParmDecl
+
+TypedefNameDecl = TypedefDecl
+                | TypeAliasDecl
+
+TagDecl = EnumDecl
+        | RecordDecl
+        | CXXRecordDecl
+        | ClassTemplateSpecializationDecl
+        | ClassTemplatePartialSpecializationDecl
+
+ValueDecl = EnumConstantDecl
+          | UnresolvedUsingValueDecl
+          | IndirectFieldDecl
+          | DeclaratorDecl
+
+DeclaratorDecl = FunctionDecl
+               | CXXMethod
+               | CXXConstructor
+               | CXXDestructor
+               | CXXConversion
+               | FieldDecl
+               | ObjCIvarDecl
+               | ObjCAtDefsFieldDecl
+               | VarDecl
+               | ImplicitParamDecl
+               | ParmVarDecl
+               | NonTypeTemplateParmDecl
+
+TemplateDecl = RedeclarableTemplateDecl
+             | TemplateTemplateParmDecl
+
+RedeclarableTemplateDecl = FunctionTemplateDecl
+                         | ClassTemplateDecl
+                         | TypeAliasTemplateDecl
+
+ObjCContainerDecl = ObjCCategory
+                  | ObjCProtocol
+                  | ObjCInterface
+                  | ObjCImpl
+
+ObjCImpl = ObjCCategoryImpl | ObjCImplementation
+
+Stmt = Expr
+     | NullStmt
+     | CompoundStmt
+     | LabelStmt
+     | AttributedStmt
+     | IfStmt
+     | SwitchStmt
+     | WhileStmt
+     | DoStmt
+     | ForStmt
+     | GotoStmt
+     | IndirectGotoStmt
+     | ContinueStmt
+     | BreakStmt
+     | ReturnStmt
+     | DeclStmt
+     | SwitchCase
+
+     // GNU Extensions
+     | AsmStmt
+
+     // MS Extensions
+     | MSAsmStmt
+
+     // Obj-C statements
+     | ObjCAtTryStmt
+     | ObjCAtCatchStmt
+     | ObjCAtFinallyStmt
+     | ObjCAtThrowStmt
+     | ObjCAtSynchronizedStmt
+     | ObjCForCollectionStmt
+     | ObjCAutoreleasePoolStmt
+
+     // C++ statments
+     | CXXCatchStmt
+     | CXXTryStmt
+     | CXXForRangeStmt
+
+SwitchCase = CaseStmt
+           | DefaultStmt
+
+Expr = PredefinedExpr
+     | DeclRefExpr
+     | IntegerLiteral
+     | FloatingLiteral
+     | ImaginaryLiteral
+     | StringLiteral
+     | CharacterLiteral
+     | ParenExpr
+     | UnaryOperator
+     | OffsetOfExpr
+     | UnaryExprOrTypeTraitExpr
+     | ArraySubscriptExpr
+     | CallExpr
+     | MemberExpr
+     | CastExpr
+     | BinaryOperator
+     | CompoundAssignOperator
+     | AbstractConditionalOperator
+     | ConditionalOperator
+     | BinaryConditionalOperator
+     | ImplicitCastExpr
+     | ExplicitCastExpr
+     | CStyleCastExpr
+     | CompoundLiteralExpr
+     | ExtVectorElementExpr
+     | InitListExpr
+     | DesignatedInitExpr
+     | ImplicitValueInitExpr
+     | ParenListExpr
+     | VAArgExpr
+     | GenericSelectionExpr
+     | PseudoObjectExpr
+     | AtomicExpr
+
+     // GNU Extensions.
+     | AddrLabelExpr
+     | StmtExpr
+     | ChooseExpr
+     | GNUNullExpr
+
+     // C++ Expressions.
+     | CXXOperatorCallExpr
+     | CXXMemberCallExpr
+     | CXXNamedCastExpr
+     | CXXStaticCastExpr
+     | CXXDynamicCastExpr
+     | CXXReinterpretCastExpr
+     | CXXConstCastExpr
+     | CXXFunctionalCastExpr
+     | CXXTypeidExpr
+     | UserDefinedLiteral
+     | CXXBoolLiteralExpr
+     | CXXNullPtrLiteralExpr
+     | CXXThisExpr
+     | CXXThrowExpr
+     | CXXDefaultArgExpr
+     | CXXScalarValueInitExpr
+     | CXXNewExpr
+     | CXXDeleteExpr
+     | CXXPseudoDestructorExpr
+     | TypeTraitExpr
+     | UnaryTypeTraitExpr
+     | BinaryTypeTraitExpr
+     | ArrayTypeTraitExpr
+     | ExpressionTraitExpr
+     | DependentScopeDeclRefExpr
+     | CXXConstructExpr
+     | CXXBindTemporaryExpr
+     | ExprWithCleanups
+     | CXXTemporaryObjectExpr
+     | CXXUnresolvedConstructExpr
+     | CXXDependentScopeMemberExpr
+     | OverloadExpr
+     | UnresolvedLookupExpr
+     | UnresolvedMemberExpr
+     | CXXNoexceptExpr
+     | PackExpansionExpr
+     | SizeOfPackExpr
+     | SubstNonTypeTemplateParmExpr
+     | SubstNonTypeTemplateParmPackExpr
+     | MaterializeTemporaryExpr
+     | LambdaExpr
+
+     // Obj-C Expressions.
+     | ObjCStringLiteral
+     | ObjCBoxedExpr
+     | ObjCArrayLiteral
+     | ObjCDictionaryLiteral
+     | ObjCEncodeExpr
+     | ObjCMessageExpr
+     | ObjCSelectorExpr
+     | ObjCProtocolExpr
+     | ObjCIvarRefExpr
+     | ObjCPropertyRefExpr
+     | ObjCIsaExpr
+     | ObjCIndirectCopyRestoreExpr
+     | ObjCBoolLiteralExpr
+     | ObjCSubscriptRefExpr
+
+     // Obj-C ARC Expressions.
+     | ObjCBridgedCastExpr
+
+     // CUDA Expressions.
+     | CUDAKernelCallExpr
+
+     // Clang Extensions.
+     | ShuffleVectorExpr
+     | BlockExpr
+     | OpaqueValueExpr
+
+     // Microsoft Extensions.
+     | CXXUuidofExpr
+     | SEHTryStmt
+     | SEHExceptStmt
+     | SEHFinallyStmt
+     | MSDependentExistsStmt
+
+     // OpenCL Extensions.
+     | AsTypeExpr
+
+Type = lots
+
+TypeLoc = ?
+
+Attr = lots
