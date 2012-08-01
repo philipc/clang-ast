@@ -24,14 +24,13 @@ class ASTPrinter : public ASTConsumer, public RecursiveASTVisitor<ASTPrinter> {
 public:
   typedef RecursiveASTVisitor<ASTPrinter> VisitorBase;
 
-  explicit ASTPrinter(
-      raw_ostream &OS, const SourceManager &SM, const LangOptions &LO,
-      const ASTPrinterOptions &Options)
-    : OS(OS), SM(SM), PP(LO), Indent(0), NeedNewline(false),
+  explicit ASTPrinter(raw_ostream &OS, const ASTPrinterOptions &Options)
+    : OS(OS), Indent(0), NeedNewline(false),
       LastLocFilename(""), LastLocLine(~0U), Options(Options)
   {}
 
   virtual void HandleTranslationUnit(ASTContext &Context) {
+    this->Context = &Context;
     TraverseDecl(Context.getTranslationUnitDecl());
   }
 
@@ -90,7 +89,7 @@ public:
   }
 
   bool VisitBuiltinType(BuiltinType *T) {
-    OS << ' ' << T->getName(PP);
+    OS << ' ' << T->getName(Context->getPrintingPolicy());
     return true;
   }
 
@@ -117,8 +116,8 @@ public:
       return;
 
     // Based on StmtDumper::DumpLocation
-    SourceLocation SpellingLoc = SM.getSpellingLoc(Loc);
-    PresumedLoc PLoc = SM.getPresumedLoc(SpellingLoc);
+    SourceLocation SpellingLoc = Context->getSourceManager().getSpellingLoc(Loc);
+    PresumedLoc PLoc = Context->getSourceManager().getPresumedLoc(SpellingLoc);
     if (!PLoc.isValid())
       return;
 
@@ -150,9 +149,8 @@ public:
   }
 
 private:
+  ASTContext *Context;
   raw_ostream &OS;
-  const SourceManager &SM;
-  PrintingPolicy PP;
   unsigned Indent;
   bool NeedNewline;
   const char *LastLocFilename;
@@ -166,8 +164,7 @@ public:
 
   virtual ASTConsumer *CreateASTConsumer(
       CompilerInstance &CI, StringRef InFile) {
-    return new ASTPrinter(llvm::outs(),
-        CI.getSourceManager(), CI.getLangOpts(), Options);
+    return new ASTPrinter(llvm::outs(), Options);
   }
 
 private:
