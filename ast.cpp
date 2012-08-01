@@ -27,19 +27,24 @@ public:
   explicit ASTPrinter(
       raw_ostream &OS, const SourceManager &SM, const LangOptions &LO,
       const ASTPrinterOptions &Options)
-    : OS(OS), SM(SM), PP(LO), Indent(0), LastLocFilename(""), LastLocLine(~0U),
-      Options(Options)
+    : OS(OS), SM(SM), PP(LO), Indent(0), NeedNewline(false),
+      LastLocFilename(""), LastLocLine(~0U), Options(Options)
   {}
 
   virtual void HandleTranslationUnit(ASTContext &Context) {
     TraverseDecl(Context.getTranslationUnitDecl());
-    OS << '\n';
   }
 
   bool TraverseDecl(Decl *D) {
     ++Indent;
     bool Result = VisitorBase::TraverseDecl(D);
     --Indent;
+    // Finish off the line now in case this was the top level.
+    // Currently only Decl can appear at the top level.
+    if (NeedNewline) {
+      OS << '\n';
+      NeedNewline = false;
+    }
     return Result;
   }
 
@@ -100,11 +105,11 @@ public:
   }
 
   void PrintIndent() {
-    // FIXME: assumes that Indent 1 only occurs at the start of a top level decl
-    if (Indent > 1)
+    if (NeedNewline)
       OS << '\n';
     for (unsigned i = 1; i < Indent; ++i)
       OS << "  ";
+    NeedNewline = true;
   }
 
   void PrintLocation(SourceLocation Loc) {
@@ -149,6 +154,7 @@ private:
   const SourceManager &SM;
   PrintingPolicy PP;
   unsigned Indent;
+  bool NeedNewline;
   const char *LastLocFilename;
   unsigned LastLocLine;
   const ASTPrinterOptions &Options;
