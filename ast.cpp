@@ -1,5 +1,6 @@
 #include "llvm/Support/CommandLine.h"
 #include "clang/AST/ASTConsumer.h"
+#include "clang/AST/ASTContext.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Frontend/CompilerInstance.h"
 #include "clang/Frontend/FrontendAction.h"
@@ -30,12 +31,9 @@ public:
       Options(Options)
   {}
 
-  virtual bool HandleTopLevelDecl(DeclGroupRef D) {
-    for (DeclGroupRef::iterator I = D.begin(), E = D.end(); I != E; ++I) {
-      TraverseDecl(*I);
-    }
+  virtual void HandleTranslationUnit(ASTContext &Context) {
+    TraverseDecl(Context.getTranslationUnitDecl());
     OS << '\n';
-    return true;
   }
 
   bool TraverseDecl(Decl *D) {
