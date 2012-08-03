@@ -83,9 +83,9 @@ public:
   }
 
   bool VisitDecl(Decl *D) {
-    PrintIndent();
+    printIndent();
     OS << D->getDeclKindName();
-    PrintSourceRange(D->getSourceRange());
+    printSourceRange(D->getSourceRange());
     return true;
   }
 
@@ -102,9 +102,9 @@ public:
   }
 
   bool VisitStmt(Stmt *S) {
-    PrintIndent();
+    printIndent();
     OS << S->getStmtClassName();
-    PrintSourceRange(S->getSourceRange());
+    printSourceRange(S->getSourceRange());
     return true;
   }
 
@@ -117,7 +117,7 @@ public:
 
   bool VisitType(Type *T) {
     ++Indent;
-    PrintIndent();
+    printIndent();
     OS << T->getTypeClassName();
     --Indent;
     return true;
@@ -129,16 +129,17 @@ public:
   }
 
   bool VisitTypeLoc(TypeLoc TL) {
-    PrintSourceRange(TL.getSourceRange());
+    printSourceRange(TL.getSourceRange());
     return true;
   }
 
   bool VisitQualifiedTypeLoc(QualifiedTypeLoc TL) {
-    PrintSourceRange(TL.getSourceRange());
+    printSourceRange(TL.getSourceRange());
     return true;
   }
 
-  void PrintIndent() {
+private:
+  void printIndent() {
     if (NeedNewline)
       OS << '\n';
     for (unsigned i = 1; i < Indent; ++i)
@@ -146,7 +147,7 @@ public:
     NeedNewline = true;
   }
 
-  void PrintLocation(SourceLocation Loc) {
+  void printLocation(SourceLocation Loc) {
     if (!Options.EnableLoc)
       return;
 
@@ -170,20 +171,19 @@ public:
     LastLocLine = Line;
   }
 
-  void PrintSourceRange(SourceRange R) {
+  void printSourceRange(SourceRange R) {
     if (!Options.EnableLoc)
       return;
 
     OS << " <";
-    PrintLocation(R.getBegin());
+    printLocation(R.getBegin());
     if (R.getBegin() != R.getEnd()) {
       OS << ", ";
-      PrintLocation(R.getEnd());
+      printLocation(R.getEnd());
     }
     OS << ">";
   }
 
-private:
   ASTFilter<ASTPrinter> Filter;
   ASTContext *Context;
   raw_ostream &OS;
