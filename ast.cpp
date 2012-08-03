@@ -13,11 +13,44 @@ using namespace clang;
 using namespace clang::tooling;
 using namespace llvm;
 
+template<typename T>
+class ASTFilter : public RecursiveASTVisitor<ASTFilter<T> > {
+public:
+  typedef RecursiveASTVisitor<ASTFilter> VisitorBase;
+
+  ASTFilter(T &Visitor, StringRef FilterString)
+    : Visitor(Visitor), FilterString(FilterString)
+  {}
+
+  bool TraverseDecl(Decl *D) {
+    if (filterMatch(D))
+      return Visitor.TraverseDecl(D);
+    return VisitorBase::TraverseDecl(D);
+  }
+
+private:
+  bool filterMatch(Decl *D) {
+    if (FilterString.empty())
+      return true;
+    return getName(D).find(FilterString) != std::string::npos;
+  }
+
+  std::string getName(Decl *D) {
+    if (isa<NamedDecl>(D))
+      return cast<NamedDecl>(D)->getNameAsString();
+    return "";
+  }
+
+  T &Visitor;
+  std::string FilterString;
+};
+
 class ASTPrinterOptions {
 public:
-  ASTPrinterOptions() : EnableLoc(false) {}
+  ASTPrinterOptions() {}
 
   bool EnableLoc;
+  std::string FilterString;
 };
 
 class ASTPrinter : public ASTConsumer, public RecursiveASTVisitor<ASTPrinter> {
@@ -25,13 +58,14 @@ public:
   typedef RecursiveASTVisitor<ASTPrinter> VisitorBase;
 
   explicit ASTPrinter(raw_ostream &OS, const ASTPrinterOptions &Options)
-    : OS(OS), Indent(0), NeedNewline(false),
+    : Filter(*this, Options.FilterString), Context(NULL), OS(OS),
+      Indent(0), NeedNewline(false),
       LastLocFilename(""), LastLocLine(~0U), Options(Options)
   {}
 
   virtual void HandleTranslationUnit(ASTContext &Context) {
     this->Context = &Context;
-    TraverseDecl(Context.getTranslationUnitDecl());
+    Filter.TraverseDecl(Context.getTranslationUnitDecl());
     this->Context = NULL;
   }
 
@@ -150,6 +184,7 @@ public:
   }
 
 private:
+  ASTFilter<ASTPrinter> Filter;
   ASTContext *Context;
   raw_ostream &OS;
   unsigned Indent;
@@ -188,6 +223,11 @@ cl::opt<bool> EnableLoc(
     cl::desc("Enable source locations"),
     cl::Optional);
 
+cl::opt<std::string> FilterString(
+    "f",
+    cl::desc("Filter named declarations"),
+    cl::Optional);
+
 cl::list<std::string> Argv(
     cl::Positional,
     cl::desc("Compiler arguments"));
@@ -202,6 +242,7 @@ int main(int argc, const char *argv[]) {
   cl::ParseCommandLineOptions(argc, argv);
   ASTPrinterOptions Options;
   Options.EnableLoc = EnableLoc;
+  Options.FilterString = FilterString;
   runTool(Argv, new ASTPrinterAction(Options));
   return 0;
 #endif
