@@ -32,6 +32,7 @@ public:
   virtual void HandleTranslationUnit(ASTContext &Context) {
     this->Context = &Context;
     TraverseDecl(Context.getTranslationUnitDecl());
+    this->Context = NULL;
   }
 
   bool TraverseDecl(Decl *D) {
