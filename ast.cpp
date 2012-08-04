@@ -20,11 +20,14 @@ public:
   typedef RecursiveASTVisitor<ASTFilter> VisitorBase;
 
   ASTFilter(T &Visitor, StringRef FilterString)
-    : Visitor(Visitor) {
-      if (FilterString.empty())
-        Filter = NULL;
-      else
+    : Visitor(Visitor), Filter(NULL) {
+      if (!FilterString.empty()) {
+        std::string Error;
         Filter = new Regex(FilterString);
+        if (!Filter->isValid(Error))
+          llvm::report_fatal_error("malformed filter expression: "
+              + FilterString + ": " + Error);
+      }
     }
 
   ~ASTFilter() {
