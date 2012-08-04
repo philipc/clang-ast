@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fno-rtti")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fno-rtti -Wall")
 
 # A convenience variable:
 set(LLVM_SOURCE_ROOT "${CMAKE_CURRENT_BINARY_DIR}/../source.git" CACHE PATH "Root of LLVM source.")

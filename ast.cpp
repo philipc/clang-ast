@@ -214,7 +214,7 @@ bool runTool(cl::list<std::string> Argv, FrontendAction *ToolAction) {
   std::vector<std::string> CommandLine;
   CommandLine.push_back("clang-tool");
   CommandLine.push_back("-fsyntax-only");
-  for (int i = 0; i < Argv.size(); ++i)
+  for (unsigned i = 0; i < Argv.size(); ++i)
     CommandLine.push_back(Argv[i]);
   FileManager Files((FileSystemOptions()));
   ToolInvocation Invocation(CommandLine, ToolAction, &Files);
