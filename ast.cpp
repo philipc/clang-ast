@@ -1,4 +1,5 @@
 #include "llvm/Support/CommandLine.h"
+#include "llvm/Support/Regex.h"
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/ASTContext.h"
 #include "clang/AST/RecursiveASTVisitor.h"
@@ -19,22 +20,24 @@ public:
   typedef RecursiveASTVisitor<ASTFilter> VisitorBase;
 
   ASTFilter(T &Visitor, StringRef FilterString)
-    : Visitor(Visitor), FilterString(FilterString)
-  {}
+    : Visitor(Visitor) {
+      if (FilterString.empty())
+        Filter = NULL;
+      else
+        Filter = new Regex(FilterString);
+    }
+
+  ~ASTFilter() {
+    delete Filter;
+  }
 
   bool TraverseDecl(Decl *D) {
-    if (filterMatch(D))
+    if (!Filter || Filter->match(getName(D)))
       return Visitor.TraverseDecl(D);
     return VisitorBase::TraverseDecl(D);
   }
 
 private:
-  bool filterMatch(Decl *D) {
-    if (FilterString.empty())
-      return true;
-    return getName(D).find(FilterString) != std::string::npos;
-  }
-
   std::string getName(Decl *D) {
     if (isa<NamedDecl>(D))
       return cast<NamedDecl>(D)->getNameAsString();
@@ -42,7 +45,7 @@ private:
   }
 
   T &Visitor;
-  std::string FilterString;
+  llvm::Regex *Filter;
 };
 
 class ASTPrinterOptions {
