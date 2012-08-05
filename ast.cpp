@@ -160,7 +160,7 @@ private:
     NeedNewline = true;
   }
 
-  void printLocation(SourceLocation Loc) {
+  void printLocation(SourceLocation Loc, bool PrintLine) {
     if (!Options.EnableLoc)
       return;
 
@@ -173,13 +173,13 @@ private:
     const char *Filename = PLoc.getFilename();
     unsigned Line = PLoc.getLine();
     if (strcmp(LastLocFilename, Filename) != 0) {
-      OS << Filename << ':' << Line;
-    } else if (LastLocLine != Line) {
-      OS << "line:" << Line;
-    } else {
-      OS << "col";
+      OS << Filename << ':';
+      PrintLine = true;
     }
-    OS << ':' << PLoc.getColumn();
+    if (PrintLine || LastLocLine != Line) {
+      OS << Line << ':';
+    }
+    OS << PLoc.getColumn();
     LastLocFilename = Filename;
     LastLocLine = Line;
   }
@@ -189,10 +189,10 @@ private:
       return;
 
     OS << " <";
-    printLocation(R.getBegin());
+    printLocation(R.getBegin(), true);
     if (R.getBegin() != R.getEnd()) {
-      OS << ", ";
-      printLocation(R.getEnd());
+      OS << "-";
+      printLocation(R.getEnd(), false);
     }
     OS << ">";
   }
