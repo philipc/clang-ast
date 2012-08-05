@@ -114,10 +114,8 @@ public:
     return true;
   }
 
-  bool TraverseLabelStmt(LabelStmt *S) {
-    WalkUpFromLabelStmt(S);
-    TraverseDecl(S->getDecl());
-    TraverseStmt(S->getSubStmt());
+  bool VisitLabelStmt(LabelStmt *S) {
+    OS << ' ' << S->getDecl()->getNameAsString();
     return true;
   }
 

@@ -11,6 +11,5 @@ void test() {
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     DeclStmt
 // CHECK-NEXT:       Label l
-// CHECK-NEXT:     LabelStmt
-// CHECK-NEXT:       Label l
+// CHECK-NEXT:     LabelStmt l
 // CHECK-NEXT:       GotoStmt

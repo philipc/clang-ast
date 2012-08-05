@@ -8,6 +8,5 @@ void test() {
 // CHECK-NEXT:   FunctionProto
 // CHECK-NEXT:   Builtin void
 // CHECK-NEXT:   CompoundStmt
-// CHECK-NEXT:     LabelStmt
-// CHECK-NEXT:       Label l
+// CHECK-NEXT:     LabelStmt l
 // CHECK-NEXT:       GotoStmt
