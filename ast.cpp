@@ -114,6 +114,13 @@ public:
     return true;
   }
 
+  bool TraverseLabelStmt(LabelStmt *S) {
+    WalkUpFromLabelStmt(S);
+    TraverseDecl(S->getDecl());
+    TraverseStmt(S->getSubStmt());
+    return true;
+  }
+
   bool TraverseType(QualType T) {
     ++Indent;
     bool Result = VisitorBase::TraverseType(T);

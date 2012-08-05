@@ -77,7 +77,7 @@ ObjCImpl = ObjCCategoryImpl | ObjCImplementation
 Stmt = Expr
      | NullStmt
      | CompoundStmt
-     | LabelStmt
+     | LabelStmt(LabelDecl, Stmt)
      | AttributedStmt
      | IfStmt
      | SwitchStmt
