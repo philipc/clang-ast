@@ -5,11 +5,11 @@ void test() {
   l: goto l;
 };
 
-// CHECK: Function test
+// CHECK: FunctionDecl test
 // CHECK-NEXT:   FunctionProto
 // CHECK-NEXT:   Builtin void
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     DeclStmt
-// CHECK-NEXT:       Label l
+// CHECK-NEXT:       LabelDecl l
 // CHECK-NEXT:     LabelStmt l
 // CHECK-NEXT:       GotoStmt

@@ -11,11 +11,11 @@ public:
 
 }
 
-// CHECK-NOT: CXXRecord
-// CHECK: CXXMethod theMethod
+// CHECK-NOT: CXXRecordDecl
+// CHECK: CXXMethodDecl theMethod
 // CHECK-NEXT:   FunctionProto
 // CHECK-NEXT:   Builtin int
-// CHECK-NEXT:   ParmVar x
+// CHECK-NEXT:   ParmVarDecl x
 // CHECK-NEXT:     Builtin int
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     ReturnStmt

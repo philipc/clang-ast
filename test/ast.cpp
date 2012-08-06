@@ -11,13 +11,13 @@ public:
 
 }
 
-// CHECK: Namespace test_namespace
-// CHECK-NEXT:   CXXRecord TheClass
-// CHECK-NEXT:     AccessSpec
-// CHECK-NEXT:     CXXMethod theMethod
+// CHECK: NamespaceDecl test_namespace
+// CHECK-NEXT:   CXXRecordDecl TheClass
+// CHECK-NEXT:     AccessSpecDecl
+// CHECK-NEXT:     CXXMethodDecl theMethod
 // CHECK-NEXT:       FunctionProto
 // CHECK-NEXT:       Builtin int
-// CHECK-NEXT:       ParmVar x
+// CHECK-NEXT:       ParmVarDecl x
 // CHECK-NEXT:         Builtin int
 // CHECK-NEXT:       CompoundStmt
 // CHECK-NEXT:         ReturnStmt

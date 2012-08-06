@@ -4,7 +4,7 @@ void test() {
   l: goto l;
 };
 
-// CHECK: Function test
+// CHECK: FunctionDecl test
 // CHECK-NEXT:   FunctionProto
 // CHECK-NEXT:   Builtin void
 // CHECK-NEXT:   CompoundStmt

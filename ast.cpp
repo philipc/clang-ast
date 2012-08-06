@@ -90,7 +90,7 @@ public:
 
   bool VisitDecl(Decl *D) {
     printIndent();
-    OS << D->getDeclKindName();
+    OS << D->getDeclKindName() << "Decl";
     printSourceRange(D->getSourceRange());
     return true;
   }
