@@ -19,7 +19,7 @@ NamedDecl = NamespaceDecl
           | NamespaceAliasDecl
           | LabelDecl(Identifier)
           | TypeDecl
-          | ValueDecl(Identifier, Type)
+          | ValueDecl(FIXME: Identifier, Type)
           | TemplateDecl
           | UsingDecl
           | UsingShadowDecl
@@ -75,22 +75,23 @@ ObjCContainerDecl = ObjCCategory
 ObjCImpl = ObjCCategoryImpl | ObjCImplementation
 
 Stmt = Expr
-     | NullStmt
-     | CompoundStmt
-     | LabelStmt(Identifier, Stmt)
-     | AttributedStmt
-     | IfStmt
-     | SwitchStmt
-     | WhileStmt
-     | DoStmt
-     | ForStmt
-     | GotoStmt(Identifier)
-     | IndirectGotoStmt
-     | ContinueStmt
-     | BreakStmt
-     | ReturnStmt
-     | DeclStmt
-     | SwitchCase
+     | NullStmt()
+     | CompoundStmt(Stmt*)
+     | LabelStmt(Identifier label, Stmt)
+     | AttributedStmt(Attr*, Stmt)
+     | IfStmt(VarDecl? var, Expr cond, Stmt then, Stmt? else)
+     | SwitchStmt(VarDecl? var, Expr cond, SwitchCase* switchcaselist)
+     | WhileStmt(VarDecl? var, Expr cond, Stmt body)
+     | DoStmt(Stmt body, Expr cond)
+     | ForStmt(Stmt? init, VarDecl? condvar, Expr? cond, Expr? inc, Stmt body)
+     | GotoStmt(Identifier label)
+     | IndirectGotoStmt(Expr)
+     | ContinueStmt()
+     | BreakStmt()
+     | ReturnStmt()
+     | ReturnStmt(Expr)
+     | DeclStmt(Decl*)
+     | SwitchCase // FIXME: can only appear in SwitchStmt?
 
      // GNU Extensions
      | AsmStmt
@@ -112,8 +113,8 @@ Stmt = Expr
      | CXXTryStmt
      | CXXForRangeStmt
 
-SwitchCase = CaseStmt
-           | DefaultStmt
+SwitchCase = CaseStmt(Expr lhs, Expr rhs)
+           | DefaultStmt(Stmt)
 
 Expr = PredefinedExpr
      | DeclRefExpr
@@ -242,5 +243,6 @@ TypeLoc = ?
 Attr = lots
 
 Notes:
-LabelStmt actually references a LabelDecl, not an Identifier. In the case
-of a GNU local label, this LabelDecl occurs elsewhere in the tree.
+- The language defined by this grammar is a superset of legal ASTs
+- LabelStmt and GotoStmt actually reference a LabelDecl, not an Identifier.
+In the case of a GNU local label, this LabelDecl occurs elsewhere in the tree.
