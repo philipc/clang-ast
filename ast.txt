@@ -84,7 +84,7 @@ Stmt = Expr
      | WhileStmt
      | DoStmt
      | ForStmt
-     | GotoStmt
+     | GotoStmt(Identifier)
      | IndirectGotoStmt
      | ContinueStmt
      | BreakStmt

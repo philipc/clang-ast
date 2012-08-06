@@ -119,6 +119,11 @@ public:
     return true;
   }
 
+  bool VisitGotoStmt(GotoStmt *S) {
+    OS << ' ' << S->getLabel()->getNameAsString();
+    return true;
+  }
+
   bool TraverseType(QualType T) {
     ++Indent;
     bool Result = VisitorBase::TraverseType(T);
