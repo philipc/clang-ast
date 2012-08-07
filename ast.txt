@@ -1,6 +1,17 @@
 DeclGroup = Decl*
 (FIXME: need to mention DeclGroupRef?)
 
+TranslationUnitDecl = TranslationUnitDecl(Decl*)
+
+DeclContext = BlockDecl
+            | FunctionDecl
+            | LinkageSpecDecl
+            | NamespaceDecl
+            | ObjCMethodDecl
+            | ObjCContainerDecl
+            | TagDecl
+            | TranslationUnitDecl
+
 Decl = TranslationUnitDecl
      | NamedDecl
      | LinkageSpecDecl
@@ -55,7 +66,7 @@ DeclaratorDecl = FunctionDecl
                | FieldDecl
                | ObjCIvarDecl
                | ObjCAtDefsFieldDecl
-               | VarDecl
+               | VarDecl(Identifier, DeclSpec*, Expr?)
                | ImplicitParamDecl
                | ParmVarDecl
                | NonTypeTemplateParmDecl
@@ -118,7 +129,7 @@ SwitchCase = CaseStmt(Expr lhs, Expr rhs)
 
 Expr = PredefinedExpr
      | DeclRefExpr
-     | IntegerLiteral
+     | IntegerLiteral(APInt val)
      | FloatingLiteral
      | ImaginaryLiteral
      | StringLiteral
@@ -167,7 +178,7 @@ Expr = PredefinedExpr
      | CXXFunctionalCastExpr
      | CXXTypeidExpr
      | UserDefinedLiteral
-     | CXXBoolLiteralExpr
+     | CXXBoolLiteralExpr(bool val)
      | CXXNullPtrLiteralExpr
      | CXXThisExpr
      | CXXThrowExpr
@@ -241,6 +252,7 @@ Type = lots
 TypeLoc = ?
 
 Attr = lots
+- all Decl have Attr*?
 
 Notes:
 - The language defined by this grammar is a superset of legal ASTs

@@ -10,5 +10,5 @@ void test() {
 // CHECK-NEXT:   Builtin void
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     WhileStmt
-// CHECK-NEXT:       CXXBoolLiteralExpr
+// CHECK-NEXT:       CXXBoolLiteralExpr true
 // CHECK-NEXT:       NullStmt

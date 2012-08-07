@@ -12,4 +12,4 @@ void test() {
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     DoStmt
 // CHECK-NEXT:       NullStmt
-// CHECK-NEXT:       CXXBoolLiteralExpr
+// CHECK-NEXT:       CXXBoolLiteralExpr true

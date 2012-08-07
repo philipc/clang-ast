@@ -18,4 +18,4 @@ int test2() {
 // CHECK-NEXT:   Builtin int
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     ReturnStmt
-// CHECK-NEXT:       IntegerLiteral
+// CHECK-NEXT:       IntegerLiteral 4

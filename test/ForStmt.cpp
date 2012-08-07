@@ -17,7 +17,7 @@ void test() {
 // CHECK-NEXT:       DeclStmt
 // CHECK-NEXT:         VarDecl i
 // CHECK-NEXT:           Builtin int
-// CHECK-NEXT:           IntegerLiteral
+// CHECK-NEXT:           IntegerLiteral 0
 // CHECK-NEXT:       DeclStmt
 // CHECK-NEXT:         VarDecl j
 // CHECK-NEXT:           Builtin int

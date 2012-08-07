@@ -92,11 +92,24 @@ public:
     printIndent();
     OS << D->getDeclKindName() << "Decl";
     printSourceRange(D->getSourceRange());
+    // TODO: Attr
     return true;
   }
 
   bool VisitNamedDecl(NamedDecl *D) {
     OS << ' ' << D->getNameAsString();
+    return true;
+  }
+
+  bool VisitVarDecl(VarDecl *D) {
+    StorageClass SC = D->getStorageClassAsWritten();
+    if (SC != SC_None)
+      OS << ' ' << VarDecl::getStorageClassSpecifierString(SC);
+    if (D->isThreadSpecified())
+      OS << " __thread";
+    if (D->isModulePrivate())
+      OS << " __module_private__";
+    // FIXME: incomplete
     return true;
   }
 
@@ -121,6 +134,17 @@ public:
 
   bool VisitGotoStmt(GotoStmt *S) {
     OS << ' ' << S->getLabel()->getNameAsString();
+    return true;
+  }
+
+  bool VisitIntegerLiteral(IntegerLiteral *E) {
+    bool isSigned = E->getType()->isSignedIntegerType();
+    OS << ' ' << E->getValue().toString(10, isSigned);
+    return true;
+  }
+
+  bool VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr *E) {
+    OS << ' ' << (E->getValue() ? "true" : "false");
     return true;
   }
 

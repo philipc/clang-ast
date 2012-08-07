@@ -15,12 +15,12 @@ void test() {
 // CHECK-NEXT:   Builtin void
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     SwitchStmt
-// CHECK-NEXT:       IntegerLiteral
+// CHECK-NEXT:       IntegerLiteral 0
 // CHECK-NEXT:       CompoundStmt
 // CHECK-NEXT:         CaseStmt
-// CHECK-NEXT:           IntegerLiteral
+// CHECK-NEXT:           IntegerLiteral 0
 // CHECK-NEXT:         CaseStmt
-// CHECK-NEXT:           IntegerLiteral
+// CHECK-NEXT:           IntegerLiteral 1
 // CHECK-NEXT:           BreakStmt
 // CHECK-NEXT:         DefaultStmt
 // CHECK-NEXT:           BreakStmt

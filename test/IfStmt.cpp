@@ -20,17 +20,17 @@ void test() {
 // CHECK-NEXT:   Builtin void
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     IfStmt
-// CHECK-NEXT:       CXXBoolLiteralExpr
+// CHECK-NEXT:       CXXBoolLiteralExpr true
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:     IfStmt
-// CHECK-NEXT:       CXXBoolLiteralExpr
+// CHECK-NEXT:       CXXBoolLiteralExpr true
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:     IfStmt
 // CHECK-NEXT:       DeclStmt
 // CHECK-NEXT:         VarDecl b
 // CHECK-NEXT:           Builtin bool
-// CHECK-NEXT:           CXXBoolLiteralExpr
+// CHECK-NEXT:           CXXBoolLiteralExpr true
 // CHECK-NEXT:       ImplicitCastExpr
 // CHECK-NEXT:         DeclRefExpr
 // CHECK-NEXT:       NullStmt
