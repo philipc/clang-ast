@@ -30,3 +30,28 @@ __thread int test5;
 // CHECK-NEXT:   Identifier test6
 // CHECK-NEXT:   BuiltinType int
 __module_private__ int test6;
+
+namespace A {
+// CHECK: VarDecl extern
+// CHECK-NEXT:   Identifier test7
+// CHECK-NEXT:   BuiltinType int
+  extern int test7;
+
+// CHECK: VarDecl extern
+// CHECK-NEXT:   Identifier test8
+// CHECK-NEXT:   BuiltinType int
+  extern int test8;
+};
+
+// CHECK: VarDecl
+// CHECK-NEXT:   Identifier test7
+// CHECK-NEXT:   NestedNameSpecifier A::
+// CHECK-NEXT:   BuiltinType int
+int A::test7;
+
+// CHECK: VarDecl
+// CHECK-NEXT:   Identifier test8
+// CHECK-NEXT:   NestedNameSpecifier A::
+// CHECK-NEXT:   BuiltinType int
+// CHECK-NEXT:   IntegerLiteral 0
+int A::test8 = 0;
