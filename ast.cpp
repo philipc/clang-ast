@@ -96,11 +96,6 @@ public:
     return true;
   }
 
-  bool VisitNamedDecl(NamedDecl *D) {
-    OS << ' ' << D->getNameAsString();
-    return true;
-  }
-
   bool VisitVarDecl(VarDecl *D) {
     StorageClass SC = D->getStorageClassAsWritten();
     if (SC != SC_None)
@@ -109,7 +104,24 @@ public:
       OS << " __thread";
     if (D->isModulePrivate())
       OS << " __module_private__";
-    // FIXME: incomplete
+
+    // TODO: more properties
+
+    printIdentifier(D);
+    return true;
+  }
+
+  bool VisitFunctionDecl(FunctionDecl *D) {
+    StorageClass SC = D->getStorageClassAsWritten();
+    if (SC != SC_None)
+      OS << ' ' << VarDecl::getStorageClassSpecifierString(SC);
+    if (D->isInlineSpecified())
+      OS << " inline";
+    if (D->isVirtualAsWritten())
+      OS << " virtual";
+    if (D->isModulePrivate())
+      OS << " __module_private__";
+    // TODO: more properties
     return true;
   }
 
@@ -127,13 +139,18 @@ public:
     return true;
   }
 
+  bool VisitLabelDecl(LabelDecl *D) {
+    printIdentifier(D);
+    return true;
+  }
+
   bool VisitLabelStmt(LabelStmt *S) {
-    OS << ' ' << S->getDecl()->getNameAsString();
+    printIdentifier(S->getDecl());
     return true;
   }
 
   bool VisitGotoStmt(GotoStmt *S) {
-    OS << ' ' << S->getLabel()->getNameAsString();
+    printIdentifier(S->getLabel());
     return true;
   }
 
@@ -156,16 +173,21 @@ public:
   }
 
   bool VisitType(Type *T) {
-    ++Indent;
     printIndent();
-    OS << T->getTypeClassName();
-    --Indent;
+    OS << T->getTypeClassName() << "Type";
     return true;
   }
 
   bool VisitBuiltinType(BuiltinType *T) {
     OS << ' ' << T->getName(Context->getPrintingPolicy());
     return true;
+  }
+
+  bool TraverseTypeLoc(TypeLoc TL) {
+    ++Indent;
+    bool Result = VisitorBase::TraverseTypeLoc(TL);
+    --Indent;
+    return Result;
   }
 
   bool VisitTypeLoc(TypeLoc TL) {
@@ -178,6 +200,44 @@ public:
     return true;
   }
 
+  bool TraverseNestedNameSpecifier(NestedNameSpecifier *NNS) {
+    if (!NNS)
+      return true;
+
+    ++Indent;
+    printIndent();
+    OS << "NestedNameSpecifier ";
+    NNS->print(OS, Context->getPrintingPolicy());
+    bool Result = VisitorBase::TraverseNestedNameSpecifier(NNS);
+    --Indent;
+    return Result;
+  }
+
+  bool TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc NNS) {
+    if (!NNS)
+      return true;
+
+    ++Indent;
+    printIndent();
+    OS << "NestedNameSpecifier ";
+    NNS.getNestedNameSpecifier()->print(OS, Context->getPrintingPolicy());
+    printSourceRange(NNS.getSourceRange());
+    bool Result = VisitorBase::TraverseNestedNameSpecifierLoc(NNS);
+    --Indent;
+    return Result;
+  }
+
+  bool TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
+    ++Indent;
+    printIndent();
+    OS << "DeclarationName ";
+    NameInfo.getName().printName(OS);
+    printSourceRange(NameInfo.getSourceRange());
+    bool Result = VisitorBase::TraverseDeclarationNameInfo(NameInfo);
+    --Indent;
+    return Result;
+  }
+
 private:
   void printIndent() {
     if (NeedNewline)
@@ -187,10 +247,15 @@ private:
     NeedNewline = true;
   }
 
-  void printLocation(SourceLocation Loc, bool PrintLine) {
-    if (!Options.EnableLoc)
-      return;
+  void printIdentifier(NamedDecl *D) {
+    ++Indent;
+    printIndent();
+    OS << "Identifier " << D->getNameAsString();
+    printLocation(D->getLocation());
+    --Indent;
+  }
 
+  void printLocation(SourceLocation Loc, bool PrintLine) {
     // Based on StmtDumper::DumpLocation
     SourceLocation SpellingLoc = Context->getSourceManager().getSpellingLoc(Loc);
     PresumedLoc PLoc = Context->getSourceManager().getPresumedLoc(SpellingLoc);
@@ -209,6 +274,15 @@ private:
     OS << PLoc.getColumn();
     LastLocFilename = Filename;
     LastLocLine = Line;
+  }
+
+  void printLocation(SourceLocation Loc) {
+    if (!Options.EnableLoc)
+      return;
+
+    OS << " <";
+    printLocation(Loc, true);
+    OS << ">";
   }
 
   void printSourceRange(SourceRange R) {

@@ -4,10 +4,12 @@ int i;
 int j;
 
 // CHECK: TranslationUnitDecl
-// CHECK-NEXT:   TypedefDecl __builtin_va_list
-// CHECK-NEXT:     Pointer
-// CHECK-NEXT:     Builtin char
-// CHECK-NEXT:   VarDecl i
-// CHECK-NEXT:     Builtin int
-// CHECK-NEXT:   VarDecl j
-// CHECK-NEXT:     Builtin int
+// CHECK-NEXT:   TypedefDecl
+// CHECK-NEXT:     PointerType
+// CHECK-NEXT:       BuiltinType char
+// CHECK-NEXT:   VarDecl
+// CHECK-NEXT:     Identifier i
+// CHECK-NEXT:     BuiltinType int
+// CHECK-NEXT:   VarDecl
+// CHECK-NEXT:     Identifier j
+// CHECK-NEXT:     BuiltinType int

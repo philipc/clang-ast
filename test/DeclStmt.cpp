@@ -5,15 +5,15 @@ void test() {
   int k;
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
+// CHECK:   CompoundStmt
 // CHECK-NEXT:     DeclStmt
-// CHECK-NEXT:       VarDecl i
-// CHECK-NEXT:         Builtin int
-// CHECK-NEXT:       VarDecl j
-// CHECK-NEXT:         Builtin int
+// CHECK-NEXT:       VarDecl
+// CHECK-NEXT:         Identifier i
+// CHECK-NEXT:         BuiltinType int
+// CHECK-NEXT:       VarDecl
+// CHECK-NEXT:         Identifier j
+// CHECK-NEXT:         BuiltinType int
 // CHECK-NEXT:     DeclStmt
-// CHECK-NEXT:       VarDecl k
-// CHECK-NEXT:         Builtin int
+// CHECK-NEXT:       VarDecl
+// CHECK-NEXT:         Identifier k
+// CHECK-NEXT:         BuiltinType int

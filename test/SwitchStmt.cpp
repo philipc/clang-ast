@@ -10,10 +10,7 @@ void test() {
   }
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
+// CHECK:   CompoundStmt
 // CHECK-NEXT:     SwitchStmt
 // CHECK-NEXT:       IntegerLiteral 0
 // CHECK-NEXT:       CompoundStmt

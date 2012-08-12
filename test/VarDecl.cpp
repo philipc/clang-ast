@@ -1,26 +1,32 @@
 // RUN: ast -f test "%s" 2>&1 | FileCheck %s
 
-// CHECK: VarDecl test1
-// CHECK-NEXT:   Builtin int
+// CHECK: VarDecl
+// CHECK-NEXT:   Identifier test1
+// CHECK-NEXT:   BuiltinType int
 int test1;
 
-// CHECK: VarDecl test2
-// CHECK-NEXT:   Builtin int
+// CHECK: VarDecl
+// CHECK-NEXT:   Identifier test2
+// CHECK-NEXT:   BuiltinType int
 // CHECK-NEXT:   IntegerLiteral 0
 int test2 = 0;
 
-// CHECK: VarDecl test3 extern
-// CHECK-NEXT:   Builtin int
+// CHECK: VarDecl extern
+// CHECK-NEXT:   Identifier test3
+// CHECK-NEXT:   BuiltinType int
 extern int test3;
 
-// CHECK: VarDecl test4 static
-// CHECK-NEXT:   Builtin int
+// CHECK: VarDecl static
+// CHECK-NEXT:   Identifier test4
+// CHECK-NEXT:   BuiltinType int
 static int test4;
 
-// CHECK: VarDecl test5 __thread
-// CHECK-NEXT:   Builtin int
+// CHECK: VarDecl __thread
+// CHECK-NEXT:   Identifier test5
+// CHECK-NEXT:   BuiltinType int
 __thread int test5;
 
-// CHECK: VarDecl test6 __module_private__
-// CHECK-NEXT:   Builtin int
+// CHECK: VarDecl __module_private__
+// CHECK-NEXT:   Identifier test6
+// CHECK-NEXT:   BuiltinType int
 __module_private__ int test6;

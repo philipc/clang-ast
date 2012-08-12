@@ -5,9 +5,6 @@ void test() {
     break;
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
+// CHECK:   CompoundStmt
 // CHECK-NEXT:     ForStmt
 // CHECK-NEXT:       BreakStmt

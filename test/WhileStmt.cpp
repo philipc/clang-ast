@@ -5,10 +5,7 @@ void test() {
     ;
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
+// CHECK:   CompoundStmt
 // CHECK-NEXT:     WhileStmt
 // CHECK-NEXT:       CXXBoolLiteralExpr true
 // CHECK-NEXT:       NullStmt

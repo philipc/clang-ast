@@ -15,10 +15,7 @@ void test() {
     ;
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
+// CHECK:   CompoundStmt
 // CHECK-NEXT:     IfStmt
 // CHECK-NEXT:       CXXBoolLiteralExpr true
 // CHECK-NEXT:       NullStmt
@@ -28,10 +25,12 @@ void test() {
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:     IfStmt
 // CHECK-NEXT:       DeclStmt
-// CHECK-NEXT:         VarDecl b
-// CHECK-NEXT:           Builtin bool
+// CHECK-NEXT:         VarDecl
+// CHECK-NEXT:           Identifier b
+// CHECK-NEXT:           BuiltinType bool
 // CHECK-NEXT:           CXXBoolLiteralExpr true
 // CHECK-NEXT:       ImplicitCastExpr
 // CHECK-NEXT:         DeclRefExpr
+// CHECK-NEXT:           DeclarationName b
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:       NullStmt

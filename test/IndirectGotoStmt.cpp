@@ -6,18 +6,18 @@ void test() {
   goto *p;
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
-// CHECK-NEXT:     LabelStmt l
+// CHECK:   CompoundStmt
+// CHECK-NEXT:     LabelStmt
+// CHECK-NEXT:       Identifier l
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:     DeclStmt
-// CHECK-NEXT:       VarDecl p
-// CHECK-NEXT:         Pointer
-// CHECK-NEXT:         Builtin void
+// CHECK-NEXT:       VarDecl
+// CHECK-NEXT:         Identifier p
+// CHECK-NEXT:         PointerType
+// CHECK-NEXT:           BuiltinType void
 // CHECK-NEXT:         AddrLabelExpr
 // CHECK-NEXT:     IndirectGotoStmt
 // CHECK-NEXT:       ImplicitCastExpr
 // CHECK-NEXT:         ImplicitCastExpr
 // CHECK-NEXT:           DeclRefExpr
+// CHECK-NEXT:             DeclarationName p

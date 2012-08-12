@@ -58,7 +58,7 @@ ValueDecl = EnumConstantDecl
           | IndirectFieldDecl
           | DeclaratorDecl
 
-DeclaratorDecl = FunctionDecl
+DeclaratorDecl = FunctionDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
                | CXXMethod
                | CXXConstructor
                | CXXDestructor
@@ -66,7 +66,7 @@ DeclaratorDecl = FunctionDecl
                | FieldDecl
                | ObjCIvarDecl
                | ObjCAtDefsFieldDecl
-               | VarDecl(Identifier, DeclSpec*, Expr?)
+               | VarDecl(Identifier, NestedNameSpecifier?, Type, Expr?)
                | ImplicitParamDecl
                | ParmVarDecl
                | NonTypeTemplateParmDecl
@@ -247,14 +247,24 @@ Expr = PredefinedExpr
      // OpenCL Extensions.
      | AsTypeExpr
 
-Type = lots
+Type = BuiltinType()
+     | FunctionType
+     | lots
+
+FunctionType = FunctionNoProtoType(Type result)
+             | FunctionProtoType(Type result, ParmVarDecl* arg)
 
 TypeLoc = ?
 
 Attr = lots
-- all Decl have Attr*?
 
 Notes:
-- The language defined by this grammar is a superset of legal ASTs
+- The structure defined by this grammar is a superset of legal ASTs.
+- Nodes can have additional properties beyond those listed. Only
+the properties that occur elsewhere in the grammar are listed.
+- Many nodes have one or more SourceLocation.
+- Decls have a DeclContext and Attr*.
 - LabelStmt and GotoStmt actually reference a LabelDecl, not an Identifier.
 In the case of a GNU local label, this LabelDecl occurs elsewhere in the tree.
+- There are inheritance relationships between some node types that are not
+expressed in this grammar.

@@ -12,15 +12,19 @@ public:
 }
 
 // CHECK-NOT: CXXRecordDecl
-// CHECK: CXXMethodDecl theMethod
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin int
-// CHECK-NEXT:   ParmVarDecl x
-// CHECK-NEXT:     Builtin int
+// CHECK: CXXMethodDecl
+// CHECK-NEXT:   DeclarationName theMethod
+// CHECK-NEXT:   FunctionProtoType
+// CHECK-NEXT:     BuiltinType int
+// CHECK-NEXT:     ParmVarDecl
+// CHECK-NEXT:       Identifier x
+// CHECK-NEXT:       BuiltinType int
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     ReturnStmt
 // CHECK-NEXT:       BinaryOperator
 // CHECK-NEXT:         ImplicitCastExpr
 // CHECK-NEXT:           DeclRefExpr
+// CHECK-NEXT:             DeclarationName x
 // CHECK-NEXT:         ImplicitCastExpr
 // CHECK-NEXT:           DeclRefExpr
+// CHECK-NEXT:             DeclarationName x

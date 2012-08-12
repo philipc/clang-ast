@@ -6,9 +6,6 @@ void test() {
   return;
 };
 
-// CHECK: FunctionDecl test
-// CHECK-NEXT:   FunctionProto
-// CHECK-NEXT:   Builtin void
-// CHECK-NEXT:   CompoundStmt
+// CHECK:   CompoundStmt
 // CHECK-NEXT:     CompoundStmt
 // CHECK-NEXT:     ReturnStmt
