@@ -59,10 +59,10 @@ ValueDecl = EnumConstantDecl
           | DeclaratorDecl
 
 DeclaratorDecl = FunctionDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
-               | CXXMethod
-               | CXXConstructor
-               | CXXDestructor
-               | CXXConversion
+               | CXXMethodDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
+               | CXXConstructorDecl(DeclarationName, NestedNameSpecifier?, FunctionType, CXXCtorInitializer*, Stmt?)
+               | CXXDestructorDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
+               | CXXConversionDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
                | FieldDecl
                | ObjCIvarDecl
                | ObjCAtDefsFieldDecl
@@ -71,6 +71,9 @@ DeclaratorDecl = FunctionDecl(DeclarationName, NestedNameSpecifier?, FunctionTyp
                | ParmVarDecl
                | NonTypeTemplateParmDecl
 
+CXXCtorInitializer = CXXCtorInitializer(Type, Expr)
+                   | CXXCtorInitializer(Identifier, Expr)
+          
 TemplateDecl = RedeclarableTemplateDecl
              | TemplateTemplateParmDecl
 
@@ -266,5 +269,6 @@ the properties that occur elsewhere in the grammar are listed.
 - Decls have a DeclContext and Attr*.
 - LabelStmt and GotoStmt actually reference a LabelDecl, not an Identifier.
 In the case of a GNU local label, this LabelDecl occurs elsewhere in the tree.
+- CXXCtorInitializer actually references a FieldDecl, not and Indentifier.
 - There are inheritance relationships between some node types that are not
 expressed in this grammar.

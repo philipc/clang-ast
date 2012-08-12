@@ -238,6 +238,21 @@ public:
     return Result;
   }
 
+  bool TraverseConstructorInitializer(CXXCtorInitializer *Init) {
+    ++Indent;
+    printIndent();
+    OS << "CXXCtorInitializer ";
+    printSourceRange(Init->getSourceRange());
+    if (Init->isBaseInitializer())
+      TraverseTypeLoc(Init->getTypeSourceInfo()->getTypeLoc());
+    else if (Init->isAnyMemberInitializer())
+      printIdentifier(Init->getAnyMember());
+    if (Init->isWritten())
+      TraverseStmt(Init->getInit());
+    --Indent;
+    return true;
+  }
+
 private:
   void printIndent() {
     if (NeedNewline)
