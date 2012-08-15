@@ -24,6 +24,7 @@ class A {
 // CHECK: CXXMethodDecl
 // CHECK-NEXT:   NestedNameSpecifier A::
 // CHECK-NEXT:     RecordType
+// CHECK-NEXT:       Identifier A
 // CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType void

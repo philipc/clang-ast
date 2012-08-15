@@ -1,3 +1,5 @@
+FIXME: this should match ASTWriter.
+        
 DeclGroup = Decl*
 (FIXME: need to mention DeclGroupRef?)
 
@@ -151,17 +153,18 @@ Stmt = Expr
 SwitchCase = CaseStmt(Expr lhs, Expr rhs)
            | DefaultStmt(Stmt)
 
-Expr = PredefinedExpr
-     | DeclRefExpr
-     | IntegerLiteral(APInt val)
-     | FloatingLiteral
-     | ImaginaryLiteral
-     | StringLiteral
-     | CharacterLiteral
-     | ParenExpr
-     | UnaryOperator
-     | OffsetOfExpr
-     | UnaryExprOrTypeTraitExpr
+Expr = PredefinedExpr()
+     | DeclRefExpr(NestedNameSpecifier?, DeclarationName, TemplateArgument*)
+     | IntegerLiteral()
+     | FloatingLiteral()
+     | ImaginaryLiteral(Expr)
+     | StringLiteral()
+     | CharacterLiteral()
+     | ParenExpr(Expr)
+     | UnaryOperator(Expr)
+     | OffsetOfExpr(Type, Expr)
+     | UnaryExprOrTypeTraitExpr(Type)
+     | UnaryExprOrTypeTraitExpr(Expr)
      | ArraySubscriptExpr
      | CallExpr
      | MemberExpr
@@ -187,7 +190,7 @@ Expr = PredefinedExpr
 
      // C++ Expressions.
      | CXXTypeidExpr
-     | CXXBoolLiteralExpr(bool val)
+     | CXXBoolLiteralExpr()
      | CXXNullPtrLiteralExpr
      | CXXThisExpr
      | CXXThrowExpr
@@ -276,6 +279,8 @@ OverloadExpr = UnresolvedLookupExpr
 
 Type = BuiltinType()
      | FunctionType
+     | RecordType(Identifier)
+     | ElaboratedType(Type)
      | lots
 
 FunctionType = FunctionNoProtoType(Type result)

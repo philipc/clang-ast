@@ -154,9 +154,68 @@ public:
     return true;
   }
 
+  bool VisitPredefinedExpr(PredefinedExpr *E) {
+    switch (E->getIdentType()) {
+    default:
+      llvm_unreachable("unknown IdentType");
+    case PredefinedExpr::Func:
+      OS << " __func__";
+      break;
+    case PredefinedExpr::Function:
+      OS << " __FUNCTION__";
+      break;
+    case PredefinedExpr::LFunction:
+      OS << " L__FUNCTION__";
+      break;
+    case PredefinedExpr::PrettyFunction:
+      OS << " __PRETTY_FUNCTION__";
+      break;
+    }
+    return true;
+  }
+
   bool VisitIntegerLiteral(IntegerLiteral *E) {
     bool isSigned = E->getType()->isSignedIntegerType();
     OS << ' ' << E->getValue().toString(10, isSigned);
+    return true;
+  }
+
+  bool VisitFloatingLiteral(FloatingLiteral *E) {
+    OS << ' ' << E->getValueAsApproximateDouble();
+    return true;
+  }
+
+  bool VisitStringLiteral(StringLiteral *E) {
+    OS << ' ';
+    E->outputString(OS);
+    return true;
+  }
+
+  bool VisitCharacterLiteral(CharacterLiteral *E) {
+    OS << ' ' << E->getValue();
+    return true;
+  }
+
+  bool VisitUnaryOperator(UnaryOperator *E) {
+    OS << ' ' << (E->isPostfix() ? "postfix" : "prefix")
+       << ' ' << UnaryOperator::getOpcodeStr(E->getOpcode());
+    return true;
+  }
+
+  bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr *E) {
+    switch (E->getKind()) {
+    default:
+      llvm_unreachable("unknown IdentType");
+    case UETT_SizeOf:
+      OS << " sizeof";
+      break;
+    case UETT_AlignOf:
+      OS << " alignof";
+      break;
+    case UETT_VecStep:
+      OS << " vec_step";
+      break;
+    }
     return true;
   }
 
@@ -180,6 +239,11 @@ public:
 
   bool VisitBuiltinType(BuiltinType *T) {
     OS << ' ' << T->getName(Context->getPrintingPolicy());
+    return true;
+  }
+
+  bool VisitRecordType(RecordType *T) {
+    printIdentifier(T->getDecl());
     return true;
   }
 
@@ -251,6 +315,25 @@ public:
       TraverseStmt(Init->getInit());
     --Indent;
     return true;
+  }
+
+  bool TraverseTemplateArgument(const TemplateArgument &Arg) {
+    ++Indent;
+    printIndent();
+    OS << "TemplateArgument";
+    bool Result = VisitorBase::TraverseTemplateArgument(Arg);
+    --Indent;
+    return Result;
+  }
+
+  bool TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc) {
+    ++Indent;
+    printIndent();
+    OS << "TemplateArgument";
+    printSourceRange(ArgLoc.getSourceRange());
+    bool Result = VisitorBase::TraverseTemplateArgumentLoc(ArgLoc);
+    --Indent;
+    return Result;
   }
 
 private:
