@@ -283,9 +283,10 @@ public:
 
     ++Indent;
     printIndent();
-    OS << "NestedNameSpecifier ";
-    NNS.getNestedNameSpecifier()->print(OS, Context->getPrintingPolicy());
+    OS << "NestedNameSpecifier";
     printSourceRange(NNS.getSourceRange());
+    OS << ' ';
+    NNS.getNestedNameSpecifier()->print(OS, Context->getPrintingPolicy());
     bool Result = VisitorBase::TraverseNestedNameSpecifierLoc(NNS);
     --Indent;
     return Result;
@@ -294,9 +295,10 @@ public:
   bool TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
     ++Indent;
     printIndent();
-    OS << "DeclarationName ";
-    NameInfo.getName().printName(OS);
+    OS << "DeclarationName";
     printSourceRange(NameInfo.getSourceRange());
+    OS << ' ';
+    NameInfo.getName().printName(OS);
     bool Result = VisitorBase::TraverseDeclarationNameInfo(NameInfo);
     --Indent;
     return Result;
@@ -348,8 +350,9 @@ private:
   void printIdentifier(NamedDecl *D) {
     ++Indent;
     printIndent();
-    OS << "Identifier " << D->getNameAsString();
+    OS << "Identifier";
     printLocation(D->getLocation());
+    OS << ' ' << D->getNameAsString();
     --Indent;
   }
 
