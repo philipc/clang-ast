@@ -43,7 +43,7 @@ public:
 private:
   std::string getName(Decl *D) {
     if (isa<NamedDecl>(D))
-      return cast<NamedDecl>(D)->getNameAsString();
+      return cast<NamedDecl>(D)->getQualifiedNameAsString();
     return "";
   }
 

@@ -1,18 +1,35 @@
-// RUN: ast -f Method "%s" 2>&1 | FileCheck %s
+// RUN: ast -f TheClass "%s" 2>&1 | FileCheck %s
 
 namespace test_namespace {
 
 class TheClass {
 public:
-  int theMethod(int x) {
-    return x + x;
-  }
+  int theMethod(int x);
 };
+
+int TheClass::theMethod(int x) {
+  return x + x;
+}
+
+int theFunction(int x) {
+  return x + x;
+}
 
 }
 
-// CHECK-NOT: CXXRecordDecl
-// CHECK: CXXMethodDecl
+// CHECK: CXXRecordDecl
+// CHECK-NEXT:   AccessSpecDecl
+// CHECK-NEXT:   CXXMethodDecl
+// CHECK-NEXT:     DeclarationName theMethod
+// CHECK-NEXT:     FunctionProtoType
+// CHECK-NEXT:       BuiltinType int
+// CHECK-NEXT:       ParmVarDecl
+// CHECK-NEXT:         Identifier x
+// CHECK-NEXT:         BuiltinType int
+// CHECK-NEXT: CXXMethodDecl
+// CHECK-NEXT:   NestedNameSpecifier TheClass::
+// CHECK-NEXT:     RecordType
+// CHECK-NEXT:       Identifier TheClass
 // CHECK-NEXT:   DeclarationName theMethod
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType int
@@ -28,3 +45,4 @@ public:
 // CHECK-NEXT:         ImplicitCastExpr
 // CHECK-NEXT:           DeclRefExpr
 // CHECK-NEXT:             DeclarationName x
+// CHECK-NOT: FunctionDecl
