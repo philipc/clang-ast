@@ -68,28 +68,243 @@ public:
 
   bool TraverseDecl(Decl *D);
   bool VisitDecl(Decl *D);
-  bool VisitVarDecl(VarDecl *D);
-  bool VisitFunctionDecl(FunctionDecl *D);
+  // TranslationUnitDecl empty
+  // NamedDecl empty
+  // TODO: NamespaceDecl
+  // TODO: UsingDirectiveDecl
+  // TODO: NamespaceAliasDecl
   bool VisitLabelDecl(LabelDecl *D);
+  // TODO: TypeDecl
+  // TODO: TypedefNameDecl
+  // TODO: TypedefDecl
+  // TODO: TypeAliasDecl
+  // TODO: UnresolvedUsingTypenameDecl
+  // TODO: TagDecl
+  // TODO: EnumDecl
+  // TODO: RecordDecl
+  // TODO: CXXRecordDecl
+  // TODO: ClassTemplateSpecializationDecl
+  // TODO: ClassTemplatePartialSpecializationDecl
+  // TODO: TemplateTypeParmDecl
+  // TODO: ValueDecl
+  // TODO: EnumConstantDecl
+  // TODO: UnresolvedUsingValueDecl
+  // TODO: IndirectFieldDecl
+  // TODO: DeclaratorDecl
+  bool VisitFunctionDecl(FunctionDecl *D);
+  // TODO: CXXMethodDecl
+  // TODO: CXXConstructorDecl
+  // TODO: CXXDestructorDecl
+  // TODO: CXXConversionDecl
+  // TODO: FieldDecl
+  // TODO: ObjCIvarDecl
+  // TODO: ObjCAtDefsFieldDecl
+  bool VisitVarDecl(VarDecl *D);
+  // TODO: ImplicitParamDecl
+  // TODO: ParmVarDecl
+  // TODO: NonTypeTemplateParmDecl
+  // TODO: TemplateDecl
+  // TODO: RedeclarableTemplateDecl
+  // TODO: FunctionTemplateDecl
+  // TODO: ClassTemplateDecl
+  // TODO: TypeAliasTemplateDecl
+  // TODO: TemplateTemplateParmDecl
+  // TODO: UsingDecl
+  // TODO: UsingShadowDecl
+  // TODO: ObjCMethodDecl
+  // TODO: ObjCContainerDecl
+  // TODO: ObjCCategoryDecl
+  // TODO: ObjCProtocolDecl
+  // TODO: ObjCInterfaceDecl
+  // TODO: ObjCImplDecl
+  // TODO: ObjCCategoryImplDecl
+  // TODO: ObjCImplementationDecl
+  // TODO: ObjCPropertyDecl
+  // TODO: ObjCCompatibleAliasDecl
+  // TODO: LinkageSpecDecl
+  // TODO: ObjCPropertyImplDecl
+  // TODO: FileScopeAsmDecl
+  // TODO: AccessSpecDecl
+  // TODO: FriendDecl
+  // TODO: FriendTemplateDecl
+  // TODO: StaticAssertDecl
+  // TODO: BlockDecl
+  // TODO: ClassScopeFunctionSpecializationDecl
+  // TODO: ImportDecl
 
+  // Statements
   bool TraverseStmt(Stmt *S);
   bool VisitStmt(Stmt *S);
+  // TODO: NullStmt
+  // TODO: CompoundStmt
   bool VisitLabelStmt(LabelStmt *S);
+  // TODO: AttributedStmt
+  // TODO: IfStmt
+  // TODO: SwitchStmt
+  // TODO: WhileStmt
+  // TODO: DoStmt
+  // TODO: ForStmt
   bool VisitGotoStmt(GotoStmt *S);
+  // TODO: IndirectGotoStmt
+  // TODO: ContinueStmt
+  // TODO: BreakStmt
+  // TODO: ReturnStmt
+  // TODO: DeclStmt 
+  // TODO: SwitchCase
+  // TODO: CaseStmt
+  // TODO: DefaultStmt
 
+  // GNU Extensions
+  // TODO: AsmStmt
+
+  // MS Extensions
+  // TODO: MSAsmStmt
+
+  // Obj-C statements
+  // TODO: ObjCAtTryStmt
+  // TODO: ObjCAtCatchStmt
+  // TODO: ObjCAtFinallyStmt
+  // TODO: ObjCAtThrowStmt
+  // TODO: ObjCAtSynchronizedStmt
+  // TODO: ObjCForCollectionStmt
+  // TODO: ObjCAutoreleasePoolStmt
+
+  // C++ statments
+  // TODO: CXXCatchStmt
+  // TODO: CXXTryStmt
+  // TODO: CXXForRangeStmt
+
+  // Expressions
+  // TODO: Expr
   bool VisitPredefinedExpr(PredefinedExpr *E);
+  // TODO: DeclRefExpr
   bool VisitIntegerLiteral(IntegerLiteral *E);
   bool VisitFloatingLiteral(FloatingLiteral *E);
+  // TODO: ImaginaryLiteral
   bool VisitStringLiteral(StringLiteral *E);
   bool VisitCharacterLiteral(CharacterLiteral *E);
+  // TODO: ParenExpr
   bool VisitUnaryOperator(UnaryOperator *E);
+  // TODO: OffsetOfExpr
   bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr *E);
+  // TODO: ArraySubscriptExpr
+  // TODO: CallExpr
+  // TODO: MemberExpr
+  // TODO: CastExpr
+  // TODO: BinaryOperator
+  // TODO: CompoundAssignOperator
+  // TODO: AbstractConditionalOperator
+  // TODO: ConditionalOperator
+  // TODO: BinaryConditionalOperator
+  // TODO: ImplicitCastExpr
+  // TODO: ExplicitCastExpr
+  // TODO: CStyleCastExpr
+  // TODO: CompoundLiteralExpr
+  // TODO: ExtVectorElementExpr
+  // TODO: InitListExpr
+  // TODO: DesignatedInitExpr
+  // TODO: ImplicitValueInitExpr
+  // TODO: ParenListExpr
+  // TODO: VAArgExpr
+  // TODO: GenericSelectionExpr
+  // TODO: PseudoObjectExpr
+
+  // Atomic expressions
+  // TODO: AtomicExpr
+
+  // GNU Extensions.
+  // TODO: AddrLabelExpr
+  // TODO: StmtExpr
+  // TODO: ChooseExpr
+  // TODO: GNUNullExpr
+
+  // C++ Expressions.
+  // TODO: CXXOperatorCallExpr
+  // TODO: CXXMemberCallExpr
+  // TODO: CXXNamedCastExpr
+  // TODO: CXXStaticCastExpr
+  // TODO: CXXDynamicCastExpr
+  // TODO: CXXReinterpretCastExpr
+  // TODO: CXXConstCastExpr
+  // TODO: CXXFunctionalCastExpr
+  // TODO: CXXTypeidExpr
+  // TODO: UserDefinedLiteral
   bool VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr *E);
+  // TODO: CXXNullPtrLiteralExpr
+  // TODO: CXXThisExpr
+  // TODO: CXXThrowExpr
+  // TODO: CXXDefaultArgExpr
+  // TODO: CXXScalarValueInitExpr
+  // TODO: CXXNewExpr
+  // TODO: CXXDeleteExpr
+  // TODO: CXXPseudoDestructorExpr
+  // TODO: TypeTraitExpr
+  // TODO: UnaryTypeTraitExpr
+  // TODO: BinaryTypeTraitExpr
+  // TODO: ArrayTypeTraitExpr
+  // TODO: ExpressionTraitExpr
+  // TODO: DependentScopeDeclRefExpr
+  // TODO: CXXConstructExpr
+  // TODO: CXXBindTemporaryExpr
+  // TODO: ExprWithCleanups
+  // TODO: CXXTemporaryObjectExpr
+  // TODO: CXXUnresolvedConstructExpr
+  // TODO: CXXDependentScopeMemberExpr
+  // TODO: OverloadExpr
+  // TODO: UnresolvedLookupExpr
+  // TODO: UnresolvedMemberExpr
+  // TODO: CXXNoexceptExpr
+  // TODO: PackExpansionExpr
+  // TODO: SizeOfPackExpr
+  // TODO: SubstNonTypeTemplateParmExpr
+  // TODO: SubstNonTypeTemplateParmPackExpr
+  // TODO: MaterializeTemporaryExpr
+  // TODO: LambdaExpr
+
+  // Obj-C Expressions.
+  // TODO: ObjCStringLiteral
+  // TODO: ObjCBoxedExpr
+  // TODO: ObjCArrayLiteral
+  // TODO: ObjCDictionaryLiteral
+  // TODO: ObjCEncodeExpr
+  // TODO: ObjCMessageExpr
+  // TODO: ObjCSelectorExpr
+  // TODO: ObjCProtocolExpr
+  // TODO: ObjCIvarRefExpr
+  // TODO: ObjCPropertyRefExpr
+  // TODO: ObjCIsaExpr
+  // TODO: ObjCIndirectCopyRestoreExpr
+  // TODO: ObjCBoolLiteralExpr
+  // TODO: ObjCSubscriptRefExpr
+
+  // Obj-C ARC Expressions.
+  // TODO: ObjCBridgedCastExpr
+
+  // CUDA Expressions.
+  // TODO: CUDAKernelCallExpr
+
+  // Clang Extensions.
+  // TODO: ShuffleVectorExpr
+  // TODO: BlockExpr
+  // TODO: OpaqueValueExpr
+
+  // Microsoft Extensions.
+  // TODO: CXXUuidofExpr
+  // TODO: SEHTryStmt
+  // TODO: SEHExceptStmt
+  // TODO: SEHFinallyStmt
+  // TODO: MSDependentExistsStmt
+
+  // OpenCL Extensions.
+  // TODO: AsTypeExpr
 
   bool TraverseType(QualType T);
   bool VisitType(Type *T);
   bool VisitBuiltinType(BuiltinType *T);
   bool VisitRecordType(RecordType *T);
+  // TODO: Type
+
+  // TODO: Attr
 
   bool TraverseTypeLoc(TypeLoc TL);
   bool VisitTypeLoc(TypeLoc TL);
@@ -98,9 +313,9 @@ public:
   bool TraverseNestedNameSpecifier(NestedNameSpecifier *NNS);
   bool TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc NNS);
   bool TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo);
-  bool TraverseConstructorInitializer(CXXCtorInitializer *Init);
   bool TraverseTemplateArgument(const TemplateArgument &Arg);
   bool TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc);
+  bool TraverseConstructorInitializer(CXXCtorInitializer *Init);
 
 private:
   void printIndent();
@@ -108,6 +323,7 @@ private:
   void printLocation(SourceLocation Loc, bool PrintLine);
   void printLocation(SourceLocation Loc);
   void printSourceRange(SourceRange R);
+
   ASTFilter<ASTPrinter> Filter;
   ASTContext *Context;
   raw_ostream &OS;
@@ -147,21 +363,15 @@ bool ASTPrinter::VisitDecl(Decl *D) {
   printIndent();
   OS << D->getDeclKindName() << "Decl";
   printSourceRange(D->getSourceRange());
+  // TODO: DeclContext
+  // TODO: LexicalDeclContext
   // TODO: Attr
+  // TODO: AccessSpecifier
+  // TODO: various bool members
   return true;
 }
 
-bool ASTPrinter::VisitVarDecl(VarDecl *D) {
-  StorageClass SC = D->getStorageClassAsWritten();
-  if (SC != SC_None)
-    OS << ' ' << VarDecl::getStorageClassSpecifierString(SC);
-  if (D->isThreadSpecified())
-    OS << " __thread";
-  if (D->isModulePrivate())
-    OS << " __module_private__";
-
-  // TODO: more properties
-
+bool ASTPrinter::VisitLabelDecl(LabelDecl *D) {
   printIdentifier(D);
   return true;
 }
@@ -174,13 +384,27 @@ bool ASTPrinter::VisitFunctionDecl(FunctionDecl *D) {
     OS << " inline";
   if (D->isVirtualAsWritten())
     OS << " virtual";
+  // FIXME: this is a Decl attribute
   if (D->isModulePrivate())
     OS << " __module_private__";
+
   // TODO: more properties
+
   return true;
 }
 
-bool ASTPrinter::VisitLabelDecl(LabelDecl *D) {
+bool ASTPrinter::VisitVarDecl(VarDecl *D) {
+  StorageClass SC = D->getStorageClassAsWritten();
+  if (SC != SC_None)
+    OS << ' ' << VarDecl::getStorageClassSpecifierString(SC);
+  if (D->isThreadSpecified())
+    OS << " __thread";
+  // FIXME: this is a Decl attribute
+  if (D->isModulePrivate())
+    OS << " __module_private__";
+
+  // TODO: more properties
+
   printIdentifier(D);
   return true;
 }
@@ -359,21 +583,6 @@ bool ASTPrinter::TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
   return Result;
 }
 
-bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
-  ++Indent;
-  printIndent();
-  OS << "CXXCtorInitializer ";
-  printSourceRange(Init->getSourceRange());
-  if (Init->isBaseInitializer())
-    TraverseTypeLoc(Init->getTypeSourceInfo()->getTypeLoc());
-  else if (Init->isAnyMemberInitializer())
-    printIdentifier(Init->getAnyMember());
-  if (Init->isWritten())
-    TraverseStmt(Init->getInit());
-  --Indent;
-  return true;
-}
-
 bool ASTPrinter::TraverseTemplateArgument(const TemplateArgument &Arg) {
   ++Indent;
   printIndent();
@@ -391,6 +600,21 @@ bool ASTPrinter::TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc) 
   bool Result = VisitorBase::TraverseTemplateArgumentLoc(ArgLoc);
   --Indent;
   return Result;
+}
+
+bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
+  ++Indent;
+  printIndent();
+  OS << "CXXCtorInitializer ";
+  printSourceRange(Init->getSourceRange());
+  if (Init->isBaseInitializer())
+    TraverseTypeLoc(Init->getTypeSourceInfo()->getTypeLoc());
+  else if (Init->isAnyMemberInitializer())
+    printIdentifier(Init->getAnyMember());
+  if (Init->isWritten())
+    TraverseStmt(Init->getInit());
+  --Indent;
+  return true;
 }
 
 void ASTPrinter::printIndent() {
