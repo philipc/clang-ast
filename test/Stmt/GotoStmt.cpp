@@ -6,6 +6,6 @@ void test() {
 
 // CHECK:   CompoundStmt
 // CHECK-NEXT:     LabelStmt
-// CHECK-NEXT:       Identifier l
+// CHECK-NEXT:       LabelDeclRef l
 // CHECK-NEXT:       GotoStmt
-// CHECK-NEXT:         Identifier l
+// CHECK-NEXT:         LabelDeclRef l

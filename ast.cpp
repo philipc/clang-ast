@@ -138,24 +138,24 @@ public:
   // Statements
   bool TraverseStmt(Stmt *S);
   bool VisitStmt(Stmt *S);
-  // TODO: NullStmt
-  // TODO: CompoundStmt
+  bool VisitNullStmt(NullStmt *S);
+  // CompoundStmt empty
   bool VisitLabelStmt(LabelStmt *S);
-  // TODO: AttributedStmt
-  // TODO: IfStmt
-  // TODO: SwitchStmt
-  // TODO: WhileStmt
-  // TODO: DoStmt
-  // TODO: ForStmt
+  bool VisitAttributedStmt(AttributedStmt *S);
+  // IfStmt empty
+  bool VisitSwitchStmt(SwitchStmt *S);
+  // WhileStmt empty
+  // DoStmt empty
+  // ForStmt empty
   bool VisitGotoStmt(GotoStmt *S);
-  // TODO: IndirectGotoStmt
-  // TODO: ContinueStmt
-  // TODO: BreakStmt
-  // TODO: ReturnStmt
-  // TODO: DeclStmt 
-  // TODO: SwitchCase
-  // TODO: CaseStmt
-  // TODO: DefaultStmt
+  // IndirectGotoStmt empty
+  // ContinueStmt empty
+  // BreakStmt empty
+  bool VisitReturnStmt(ReturnStmt *S);
+  // DeclStmt 
+  // SwitchCase empty
+  // CaseStmt empty
+  // DefaultStmt empty
 
   // GNU Extensions
   // TODO: AsmStmt
@@ -322,6 +322,7 @@ public:
 
 private:
   void printIndent();
+  void printDeclRef(NamedDecl *D, SourceLocation Loc);
   void printIdentifier(NamedDecl *D);
   void printLocation(SourceLocation Loc, bool PrintLine);
   void printLocation(SourceLocation Loc);
@@ -375,7 +376,9 @@ bool ASTPrinter::VisitDecl(Decl *D) {
 }
 
 bool ASTPrinter::VisitLabelDecl(LabelDecl *D) {
-  printIdentifier(D);
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
@@ -426,13 +429,33 @@ bool ASTPrinter::VisitStmt(Stmt *S) {
   return true;
 }
 
+bool ASTPrinter::VisitNullStmt(NullStmt *S) {
+  // TODO: HasLeadingEmptyMacro
+  return true;
+}
+
 bool ASTPrinter::VisitLabelStmt(LabelStmt *S) {
-  printIdentifier(S->getDecl());
+  printDeclRef(S->getDecl(), S->getIdentLoc());
+  return true;
+}
+
+bool ASTPrinter::VisitAttributedStmt(AttributedStmt *S) {
+  // TODO: getAttrs()
+  return true;
+}
+
+bool ASTPrinter::VisitSwitchStmt(SwitchStmt *S) {
+  // TODO: isAllEnumCasesCovered()
   return true;
 }
 
 bool ASTPrinter::VisitGotoStmt(GotoStmt *S) {
-  printIdentifier(S->getLabel());
+  printDeclRef(S->getLabel(), S->getLabelLoc());
+  return true;
+}
+
+bool ASTPrinter::VisitReturnStmt(ReturnStmt *S) {
+  // TODO: getNRVOCandidate()
   return true;
 }
 
@@ -631,6 +654,15 @@ void ASTPrinter::printIndent() {
   for (unsigned i = 1; i < Indent; ++i)
     OS << "  ";
   NeedNewline = true;
+}
+
+void ASTPrinter::printDeclRef(NamedDecl *D, SourceLocation Loc) {
+  ++Indent;
+  printIndent();
+  OS << D->getDeclKindName() << "DeclRef";
+  printLocation(Loc);
+  OS << ' ' << D->getQualifiedNameAsString();
+  --Indent;
 }
 
 void ASTPrinter::printIdentifier(NamedDecl *D) {

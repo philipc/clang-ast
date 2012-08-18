@@ -8,7 +8,7 @@ void test() {
 
 // CHECK:   CompoundStmt
 // CHECK-NEXT:     LabelStmt
-// CHECK-NEXT:       Identifier l
+// CHECK-NEXT:       LabelDeclRef l
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:     DeclStmt
 // CHECK-NEXT:       VarDecl
