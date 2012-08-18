@@ -56,6 +56,7 @@ public:
   ASTPrinterOptions() {}
 
   bool EnableLoc;
+  bool EnableImplicit;
   std::string FilterString;
 };
 
@@ -65,6 +66,8 @@ public:
 
   explicit ASTPrinter(raw_ostream &OS, const ASTPrinterOptions &Options);
   virtual void HandleTranslationUnit(ASTContext &Context);
+
+  bool shouldVisitImplicitCode() { return Options.EnableImplicit; }
 
   bool TraverseDecl(Decl *D);
   bool VisitDecl(Decl *D);
@@ -706,6 +709,11 @@ cl::opt<bool> EnableLoc(
     cl::desc("Enable source locations"),
     cl::Optional);
 
+cl::opt<bool> EnableImplicit(
+    "i",
+    cl::desc("Enable implicit code"),
+    cl::Optional);
+
 cl::opt<std::string> FilterString(
     "f",
     cl::desc("Filter named declarations"),
@@ -725,6 +733,7 @@ int main(int argc, const char *argv[]) {
   cl::ParseCommandLineOptions(argc, argv);
   ASTPrinterOptions Options;
   Options.EnableLoc = EnableLoc;
+  Options.EnableImplicit = EnableImplicit;
   Options.FilterString = FilterString;
   runTool(Argv, new ASTPrinterAction(Options));
   return 0;
