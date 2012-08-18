@@ -38,38 +38,38 @@ void test1() {
   // CHECK-NEXT:         DeclarationName i
   --i;
 
-  // CHECK-NEXT:     UnaryOperator prefix &
+  // CHECK-NEXT:     UnaryOperator &
   // CHECK-NEXT:       DeclRefExpr
   // CHECK-NEXT:         DeclarationName i
   &i;
 
-  // CHECK-NEXT:     UnaryOperator prefix *
+  // CHECK-NEXT:     UnaryOperator *
   // CHECK-NEXT:       ImplicitCastExpr
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName p
   *p;
 
-  // CHECK-NEXT:     UnaryOperator prefix +
+  // CHECK-NEXT:     UnaryOperator +
   // CHECK-NEXT:       IntegerLiteral 1
   +1;
 
-  // CHECK-NEXT:     UnaryOperator prefix -
+  // CHECK-NEXT:     UnaryOperator -
   // CHECK-NEXT:       IntegerLiteral 1
   -1;
 
-  // CHECK-NEXT:     UnaryOperator prefix ~
+  // CHECK-NEXT:     UnaryOperator ~
   // CHECK-NEXT:       IntegerLiteral 0
   ~0;
 
-  // CHECK-NEXT:     UnaryOperator prefix !
+  // CHECK-NEXT:     UnaryOperator !
   // CHECK-NEXT:       CXXBoolLiteralExpr false
   !false;
 
-  // CHECK-NEXT:     UnaryOperator prefix __real
+  // CHECK-NEXT:     UnaryOperator __real
   // CHECK-NEXT:       IntegerLiteral 0
   __real__ 0;
 
-  // CHECK-NEXT:     UnaryOperator prefix __imag
+  // CHECK-NEXT:     UnaryOperator __imag
   // CHECK-NEXT:       IntegerLiteral 0
   __imag__ 0;
 

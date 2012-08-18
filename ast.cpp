@@ -178,17 +178,17 @@ public:
   // TODO: CXXForRangeStmt
 
   // Expressions
-  // TODO: Expr
+  bool VisitExpr(Expr *E);
   bool VisitPredefinedExpr(PredefinedExpr *E);
-  // TODO: DeclRefExpr
+  bool VisitDeclRefExpr(DeclRefExpr *E);
   bool VisitIntegerLiteral(IntegerLiteral *E);
   bool VisitFloatingLiteral(FloatingLiteral *E);
-  // TODO: ImaginaryLiteral
+  // ImaginaryLiteral empty
   bool VisitStringLiteral(StringLiteral *E);
   bool VisitCharacterLiteral(CharacterLiteral *E);
-  // TODO: ParenExpr
+  // ParenExpr empty
   bool VisitUnaryOperator(UnaryOperator *E);
-  // TODO: OffsetOfExpr
+  bool VisitOffsetOfExpr(OffsetOfExpr *E);
   bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr *E);
   // TODO: ArraySubscriptExpr
   // TODO: CallExpr
@@ -459,6 +459,17 @@ bool ASTPrinter::VisitReturnStmt(ReturnStmt *S) {
   return true;
 }
 
+bool ASTPrinter::VisitExpr(Expr *E) {
+  // TODO: getType()
+  // TODO: isTypeDependent()
+  // TODO: isValueDependent()
+  // TODO: isInstantiationDependent()
+  // TODO: containsUnexpandedParameterPack()
+  // TODO: getValueKind()
+  // TODO: getObjectKind()
+  return true;
+}
+
 bool ASTPrinter::VisitPredefinedExpr(PredefinedExpr *E) {
   switch (E->getIdentType()) {
   default:
@@ -479,6 +490,13 @@ bool ASTPrinter::VisitPredefinedExpr(PredefinedExpr *E) {
   return true;
 }
 
+bool ASTPrinter::VisitDeclRefExpr(DeclRefExpr *E) {
+  // TODO: getFoundDecl()
+  // TODO: hadMultipleCandidates()
+  // TODO: refersToEnclosingLocal()
+  return true;
+}
+
 bool ASTPrinter::VisitIntegerLiteral(IntegerLiteral *E) {
   bool isSigned = E->getType()->isSignedIntegerType();
   OS << ' ' << E->getValue().toString(10, isSigned);
@@ -487,23 +505,37 @@ bool ASTPrinter::VisitIntegerLiteral(IntegerLiteral *E) {
 
 bool ASTPrinter::VisitFloatingLiteral(FloatingLiteral *E) {
   OS << ' ' << E->getValueAsApproximateDouble();
+  // TODO: isExact()
   return true;
 }
 
 bool ASTPrinter::VisitStringLiteral(StringLiteral *E) {
   OS << ' ';
   E->outputString(OS);
+  // TODO: getNumConcatenated()
+  // TODO: getKind()
+  // TODO: isPascal()
   return true;
 }
 
 bool ASTPrinter::VisitCharacterLiteral(CharacterLiteral *E) {
   OS << ' ' << E->getValue();
+  // TODO: getKind()
   return true;
 }
 
 bool ASTPrinter::VisitUnaryOperator(UnaryOperator *E) {
-  OS << ' ' << (E->isPostfix() ? "postfix" : "prefix")
-     << ' ' << UnaryOperator::getOpcodeStr(E->getOpcode());
+  if (E->isPostfix())
+    OS << ' ' << "postfix";
+  if (E->isPrefix())
+    OS << ' ' << "prefix";
+  OS << ' ' << UnaryOperator::getOpcodeStr(E->getOpcode());
+  return true;
+}
+
+bool ASTPrinter::VisitOffsetOfExpr(OffsetOfExpr *E) {
+  // TODO: getComponent(getNumComponents())
+  // TODO: getIndexExpr(getNUmExpressions)
   return true;
 }
 
