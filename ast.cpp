@@ -525,7 +525,11 @@ bool ASTPrinter::VisitBuiltinType(BuiltinType *T) {
 }
 
 bool ASTPrinter::VisitRecordType(RecordType *T) {
-  printIdentifier(T->getDecl());
+  RecordDecl *D = T->getDecl();
+  if (D->getIdentifier())
+    printIdentifier(D);
+  else
+    OS << " <anon>";
   return true;
 }
 
@@ -575,6 +579,7 @@ bool ASTPrinter::TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc NNS) {
 }
 
 bool ASTPrinter::TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
+  // FIXME: handle anonymous decls
   ++Indent;
   printIndent();
   OS << "DeclarationName";

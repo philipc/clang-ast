@@ -9,6 +9,5 @@ void test() {
 // CHECK-NEXT:       VarDecl
 // CHECK-NEXT:         Identifier 
 // CHECK-NEXT:         ElaboratedType
-// CHECK-NEXT:           RecordType
-// CHECK-NEXT:             Identifier 
+// CHECK-NEXT:           RecordType <anon>
 // CHECK-NEXT:         CXXConstructExpr
