@@ -321,6 +321,7 @@ public:
   bool TraverseConstructorInitializer(CXXCtorInitializer *Init);
 
 private:
+  void printNewline();
   void printIndent();
   void printDeclRef(NamedDecl *D, SourceLocation Loc);
   void printLocation(SourceLocation Loc, bool PrintLine);
@@ -332,6 +333,7 @@ private:
   raw_ostream &OS;
   unsigned Indent;
   bool NeedNewline;
+  SourceRange NeedLoc;
   const char *LastLocFilename;
   unsigned LastLocLine;
   const ASTPrinterOptions &Options;
@@ -355,10 +357,7 @@ bool ASTPrinter::TraverseDecl(Decl *D) {
   --Indent;
   // Finish off the line now in case this was the top level.
   // Currently only Decl can appear at the top level.
-  if (NeedNewline) {
-    OS << '\n';
-    NeedNewline = false;
-  }
+  printNewline();
   return Result;
 }
 
@@ -752,9 +751,25 @@ bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
   return true;
 }
 
-void ASTPrinter::printIndent() {
-  if (NeedNewline)
+void ASTPrinter::printNewline() {
+  if (NeedLoc.isValid()) {
+    OS << " <";
+    printLocation(NeedLoc.getBegin(), true);
+    if (NeedLoc.getBegin() != NeedLoc.getEnd()) {
+      OS << "-";
+      printLocation(NeedLoc.getEnd(), false);
+    }
+    OS << ">";
+    NeedLoc = SourceRange();
+  }
+  if (NeedNewline) {
     OS << '\n';
+    NeedNewline = false;
+  }
+}
+
+void ASTPrinter::printIndent() {
+  printNewline();
   for (unsigned i = 1; i < Indent; ++i)
     OS << "  ";
   NeedNewline = true;
@@ -793,23 +808,13 @@ void ASTPrinter::printLocation(SourceLocation Loc, bool PrintLine) {
 void ASTPrinter::printLocation(SourceLocation Loc) {
   if (!Options.EnableLoc)
     return;
-
-  OS << " <";
-  printLocation(Loc, true);
-  OS << ">";
+  NeedLoc = Loc;
 }
 
 void ASTPrinter::printSourceRange(SourceRange R) {
   if (!Options.EnableLoc)
     return;
-
-  OS << " <";
-  printLocation(R.getBegin(), true);
-  if (R.getBegin() != R.getEnd()) {
-    OS << "-";
-    printLocation(R.getEnd(), false);
-  }
-  OS << ">";
+  NeedLoc = R;
 }
 
 class ASTPrinterAction : public ASTFrontendAction {
