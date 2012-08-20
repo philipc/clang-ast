@@ -15,8 +15,7 @@ struct T t;
 // CHECK: CompoundStmt
 // CHECK-NEXT:   UnaryExprOrTypeTraitExpr sizeof
 // CHECK-NEXT:     ElaboratedType
-// CHECK-NEXT:       RecordType
-// CHECK-NEXT:         Identifier T
+// CHECK-NEXT:       RecordType T
 // CHECK-NEXT:   UnaryExprOrTypeTraitExpr alignof
 // CHECK-NEXT:     DeclRefExpr
 // CHECK-NEXT:       DeclarationName t

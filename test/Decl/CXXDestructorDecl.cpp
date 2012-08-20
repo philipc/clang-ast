@@ -10,8 +10,7 @@ class test1 {
 
 // CHECK: CXXDestructorDecl
 // CHECK-NEXT:   NestedNameSpecifier test1::
-// CHECK-NEXT:     RecordType
-// CHECK-NEXT:       Identifier test1
+// CHECK-NEXT:     RecordType test1
 // CHECK-NEXT:   DeclarationName ~test1
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType void

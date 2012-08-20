@@ -10,8 +10,7 @@ class test1 {
 
 // CHECK: CXXConstructorDecl
 // CHECK-NEXT:   NestedNameSpecifier test1::
-// CHECK-NEXT:     RecordType
-// CHECK-NEXT:       Identifier test1
+// CHECK-NEXT:     RecordType test1
 // CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType void
@@ -44,14 +43,12 @@ class test3 : public A {
   // CHECK-NEXT:       ParmVarDecl
   // CHECK-NEXT:         DeclarationName a
   // CHECK-NEXT:         LValueReferenceType
-  // CHECK-NEXT:           RecordType
-  // CHECK-NEXT:             Identifier A
+  // CHECK-NEXT:           RecordType A
   // CHECK-NEXT:       ParmVarDecl
   // CHECK-NEXT:         DeclarationName i
   // CHECK-NEXT:         BuiltinType int
   // CHECK-NEXT:     CXXCtorInitializer 
-  // CHECK-NEXT:       RecordType
-  // CHECK-NEXT:         Identifier A
+  // CHECK-NEXT:       RecordType A
   // CHECK-NEXT:       CXXConstructExpr
   // CHECK-NEXT:         ImplicitCastExpr
   // CHECK-NEXT:           DeclRefExpr

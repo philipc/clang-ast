@@ -12,8 +12,7 @@ class test1 {
 
 // CHECK: CXXConversionDecl
 // CHECK-NEXT:   NestedNameSpecifier test1::
-// CHECK-NEXT:     RecordType
-// CHECK-NEXT:       Identifier test1
+// CHECK-NEXT:     RecordType test1
 // CHECK-NEXT:   DeclarationName operator _Bool
 // CHECK-NEXT:     BuiltinType bool
 // CHECK-NEXT:   FunctionProtoType

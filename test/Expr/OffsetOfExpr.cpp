@@ -13,8 +13,7 @@ struct T {
 // CHECK: CompoundStmt
 // CHECK-NEXT:   OffsetOfExpr
 // CHECK-NEXT:     ElaboratedType
-// CHECK-NEXT:       RecordType
-// CHECK-NEXT:         Identifier T
+// CHECK-NEXT:       RecordType T
 // CHECK-NEXT:     IntegerLiteral 2
 void test1() {
   __builtin_offsetof(struct T, s[2].d);

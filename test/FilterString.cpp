@@ -28,8 +28,7 @@ int theFunction(int x) {
 // CHECK-NEXT:         BuiltinType int
 // CHECK-NEXT: CXXMethodDecl
 // CHECK-NEXT:   NestedNameSpecifier TheClass::
-// CHECK-NEXT:     RecordType
-// CHECK-NEXT:       Identifier TheClass
+// CHECK-NEXT:     RecordType TheClass
 // CHECK-NEXT:   DeclarationName theMethod
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType int

@@ -323,7 +323,6 @@ public:
 private:
   void printIndent();
   void printDeclRef(NamedDecl *D, SourceLocation Loc);
-  void printIdentifier(NamedDecl *D);
   void printLocation(SourceLocation Loc, bool PrintLine);
   void printLocation(SourceLocation Loc);
   void printSourceRange(SourceRange R);
@@ -651,9 +650,10 @@ bool ASTPrinter::VisitBuiltinType(BuiltinType *T) {
 }
 
 bool ASTPrinter::VisitRecordType(RecordType *T) {
+  // TODO: traverse into the RecordDecl instead
   RecordDecl *D = T->getDecl();
   if (D->getIdentifier())
-    printIdentifier(D);
+    OS << ' ' << D->getNameAsString();
   else
     OS << " <anon>";
   return true;
@@ -683,6 +683,7 @@ bool ASTPrinter::TraverseNestedNameSpecifier(NestedNameSpecifier *NNS) {
   ++Indent;
   printIndent();
   OS << "NestedNameSpecifier ";
+  // FIXME: no need to print this once everything is handled?
   NNS->print(OS, Context->getPrintingPolicy());
   bool Result = VisitorBase::TraverseNestedNameSpecifier(NNS);
   --Indent;
@@ -765,15 +766,6 @@ void ASTPrinter::printDeclRef(NamedDecl *D, SourceLocation Loc) {
   OS << D->getDeclKindName() << "DeclRef";
   printLocation(Loc);
   OS << ' ' << D->getQualifiedNameAsString();
-  --Indent;
-}
-
-void ASTPrinter::printIdentifier(NamedDecl *D) {
-  ++Indent;
-  printIndent();
-  OS << "Identifier";
-  printLocation(D->getLocation());
-  OS << ' ' << D->getNameAsString();
   --Indent;
 }
 
