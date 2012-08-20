@@ -24,7 +24,7 @@ int theFunction(int x) {
 // CHECK-NEXT:     FunctionProtoType
 // CHECK-NEXT:       BuiltinType int
 // CHECK-NEXT:       ParmVarDecl
-// CHECK-NEXT:         Identifier x
+// CHECK-NEXT:         DeclarationName x
 // CHECK-NEXT:         BuiltinType int
 // CHECK-NEXT: CXXMethodDecl
 // CHECK-NEXT:   NestedNameSpecifier TheClass::
@@ -34,7 +34,7 @@ int theFunction(int x) {
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType int
 // CHECK-NEXT:     ParmVarDecl
-// CHECK-NEXT:       Identifier x
+// CHECK-NEXT:       DeclarationName x
 // CHECK-NEXT:       BuiltinType int
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     ReturnStmt

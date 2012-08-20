@@ -13,12 +13,12 @@ void test() {
 // CHECK-NEXT:     ForStmt
 // CHECK-NEXT:       DeclStmt
 // CHECK-NEXT:         VarDecl
-// CHECK-NEXT:           Identifier i
+// CHECK-NEXT:           DeclarationName i
 // CHECK-NEXT:           BuiltinType int
 // CHECK-NEXT:           IntegerLiteral 0
 // CHECK-NEXT:       DeclStmt
 // CHECK-NEXT:         VarDecl
-// CHECK-NEXT:           Identifier j
+// CHECK-NEXT:           DeclarationName j
 // CHECK-NEXT:           BuiltinType int
 // CHECK-NEXT:           ImplicitCastExpr
 // CHECK-NEXT:             DeclRefExpr

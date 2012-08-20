@@ -12,7 +12,7 @@ void test() {
 // CHECK-NEXT:       NullStmt
 // CHECK-NEXT:     DeclStmt
 // CHECK-NEXT:       VarDecl
-// CHECK-NEXT:         Identifier p
+// CHECK-NEXT:         DeclarationName p
 // CHECK-NEXT:         PointerType
 // CHECK-NEXT:           BuiltinType void
 // CHECK-NEXT:         AddrLabelExpr

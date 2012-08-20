@@ -72,7 +72,7 @@ public:
   bool TraverseDecl(Decl *D);
   bool VisitDecl(Decl *D);
   // TranslationUnitDecl empty
-  // NamedDecl empty
+  bool VisitNamedDecl(NamedDecl *D);
   // TODO: NamespaceDecl
   // TODO: UsingDirectiveDecl
   // TODO: NamespaceAliasDecl
@@ -95,10 +95,10 @@ public:
   // TODO: IndirectFieldDecl
   // TODO: DeclaratorDecl
   bool VisitFunctionDecl(FunctionDecl *D);
-  // TODO: CXXMethodDecl
-  // TODO: CXXConstructorDecl
-  // TODO: CXXDestructorDecl
-  // TODO: CXXConversionDecl
+  bool VisitCXXMethodDecl(CXXMethodDecl *D);
+  bool VisitCXXConstructorDecl(CXXConstructorDecl *D);
+  bool VisitCXXDestructorDecl(CXXDestructorDecl *D);
+  bool VisitCXXConversionDecl(CXXConversionDecl *D);
   // TODO: FieldDecl
   // TODO: ObjCIvarDecl
   // TODO: ObjCAtDefsFieldDecl
@@ -367,11 +367,29 @@ bool ASTPrinter::VisitDecl(Decl *D) {
   printIndent();
   OS << D->getDeclKindName() << "Decl";
   printSourceRange(D->getSourceRange());
-  // TODO: DeclContext
-  // TODO: LexicalDeclContext
-  // TODO: Attr
+  // TODO: getDeclContext()
+  // TODO: getLexicalDeclContext()
+  // TODO: isInvalidDecl()
+  // TODO: getAttrs()
+  // TODO: isImplicit()
+  // TODO: isUsed()
+  // TODO: isReferenced()
+  // TODO: isTopLevelDeclInObjCContainer()
+  // TODO: getAccess()
   // TODO: AccessSpecifier
   // TODO: various bool members
+
+  // TODO: isModulePrivate() in all children
+  // - can't here because it is protected
+  return true;
+}
+
+bool ASTPrinter::VisitNamedDecl(NamedDecl *D) {
+  if (D->isModulePrivate())
+    OS << " __module_private__";
+
+  // TODO: getDeclName() in all children
+  // - can't here because some already traverse it
   return true;
 }
 
@@ -383,35 +401,88 @@ bool ASTPrinter::VisitLabelDecl(LabelDecl *D) {
 }
 
 bool ASTPrinter::VisitFunctionDecl(FunctionDecl *D) {
+  // TODO: VisitRedeclarable()
+  // TODO: getStorageClass()
   StorageClass SC = D->getStorageClassAsWritten();
   if (SC != SC_None)
     OS << ' ' << VarDecl::getStorageClassSpecifierString(SC);
+  // TODO: IsInline
   if (D->isInlineSpecified())
     OS << " inline";
   if (D->isVirtualAsWritten())
     OS << " virtual";
-  // FIXME: this is a Decl attribute
-  if (D->isModulePrivate())
-    OS << " __module_private__";
+  // TODO: isPure()
+  // TODO: hasInheritedPrototype()
+  // TODO: hasWrittenPrototype()
+  // TODO: isDeletedAsWritten()
+  // TODO: isTrivial()
+  // TODO: isDefaulted()
+  // TODO: isExplicitlyDefaulted()
+  // TODO: hasImplicitReturnZero()
+  // TODO: isConstexpr()
+  // TODO: getTemplateKind()
 
-  // TODO: more properties
+  switch (D->getTemplatedKind()) {
+  case FunctionDecl::TK_NonTemplate:
+    break;
+  case FunctionDecl::TK_FunctionTemplate:
+    // TODO: getDescribedFunctionTemplate()
+    break;
+  case FunctionDecl::TK_MemberSpecialization:
+    // TODO: getMemberSpecializationInfo()
+    break;
+  case FunctionDecl::TK_FunctionTemplateSpecialization:
+    // TODO: getTemplateSpecializationInfo()
+    break;
+  case FunctionDecl::TK_DependentFunctionTemplateSpecialization:
+    // TODO: getDependentSpecializationInfo()
+    break;
+  }
 
   return true;
 }
 
+bool ASTPrinter::VisitCXXMethodDecl(CXXMethodDecl *D) {
+  // TODO: overridden_methods
+  return true;
+}
+
+bool ASTPrinter::VisitCXXConstructorDecl(CXXConstructorDecl *D) {
+  // TODO: IsExplicitSpecified
+  // TODO: ImplicitlyDefined
+  return true;
+}
+
+bool ASTPrinter::VisitCXXDestructorDecl(CXXDestructorDecl *D) {
+  // TODO: ImplicitlyDefined
+  // TODO: OperatorDelete
+  return true;
+}
+
+bool ASTPrinter::VisitCXXConversionDecl(CXXConversionDecl *D) {
+  // TODO: IsExplicitSpecified
+  return true;
+}
+
 bool ASTPrinter::VisitVarDecl(VarDecl *D) {
+  // TODO: VisitRedeclarable()
+  // TODO: getStorageClass()
   StorageClass SC = D->getStorageClassAsWritten();
   if (SC != SC_None)
     OS << ' ' << VarDecl::getStorageClassSpecifierString(SC);
   if (D->isThreadSpecified())
     OS << " __thread";
-  // FIXME: this is a Decl attribute
-  if (D->isModulePrivate())
-    OS << " __module_private__";
+  // TODO: getInitStyle()
+  // TODO: isExceptionVariable()
+  // TODO: isNRVOVariable()
+  // TODO: isCXXForRangeDecl()
+  // TODO: isARCPseufoStrong()
+  // TODO: isInitKnownICE()
+  // TODO: isInitICE()
 
-  // TODO: more properties
-
-  printIdentifier(D);
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
@@ -668,12 +739,12 @@ bool ASTPrinter::TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc) 
 bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
   ++Indent;
   printIndent();
-  OS << "CXXCtorInitializer ";
+  OS << "CXXCtorInitializer";
   printSourceRange(Init->getSourceRange());
   if (Init->isBaseInitializer())
     TraverseTypeLoc(Init->getTypeSourceInfo()->getTypeLoc());
   else if (Init->isAnyMemberInitializer())
-    printIdentifier(Init->getAnyMember());
+    printDeclRef(Init->getAnyMember(), Init->getMemberLocation());
   if (Init->isWritten())
     TraverseStmt(Init->getInit());
   --Indent;

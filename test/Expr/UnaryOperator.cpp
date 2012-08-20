@@ -4,14 +4,14 @@
 void test1() {
   // CHECK-NEXT:     DeclStmt
   // CHECK-NEXT:       VarDecl
-  // CHECK-NEXT:         Identifier i
+  // CHECK-NEXT:         DeclarationName i
   // CHECK-NEXT:         BuiltinType int
   // CHECK-NEXT:         IntegerLiteral 0
   int i = 0;
 
   // CHECK-NEXT:     DeclStmt
   // CHECK-NEXT:       VarDecl
-  // CHECK-NEXT:         Identifier p
+  // CHECK-NEXT:         DeclarationName p
   // CHECK-NEXT:         PointerType
   // CHECK-NEXT:           BuiltinType int
   // CHECK-NEXT:         ImplicitCastExpr

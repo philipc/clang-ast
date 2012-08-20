@@ -19,7 +19,7 @@ public:
 // CHECK-NEXT:       FunctionProtoType <7:3-22>
 // CHECK-NEXT:         BuiltinType int <7:3>
 // CHECK-NEXT:         ParmVarDecl <7:17-21>
-// CHECK-NEXT:           Identifier <7:21> x
+// CHECK-NEXT:           DeclarationName <7:21> x
 // CHECK-NEXT:           BuiltinType int <7:17>
 // CHECK-NEXT:       CompoundStmt <7:24-9:3>
 // CHECK-NEXT:         ReturnStmt <8:5-16>

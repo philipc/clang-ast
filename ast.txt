@@ -1,20 +1,4 @@
-FIXME: this should match ASTWriter.
-        
-DeclGroup = Decl*
-(FIXME: need to mention DeclGroupRef?)
-
-TranslationUnitDecl = TranslationUnitDecl(Decl*)
-
-DeclContext = BlockDecl
-            | FunctionDecl
-            | LinkageSpecDecl
-            | NamespaceDecl
-            | ObjCMethodDecl
-            | ObjCContainerDecl
-            | TagDecl
-            | TranslationUnitDecl
-
-Decl = TranslationUnitDecl
+Decl = TranslationUnitDecl(Decl*)
      | NamedDecl
      | LinkageSpecDecl
      | ObjCPropertyImplDecl
@@ -26,6 +10,15 @@ Decl = TranslationUnitDecl
      | BlockDecl
      | ClassScopeFunctionSpecializationDecl
      | ImportDecl
+
+DeclContext = BlockDecl
+            | FunctionDecl
+            | LinkageSpecDecl
+            | NamespaceDecl
+            | ObjCMethodDecl
+            | ObjCContainerDecl
+            | TagDecl
+            | TranslationUnitDecl
 
 NamedDecl = NamespaceDecl
           | UsingDirectiveDecl
@@ -80,13 +73,13 @@ CXXMethodDecl = CXXMethodDecl(DeclarationName, NestedNameSpecifier?, FunctionTyp
               | CXXConversionDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
 
 CXXCtorInitializer = CXXCtorInitializer(Type, Expr)
-                   | CXXCtorInitializer(Identifier, Expr)
+                   | CXXCtorInitializer(FieldDeclRef, Expr)
 
 FieldDecl = FieldDecl
           | ObjCIvarDecl
           | ObjCAtDefsFieldDecl
 
-VarDecl = VarDecl(Identifier, NestedNameSpecifier?, Type, Expr?)
+VarDecl = VarDecl(DeclarationName, NestedNameSpecifier?, Type, Expr?)
         | ImplicitParamDecl
         | ParmVarDecl
 
@@ -296,4 +289,3 @@ Notes:
 the properties that occur elsewhere in the grammar are listed.
 - Many nodes have one or more SourceLocation.
 - Decls have a DeclContext and Attr*.
-- CXXCtorInitializer actually references a FieldDecl, not and Indentifier.

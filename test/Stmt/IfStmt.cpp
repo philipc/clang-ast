@@ -26,7 +26,7 @@ void test() {
 // CHECK-NEXT:     IfStmt
 // CHECK-NEXT:       DeclStmt
 // CHECK-NEXT:         VarDecl
-// CHECK-NEXT:           Identifier b
+// CHECK-NEXT:           DeclarationName b
 // CHECK-NEXT:           BuiltinType bool
 // CHECK-NEXT:           CXXBoolLiteralExpr true
 // CHECK-NEXT:       ImplicitCastExpr

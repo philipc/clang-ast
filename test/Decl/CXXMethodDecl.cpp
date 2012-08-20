@@ -13,7 +13,7 @@ class A {
   // CHECK-NEXT:   FunctionProtoType
   // CHECK-NEXT:     BuiltinType void
   // CHECK-NEXT:     ParmVarDecl
-  // CHECK-NEXT:       Identifier a
+  // CHECK-NEXT:       DeclarationName a
   // CHECK-NEXT:       BuiltinType int
   // CHECK-NEXT:   CompoundStmt
   void test2(int a) {

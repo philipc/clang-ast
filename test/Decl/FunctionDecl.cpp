@@ -5,7 +5,7 @@
 // CHECK-NEXT:   FunctionProtoType
 // CHECK-NEXT:     BuiltinType void
 // CHECK-NEXT:     ParmVarDecl
-// CHECK-NEXT:       Identifier a
+// CHECK-NEXT:       DeclarationName a
 // CHECK-NEXT:       BuiltinType int
 void test1(int a);
 

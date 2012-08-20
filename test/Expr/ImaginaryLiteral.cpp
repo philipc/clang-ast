@@ -1,7 +1,7 @@
 // RUN: ast -f test "%s" 2>&1 | FileCheck %s
 
 // CHECK: VarDecl
-// CHECK-NEXT:   Identifier test1
+// CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT:   ComplexType
 // CHECK-NEXT:     BuiltinType double
 // CHECK-NEXT:   ImaginaryLiteral

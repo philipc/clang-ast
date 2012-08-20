@@ -25,7 +25,7 @@ class test2 {
   // CHECK-NEXT:     FunctionProtoType
   // CHECK-NEXT:       BuiltinType void
   // CHECK-NEXT:       ParmVarDecl
-  // CHECK-NEXT:         Identifier a
+  // CHECK-NEXT:         DeclarationName a
   // CHECK-NEXT:         BuiltinType int
   // CHECK-NEXT:     CompoundStmt
   test2(int a) {
@@ -42,12 +42,12 @@ class test3 : public A {
   // CHECK-NEXT:     FunctionProtoType
   // CHECK-NEXT:       BuiltinType void
   // CHECK-NEXT:       ParmVarDecl
-  // CHECK-NEXT:         Identifier a
+  // CHECK-NEXT:         DeclarationName a
   // CHECK-NEXT:         LValueReferenceType
   // CHECK-NEXT:           RecordType
   // CHECK-NEXT:             Identifier A
   // CHECK-NEXT:       ParmVarDecl
-  // CHECK-NEXT:         Identifier i
+  // CHECK-NEXT:         DeclarationName i
   // CHECK-NEXT:         BuiltinType int
   // CHECK-NEXT:     CXXCtorInitializer 
   // CHECK-NEXT:       RecordType
@@ -57,7 +57,7 @@ class test3 : public A {
   // CHECK-NEXT:           DeclRefExpr
   // CHECK-NEXT:             DeclarationName a
   // CHECK-NEXT:     CXXCtorInitializer 
-  // CHECK-NEXT:       Identifier I
+  // CHECK-NEXT:       FieldDeclRef test3::I
   // CHECK-NEXT:       ImplicitCastExpr
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName i
