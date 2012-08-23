@@ -11,21 +11,21 @@ Decl = TranslationUnitDecl(Decl*)
      | ClassScopeFunctionSpecializationDecl
      | ImportDecl
 
-DeclContext = BlockDecl
-            | FunctionDecl
-            | LinkageSpecDecl
+DeclContext = TranslationUnitDecl
             | NamespaceDecl
+            | FunctionDecl
+            | TagDecl
             | ObjCMethodDecl
             | ObjCContainerDecl
-            | TagDecl
-            | TranslationUnitDecl
+            | LinkageSpecDecl
+            | BlockDecl
 
-NamedDecl = NamespaceDecl
-          | UsingDirectiveDecl
-          | NamespaceAliasDecl
+NamedDecl = NamespaceDecl(DeclarationName?, Decl*)
+          | UsingDirectiveDecl(NamespaceDeclRef, NestedNameSpecifier?)
+          | NamespaceAliasDecl(DeclarationName, NestedNameSpecifier?, NamespaceDeclRef);
           | LabelDecl(DeclarationName)
           | TypeDecl
-          | ValueDecl(FIXME: Identifier, Type)
+          | ValueDecl
           | TemplateDecl
           | UsingDecl
           | UsingShadowDecl
@@ -35,17 +35,17 @@ NamedDecl = NamespaceDecl
           | ObjCCompatibleAliasDecl
 
 TypeDecl = TypedefNameDecl
-         | UnresolvedUsingTypenameDecl
+         | UnresolvedUsingTypenameDecl(DeclarationName, NestedNameSpecifier)
          | TagDecl
          | TemplateTypeParmDecl
 
-TypedefNameDecl = TypedefDecl
-                | TypeAliasDecl
+TypedefNameDecl = TypedefDecl(DeclarationName, Type)
+                | TypeAliasDecl(DeclarationName, Type)
 
-TagDecl = EnumDecl
+TagDecl = EnumDecl(DeclarationName, Type? NestedNameSpecifier?, EnumConstantDecl*)
         | RecordDecl
 
-RecordDecl = RecordDecl
+RecordDecl = RecordDecl(DeclarationName?, FieldDecl*)
            | CXXRecordDecl
 
 CXXRecordDecl = CXXRecordDecl
@@ -60,7 +60,8 @@ ValueDecl = EnumConstantDecl
           | DeclaratorDecl
 
 DeclaratorDecl = FunctionDecl
-               | FieldDecl
+               | FieldDecl(DeclarationName name, Type type, Expr? init)
+               | FieldDecl(DeclarationName name, Type type, Expr width)
                | VarDecl
                | NonTypeTemplateParmDecl
 

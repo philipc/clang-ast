@@ -54,7 +54,7 @@ class test3 : public A {
   // CHECK-NEXT:           DeclRefExpr
   // CHECK-NEXT:             DeclarationName a
   // CHECK-NEXT:     CXXCtorInitializer 
-  // CHECK-NEXT:       FieldDeclRef test3::I
+  // CHECK-NEXT:       FieldDeclRef I
   // CHECK-NEXT:       ImplicitCastExpr
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName i

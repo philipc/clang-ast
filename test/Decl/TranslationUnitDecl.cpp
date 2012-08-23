@@ -5,6 +5,7 @@ int j;
 
 // CHECK: TranslationUnitDecl
 // CHECK-NEXT:   TypedefDecl
+// CHECK-NEXT:     DeclarationName __builtin_va_list
 // CHECK-NEXT:     PointerType
 // CHECK-NEXT:       BuiltinType char
 // CHECK-NEXT:   VarDecl

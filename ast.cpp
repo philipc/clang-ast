@@ -73,23 +73,23 @@ public:
   bool VisitDecl(Decl *D);
   // TranslationUnitDecl empty
   bool VisitNamedDecl(NamedDecl *D);
-  // TODO: NamespaceDecl
-  // TODO: UsingDirectiveDecl
-  // TODO: NamespaceAliasDecl
+  bool VisitNamespaceDecl(NamespaceDecl *D);
+  bool VisitUsingDirectiveDecl(UsingDirectiveDecl *D);
+  bool VisitNamespaceAliasDecl(NamespaceAliasDecl *D);
   bool VisitLabelDecl(LabelDecl *D);
-  // TODO: TypeDecl
-  // TODO: TypedefNameDecl
-  // TODO: TypedefDecl
-  // TODO: TypeAliasDecl
-  // TODO: UnresolvedUsingTypenameDecl
-  // TODO: TagDecl
-  // TODO: EnumDecl
-  // TODO: RecordDecl
+  bool VisitTypeDecl(TypeDecl *D);
+  bool VisitTypedefNameDecl(TypedefNameDecl *D);
+  // TypedefDecl empty
+  // TypeAliasDecl empty
+  bool VisitUnresolvedUsingTypenameDecl(UnresolvedUsingTypenameDecl *D);
+  bool VisitTagDecl(TagDecl *D);
+  bool VisitEnumDecl(EnumDecl *D);
+  bool VisitRecordDecl(RecordDecl *D);
   // TODO: CXXRecordDecl
   // TODO: ClassTemplateSpecializationDecl
   // TODO: ClassTemplatePartialSpecializationDecl
   // TODO: TemplateTypeParmDecl
-  // TODO: ValueDecl
+  // ValueDecl empty
   // TODO: EnumConstantDecl
   // TODO: UnresolvedUsingValueDecl
   // TODO: IndirectFieldDecl
@@ -99,7 +99,7 @@ public:
   bool VisitCXXConstructorDecl(CXXConstructorDecl *D);
   bool VisitCXXDestructorDecl(CXXDestructorDecl *D);
   bool VisitCXXConversionDecl(CXXConversionDecl *D);
-  // TODO: FieldDecl
+  bool VisitFieldDecl(FieldDecl *D);
   // TODO: ObjCIvarDecl
   // TODO: ObjCAtDefsFieldDecl
   bool VisitVarDecl(VarDecl *D);
@@ -391,7 +391,115 @@ bool ASTPrinter::VisitNamedDecl(NamedDecl *D) {
   return true;
 }
 
+bool ASTPrinter::VisitNamespaceDecl(NamespaceDecl *D) {
+  // TODO: VisitRedeclarable()
+  // TODO: isInline()
+  // TODO: isOriginalNamespace()
+  // TODO: getOriginalNamespace()
+
+  // FIXME: move into RAV?
+  if (!D->isAnonymousNamespace())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitUsingDirectiveDecl(UsingDirectiveDecl *D) {
+  // getDeclName() is a dummy value
+  // TODO: getCommonAncestor()
+
+  printDeclRef(D->getNominatedNamespace(), D->getLocation());
+  return true;
+}
+
+bool ASTPrinter::VisitNamespaceAliasDecl(NamespaceAliasDecl *D) {
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  // FIXME: move into RAV?
+  TraverseNestedNameSpecifierLoc(D->getQualifierLoc());
+  printDeclRef(D->getNamespace(), D->getTargetNameLoc());
+  return true;
+}
+
 bool ASTPrinter::VisitLabelDecl(LabelDecl *D) {
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitTypeDecl(TypeDecl *D) {
+  return true;
+}
+
+bool ASTPrinter::VisitTypedefNameDecl(TypedefNameDecl *D) {
+  // TODO: VisitRedeclarable()
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitUnresolvedUsingTypenameDecl(UnresolvedUsingTypenameDecl *D) {
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitTagDecl(TagDecl *D) {
+  // TODO: VisitRedeclarable()
+  // TODO: getIdentifierNamespace()
+  // TODO: isCompleteDefinition()
+  // TODO: isEmbeddedInDeclarator()
+  // TODO: isFreeStanding()
+  // TODO: getExtInfo()
+  // TODO: getTypedefNameForAnonDecl()
+  return true;
+}
+
+bool ASTPrinter::VisitEnumDecl(EnumDecl *D) {
+  // TODO: getIntegerType()
+  // TODO: getPromotionType()
+  // TODO: getNumPositiveBits()
+  // TODO: getNumNegativeBits()
+  // TODO: isScoped()
+  // TODO: isScopedUsingClassTag()
+  // TODO: isFixed()
+  // TODO: getMemberSpecializationInfo()
+
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+
+  // FIXME: move into RAV?
+  if (D->getIntegerTypeSourceInfo())
+    TraverseTypeLoc(D->getIntegerTypeSourceInfo()->getTypeLoc());
+
+  // FIXME: RAV traverses getTypeForDecl() but shouldn't
+  return true;
+}
+
+bool ASTPrinter::VisitRecordDecl(RecordDecl *D) {
+  switch (D->getTagKind()) {
+  default:
+    llvm_unreachable("unknown TagKind");
+  case TTK_Struct:
+    OS << " struct";
+    break;
+  case TTK_Union:
+    OS << " union";
+    break;
+  case TTK_Class:
+    OS << " class";
+    break;
+  }
+
+  // TODO: hasFlexibleArrayMember()
+  // TODO: isAnonymousStructOrUnion()
+  // TODO: hasObjectMember()
+
   // FIXME: move into RAV?
   TraverseDeclarationNameInfo(
       DeclarationNameInfo(D->getDeclName(), D->getLocation()));
@@ -459,6 +567,17 @@ bool ASTPrinter::VisitCXXDestructorDecl(CXXDestructorDecl *D) {
 
 bool ASTPrinter::VisitCXXConversionDecl(CXXConversionDecl *D) {
   // TODO: IsExplicitSpecified
+  return true;
+}
+
+bool ASTPrinter::VisitFieldDecl(FieldDecl *D) {
+  // TODO: isMutable()
+  // TODO: isBitField()
+  // TODO: getBitWidthValue()
+
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
@@ -779,8 +898,8 @@ void ASTPrinter::printDeclRef(NamedDecl *D, SourceLocation Loc) {
   ++Indent;
   printIndent();
   OS << D->getDeclKindName() << "DeclRef";
+  OS << ' ' << D->getNameAsString();
   printLocation(Loc);
-  OS << ' ' << D->getQualifiedNameAsString();
   --Indent;
 }
 

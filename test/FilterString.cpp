@@ -17,7 +17,8 @@ int theFunction(int x) {
 
 }
 
-// CHECK: CXXRecordDecl
+// CHECK: CXXRecordDecl class
+// CHECK-NEXT:   DeclarationName TheClass
 // CHECK-NEXT:   AccessSpecDecl
 // CHECK-NEXT:   CXXMethodDecl
 // CHECK-NEXT:     DeclarationName theMethod

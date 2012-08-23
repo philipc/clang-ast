@@ -1,4 +1,4 @@
-// RUN: ast -l "%s" 2>&1 | FileCheck %s
+// RUN: ast -l -f test "%s" 2>&1 | FileCheck %s
 
 namespace test_namespace {
 
@@ -12,7 +12,9 @@ public:
 }
 
 // CHECK: NamespaceDecl <{{.*}}:3:1-12:1>
-// CHECK-NEXT:   CXXRecordDecl <5:1-10:1>
+// CHECK-NEXT:   DeclarationName test_namespace <3:11>
+// CHECK-NEXT:   CXXRecordDecl class <5:1-10:1>
+// CHECK-NEXT:     DeclarationName TheClass <5:7>
 // CHECK-NEXT:     AccessSpecDecl <6:1-7>
 // CHECK-NEXT:     CXXMethodDecl <7:3-9:3>
 // CHECK-NEXT:       DeclarationName theMethod <7:7>
