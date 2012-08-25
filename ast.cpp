@@ -68,6 +68,7 @@ public:
   virtual void HandleTranslationUnit(ASTContext &Context);
 
   bool shouldVisitImplicitCode() { return Options.EnableImplicit; }
+  bool shouldVisitTemplateInstantiations() { return Options.EnableImplicit; }
 
   bool TraverseDecl(Decl *D);
   bool VisitDecl(Decl *D);
@@ -85,10 +86,11 @@ public:
   bool VisitTagDecl(TagDecl *D);
   bool VisitEnumDecl(EnumDecl *D);
   bool VisitRecordDecl(RecordDecl *D);
-  // TODO: CXXRecordDecl
-  // TODO: ClassTemplateSpecializationDecl
-  // TODO: ClassTemplatePartialSpecializationDecl
-  // TODO: TemplateTypeParmDecl
+  bool VisitCXXRecordDecl(CXXRecordDecl *D);
+  bool TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D);
+  bool VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D);
+  bool VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl *D);
+  bool VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D);
   // ValueDecl empty
   // TODO: EnumConstantDecl
   // TODO: UnresolvedUsingValueDecl
@@ -499,6 +501,68 @@ bool ASTPrinter::VisitRecordDecl(RecordDecl *D) {
   // TODO: hasFlexibleArrayMember()
   // TODO: isAnonymousStructOrUnion()
   // TODO: hasObjectMember()
+
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitCXXRecordDecl(CXXRecordDecl *D) {
+  // TODO: CXXBaseSpecifier.isVirtual()
+  // TODO: CXXBaseSpecifier.isBaseOfCLass()
+  // TODO: CXXBaseSpecifier.getAccessSpecifierAsWritten()
+  // TODO: CXXBaseSpecifier.getInheritConstructors()
+  // TODO: CXXBaseSpecifier.isPackExpansion()
+
+  // TODO: isThisDeclarationADefinition()
+  // TODO: DefinitionData
+
+  // TODO: isLambda()
+  // TODO: LambdaDefinitionData
+  // TODO: getLambdaContextDecl()
+  // TODO: captures_begin()/captures_end()
+  return true;
+}
+
+bool ASTPrinter::TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D)
+{
+  VisitorBase::TraverseClassTemplateSpecializationDecl(D);
+
+  // FIXME: move into RAV
+  // VisitorBase::TraverseCXXRecordHelper(D);
+  if (D->isCompleteDefinition()) {
+    for (CXXRecordDecl::base_class_iterator I = D->bases_begin(),
+        E = D->bases_end();
+        I != E; ++I) {
+      TraverseTypeLoc(I->getTypeSourceInfo()->getTypeLoc());
+    }
+  }
+  
+  return true;
+}
+
+bool ASTPrinter::VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D)
+{
+  // TODO: getSpecializedTemplateOrPartial()
+  // TODO: getTemplateInstantiationArgs()
+  // TODO: getSpecializationKind()
+  return true;
+}
+
+bool ASTPrinter::VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl *D)
+{
+  // FIXME: RAV should do this instead of getTemplateParameters()
+  // TraverseTypeLoc(D->getTypeAsWritten()->getTypeLoc());
+  return true;
+}
+
+bool ASTPrinter::VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D)
+{
+  // TODO: wasDeclaredWithTypename()
+  // TODO: defaultArgumentWasInherited()
+
+  // FIXME: RAV traverses getTypeForDecl() but shouldn't
 
   // FIXME: move into RAV?
   TraverseDeclarationNameInfo(

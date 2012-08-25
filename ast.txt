@@ -37,7 +37,7 @@ NamedDecl = NamespaceDecl(DeclarationName?, Decl*)
 TypeDecl = TypedefNameDecl
          | UnresolvedUsingTypenameDecl(DeclarationName, NestedNameSpecifier)
          | TagDecl
-         | TemplateTypeParmDecl
+         | TemplateTypeParmDecl(DeclarationName name, Type? default)
 
 TypedefNameDecl = TypedefDecl(DeclarationName, Type)
                 | TypeAliasDecl(DeclarationName, Type)
@@ -48,11 +48,11 @@ TagDecl = EnumDecl(DeclarationName, Type? NestedNameSpecifier?, EnumConstantDecl
 RecordDecl = RecordDecl(DeclarationName?, FieldDecl*)
            | CXXRecordDecl
 
-CXXRecordDecl = CXXRecordDecl
+CXXRecordDecl = CXXRecordDecl(DeclarationName?, CXXBaseSpecifier*, Decl*)
               | ClassTemplateSpecializationDecl
 
-ClassTemplateSpecializationDecl = ClassTemplateSpecializationDecl
-                                | ClassTemplatePartialSpecializationDecl
+ClassTemplateSpecializationDecl = ClassTemplateSpecializationDecl(DeclarationName, TemplateSpecializationType, CXXBaseSpecifier*, Decl*)
+                                | ClassTemplatePartialSpecializationDecl(DeclarationName, TemplateSpecializationType, TemplateArgument*, CXXBaseSpecifier*, Decl*)
 
 ValueDecl = EnumConstantDecl
           | UnresolvedUsingValueDecl
