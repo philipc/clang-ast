@@ -5,7 +5,6 @@
 class test1 {
 
   // CHECK-NEXT:   CXXRecordDecl class
-  // CHECK-NEXT:     DeclarationName
   // CHECK-NEXT:     FieldDecl
   // CHECK-NEXT:       DeclarationName i
   // CHECK-NEXT:       BuiltinType int

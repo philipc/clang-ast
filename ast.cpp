@@ -92,10 +92,11 @@ public:
   bool VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl *D);
   bool VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D);
   // ValueDecl empty
-  // TODO: EnumConstantDecl
-  // TODO: UnresolvedUsingValueDecl
-  // TODO: IndirectFieldDecl
-  // TODO: DeclaratorDecl
+  bool VisitEnumConstantDecl(EnumConstantDecl *D);
+  // UnresolvedUsingValueDecl empty
+  bool TraverseIndirectFieldDecl(IndirectFieldDecl *D);
+  // IndirectFieldDecl empty
+  // DeclaratorDecl empty
   bool VisitFunctionDecl(FunctionDecl *D);
   bool VisitCXXMethodDecl(CXXMethodDecl *D);
   bool VisitCXXConstructorDecl(CXXConstructorDecl *D);
@@ -105,9 +106,10 @@ public:
   // TODO: ObjCIvarDecl
   // TODO: ObjCAtDefsFieldDecl
   bool VisitVarDecl(VarDecl *D);
-  // TODO: ImplicitParamDecl
-  // TODO: ParmVarDecl
-  // TODO: NonTypeTemplateParmDecl
+  // ImplicitParamDecl empty
+  // TODO: test ImplicitParamDecl (ObjC only?)
+  bool VisitParmVarDecl(ParmVarDecl *D);
+  bool VisitNonTypeTemplateParmDecl(NonTypeTemplateParmDecl *D);
   // TODO: TemplateDecl
   // TODO: RedeclarableTemplateDecl
   // TODO: FunctionTemplateDecl
@@ -326,6 +328,7 @@ private:
   void printNewline();
   void printIndent();
   void printDeclRef(NamedDecl *D, SourceLocation Loc);
+  void printIdentifier(NamedDecl *D);
   void printLocation(SourceLocation Loc, bool PrintLine);
   void printLocation(SourceLocation Loc);
   void printSourceRange(SourceRange R);
@@ -503,8 +506,9 @@ bool ASTPrinter::VisitRecordDecl(RecordDecl *D) {
   // TODO: hasObjectMember()
 
   // FIXME: move into RAV?
-  TraverseDeclarationNameInfo(
-      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  if (D->getDeclName())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
@@ -525,8 +529,7 @@ bool ASTPrinter::VisitCXXRecordDecl(CXXRecordDecl *D) {
   return true;
 }
 
-bool ASTPrinter::TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D)
-{
+bool ASTPrinter::TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D) {
   VisitorBase::TraverseClassTemplateSpecializationDecl(D);
 
   // FIXME: move into RAV
@@ -542,23 +545,20 @@ bool ASTPrinter::TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializa
   return true;
 }
 
-bool ASTPrinter::VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D)
-{
+bool ASTPrinter::VisitClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D) {
   // TODO: getSpecializedTemplateOrPartial()
   // TODO: getTemplateInstantiationArgs()
   // TODO: getSpecializationKind()
   return true;
 }
 
-bool ASTPrinter::VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl *D)
-{
+bool ASTPrinter::VisitClassTemplatePartialSpecializationDecl(ClassTemplatePartialSpecializationDecl *D) {
   // FIXME: RAV should do this instead of getTemplateParameters()
   // TraverseTypeLoc(D->getTypeAsWritten()->getTypeLoc());
   return true;
 }
 
-bool ASTPrinter::VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D)
-{
+bool ASTPrinter::VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D) {
   // TODO: wasDeclaredWithTypename()
   // TODO: defaultArgumentWasInherited()
 
@@ -567,6 +567,26 @@ bool ASTPrinter::VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D)
   // FIXME: move into RAV?
   TraverseDeclarationNameInfo(
       DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitEnumConstantDecl(EnumConstantDecl *D) {
+  // TODO: getInitVal()
+
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::TraverseIndirectFieldDecl(IndirectFieldDecl *D) {
+  VisitorBase::TraverseIndirectFieldDecl(D);
+
+  for (IndirectFieldDecl::chain_iterator
+       I = D->chain_begin(),
+       E = D->chain_end(); I != E; ++I)
+    printDeclRef(*I, SourceLocation());
+
   return true;
 }
 
@@ -640,8 +660,9 @@ bool ASTPrinter::VisitFieldDecl(FieldDecl *D) {
   // TODO: getBitWidthValue()
 
   // FIXME: move into RAV?
-  TraverseDeclarationNameInfo(
-      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  if (D->getDeclName())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
@@ -661,6 +682,24 @@ bool ASTPrinter::VisitVarDecl(VarDecl *D) {
   // TODO: isInitKnownICE()
   // TODO: isInitICE()
 
+  // FIXME: move into RAV?
+  TraverseDeclarationNameInfo(
+      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitParmVarDecl(ParmVarDecl *D) {
+  // TODO: isObjCMethodParameter()
+  // TODO: getFunctionScopeDepth()
+  // TODO: getFunctionScopeIndex()
+  // TODO: getObjCDeclQualifier()
+  // TODO: isKNRPromoted()
+  // TODO: hasInheritedDefaultArg()
+  // TODO: hasUninstantiatedDefaultArg()
+  return true;
+}
+
+bool ASTPrinter::VisitNonTypeTemplateParmDecl(NonTypeTemplateParmDecl *D) {
   // FIXME: move into RAV?
   TraverseDeclarationNameInfo(
       DeclarationNameInfo(D->getDeclName(), D->getLocation()));
@@ -834,10 +873,7 @@ bool ASTPrinter::VisitBuiltinType(BuiltinType *T) {
 bool ASTPrinter::VisitRecordType(RecordType *T) {
   // TODO: traverse into the RecordDecl instead
   RecordDecl *D = T->getDecl();
-  if (D->getIdentifier())
-    OS << ' ' << D->getNameAsString();
-  else
-    OS << " <anon>";
+  printIdentifier(D);
   return true;
 }
 
@@ -920,6 +956,10 @@ bool ASTPrinter::TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc) 
 }
 
 bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
+  // FIXME: move into RAV?
+  if (!Init->isWritten() && !shouldVisitImplicitCode())
+    return true;
+
   ++Indent;
   printIndent();
   OS << "CXXCtorInitializer";
@@ -928,8 +968,7 @@ bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
     TraverseTypeLoc(Init->getTypeSourceInfo()->getTypeLoc());
   else if (Init->isAnyMemberInitializer())
     printDeclRef(Init->getAnyMember(), Init->getMemberLocation());
-  if (Init->isWritten())
-    TraverseStmt(Init->getInit());
+  TraverseStmt(Init->getInit());
   --Indent;
   return true;
 }
@@ -958,13 +997,21 @@ void ASTPrinter::printIndent() {
   NeedNewline = true;
 }
 
+// FIXME: move DeclRef traversal to RAV?
 void ASTPrinter::printDeclRef(NamedDecl *D, SourceLocation Loc) {
   ++Indent;
   printIndent();
   OS << D->getDeclKindName() << "DeclRef";
-  OS << ' ' << D->getNameAsString();
+  printIdentifier(D);
   printLocation(Loc);
   --Indent;
+}
+
+void ASTPrinter::printIdentifier(NamedDecl *D) {
+  if (D->getIdentifier())
+    OS << ' ' << D->getNameAsString();
+  else
+    OS << " <anon>";
 }
 
 void ASTPrinter::printLocation(SourceLocation Loc, bool PrintLine) {

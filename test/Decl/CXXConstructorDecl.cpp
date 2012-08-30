@@ -62,3 +62,13 @@ class test3 : public A {
   test3(A& a, int i) : A(a), I(i) {
   }
 };
+
+class test4 : public A {
+  // CHECK:   CXXConstructorDecl
+  // CHECK-NEXT:     DeclarationName test4
+  // CHECK-NEXT:     FunctionProtoType
+  // CHECK-NEXT:       BuiltinType void
+  // CHECK-NEXT:     CompoundStmt
+  test4() {
+  }
+};

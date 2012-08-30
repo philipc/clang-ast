@@ -5,7 +5,6 @@
 union test1 {
 
   // CHECK-NEXT:   RecordDecl struct
-  // CHECK-NEXT:     DeclarationName
   // CHECK-NEXT:     FieldDecl
   // CHECK-NEXT:       DeclarationName i
   // CHECK-NEXT:       BuiltinType int
@@ -30,4 +29,16 @@ union test1 {
 struct test3 {
   int i;
   char c[];
+};
+
+// CHECK-NEXT: RecordDecl struct
+// CHECK-NEXT:   DeclarationName test4
+// CHECK-NEXT:   RecordDecl struct
+// CHECK-NEXT:     FieldDecl
+// CHECK-NEXT:       DeclarationName i
+// CHECK-NEXT:       BuiltinType int
+struct test4 {
+  struct {
+    int i;
+  };
 };

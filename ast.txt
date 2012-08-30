@@ -54,16 +54,15 @@ CXXRecordDecl = CXXRecordDecl(DeclarationName?, CXXBaseSpecifier*, Decl*)
 ClassTemplateSpecializationDecl = ClassTemplateSpecializationDecl(DeclarationName, TemplateSpecializationType, CXXBaseSpecifier*, Decl*)
                                 | ClassTemplatePartialSpecializationDecl(DeclarationName, TemplateSpecializationType, TemplateArgument*, CXXBaseSpecifier*, Decl*)
 
-ValueDecl = EnumConstantDecl
-          | UnresolvedUsingValueDecl
-          | IndirectFieldDecl
+ValueDecl = EnumConstantDecl(DeclarationName name, Expr? init)
+          | UnresolvedUsingValueDecl(DeclarationName, NestedNameSpecifier)
+          | IndirectFieldDecl(FieldDeclRef*)
           | DeclaratorDecl
 
 DeclaratorDecl = FunctionDecl
-               | FieldDecl(DeclarationName name, Type type, Expr? init)
-               | FieldDecl(DeclarationName name, Type type, Expr width)
+               | FieldDecl
                | VarDecl
-               | NonTypeTemplateParmDecl
+               | NonTypeTemplateParmDecl(DeclarationName, Type)
 
 FunctionDecl = FunctionDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
              | CXXMethodDecl
@@ -76,13 +75,14 @@ CXXMethodDecl = CXXMethodDecl(DeclarationName, NestedNameSpecifier?, FunctionTyp
 CXXCtorInitializer = CXXCtorInitializer(Type, Expr)
                    | CXXCtorInitializer(FieldDeclRef, Expr)
 
-FieldDecl = FieldDecl
+FieldDecl = FieldDecl(DeclarationName? name, Type type, Expr? init)
+          | FieldDecl(DeclarationName name, Type type, Expr width)
           | ObjCIvarDecl
           | ObjCAtDefsFieldDecl
 
 VarDecl = VarDecl(DeclarationName, NestedNameSpecifier?, Type, Expr?)
-        | ImplicitParamDecl
-        | ParmVarDecl
+        | ImplicitParamDecl(DeclarationName, Type)
+        | ParmVarDecl(DeclarationName, Type, Expr?)
 
 TemplateDecl = RedeclarableTemplateDecl
              | TemplateTemplateParmDecl

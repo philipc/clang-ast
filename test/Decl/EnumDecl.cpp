@@ -4,7 +4,9 @@
 // CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT:   EnumType
 // CHECK-NEXT:   EnumConstantDecl
+// CHECK-NEXT:     DeclarationName A1
 // CHECK-NEXT:   EnumConstantDecl
+// CHECK-NEXT:     DeclarationName B1
 enum test1 {
   A1,
   B1
@@ -30,7 +32,9 @@ class A {
 // CHECK-NEXT:   NestedNameSpecifier A::
 // CHECK-NEXT:     RecordType A
 // CHECK-NEXT:   EnumConstantDecl
+// CHECK-NEXT:     DeclarationName A2
 // CHECK-NEXT:   EnumConstantDecl
+// CHECK-NEXT:     DeclarationName B2
 enum A::test2 : unsigned int {
   A2,
   B2
@@ -42,7 +46,9 @@ enum A::test2 : unsigned int {
 // CHECK-NEXT:   NestedNameSpecifier A::
 // CHECK-NEXT:     RecordType A
 // CHECK-NEXT:   EnumConstantDecl
+// CHECK-NEXT:     DeclarationName A3
 // CHECK-NEXT:   EnumConstantDecl
+// CHECK-NEXT:     DeclarationName B3
 enum class A::test3 {
   A3,
   B3
