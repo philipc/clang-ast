@@ -2,5 +2,4 @@
 
 // CHECK: EnumDecl
 // CHECK-NEXT:   DeclarationName test1
-// CHECK-NEXT:   EnumType
 enum test1;

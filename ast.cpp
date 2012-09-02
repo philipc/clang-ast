@@ -477,12 +477,6 @@ bool ASTPrinter::VisitEnumDecl(EnumDecl *D) {
   // FIXME: move into RAV?
   TraverseDeclarationNameInfo(
       DeclarationNameInfo(D->getDeclName(), D->getLocation()));
-
-  // FIXME: move into RAV?
-  if (D->getIntegerTypeSourceInfo())
-    TraverseTypeLoc(D->getIntegerTypeSourceInfo()->getTypeLoc());
-
-  // FIXME: RAV traverses getTypeForDecl() but shouldn't
   return true;
 }
 

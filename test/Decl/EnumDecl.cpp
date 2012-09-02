@@ -2,7 +2,6 @@
 
 // CHECK: EnumDecl
 // CHECK-NEXT:   DeclarationName test1
-// CHECK-NEXT:   EnumType
 // CHECK-NEXT:   EnumConstantDecl
 // CHECK-NEXT:     DeclarationName A1
 // CHECK-NEXT:   EnumConstantDecl
@@ -16,21 +15,18 @@ class A {
   // CHECK-NEXT: EnumDecl
   // CHECK-NEXT:   DeclarationName test2
   // CHECK-NEXT:   BuiltinType unsigned int
-  // CHECK-NEXT:   EnumType
   enum test2 : unsigned int;
 
   // CHECK-NEXT: EnumDecl
   // CHECK-NEXT:   DeclarationName test3
-  // CHECK-NEXT:   EnumType
   enum class test3;
 };
 
 // CHECK-NEXT: EnumDecl
 // CHECK-NEXT:   DeclarationName test2
-// CHECK-NEXT:   BuiltinType unsigned int
-// CHECK-NEXT:   EnumType
 // CHECK-NEXT:   NestedNameSpecifier A::
 // CHECK-NEXT:     RecordType A
+// CHECK-NEXT:   BuiltinType unsigned int
 // CHECK-NEXT:   EnumConstantDecl
 // CHECK-NEXT:     DeclarationName A2
 // CHECK-NEXT:   EnumConstantDecl
@@ -42,7 +38,6 @@ enum A::test2 : unsigned int {
 
 // CHECK-NEXT: EnumDecl
 // CHECK-NEXT:   DeclarationName test3
-// CHECK-NEXT:   EnumType
 // CHECK-NEXT:   NestedNameSpecifier A::
 // CHECK-NEXT:     RecordType A
 // CHECK-NEXT:   EnumConstantDecl
