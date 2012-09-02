@@ -37,7 +37,7 @@ NamedDecl = NamespaceDecl(DeclarationName?, Decl*)
 TypeDecl = TypedefNameDecl
          | UnresolvedUsingTypenameDecl(DeclarationName, NestedNameSpecifier)
          | TagDecl
-         | TemplateTypeParmDecl(DeclarationName name, Type? default)
+         | TemplateTypeParmDecl(DeclarationName? name, Type? default)
 
 TypedefNameDecl = TypedefDecl(DeclarationName, Type)
                 | TypeAliasDecl(DeclarationName, Type)
@@ -62,7 +62,7 @@ ValueDecl = EnumConstantDecl(DeclarationName name, Expr? init)
 DeclaratorDecl = FunctionDecl
                | FieldDecl
                | VarDecl
-               | NonTypeTemplateParmDecl(DeclarationName, Type)
+               | NonTypeTemplateParmDecl(DeclarationName?, Type)
 
 FunctionDecl = FunctionDecl(DeclarationName, NestedNameSpecifier?, FunctionType, Stmt?)
              | CXXMethodDecl
@@ -85,11 +85,11 @@ VarDecl = VarDecl(DeclarationName, NestedNameSpecifier?, Type, Expr?)
         | ParmVarDecl(DeclarationName, Type, Expr?)
 
 TemplateDecl = RedeclarableTemplateDecl
-             | TemplateTemplateParmDecl
+             | TemplateTemplateParmDecl(DeclarationName? name, Decl* parm)
 
-RedeclarableTemplateDecl = FunctionTemplateDecl
-                         | ClassTemplateDecl
-                         | TypeAliasTemplateDecl
+RedeclarableTemplateDecl = FunctionTemplateDecl(FunctionDecl, Decl* parm)
+                         | ClassTemplateDecl(CXXRecordDecl, Decl* parm)
+                         | TypeAliasTemplateDecl(TypeAliasDecl, Decl* parm)
 
 ObjCContainerDecl = ObjCCategory
                   | ObjCProtocol

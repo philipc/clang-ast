@@ -24,3 +24,10 @@ template<typename T> class test2;
 // CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:     BuiltinType bool
 template<typename T=bool> class test3;
+
+// CHECK-NEXT: ClassTemplateDecl
+// CHECK-NEXT:   CXXRecordDecl class
+// CHECK-NEXT:     DeclarationName test4
+// CHECK-NEXT:   TemplateTypeParmDecl
+// CHECK-NEXT:     TemplateTypeParmType
+template<typename> class test4;

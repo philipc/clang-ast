@@ -4,3 +4,7 @@
 // CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT:   BuiltinType int
 template<int test1> void f();
+
+// CHECK: NonTypeTemplateParmDecl
+// CHECK-NEXT:   BuiltinType int
+template<int> void test2();

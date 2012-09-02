@@ -110,12 +110,12 @@ public:
   // TODO: test ImplicitParamDecl (ObjC only?)
   bool VisitParmVarDecl(ParmVarDecl *D);
   bool VisitNonTypeTemplateParmDecl(NonTypeTemplateParmDecl *D);
-  // TODO: TemplateDecl
-  // TODO: RedeclarableTemplateDecl
-  // TODO: FunctionTemplateDecl
-  // TODO: ClassTemplateDecl
-  // TODO: TypeAliasTemplateDecl
-  // TODO: TemplateTemplateParmDecl
+  // TemplateDecl empty
+  bool VisitRedeclarableTemplateDecl(RedeclarableTemplateDecl *D);
+  // FunctionTemplateDecl empty
+  // ClassTemplateDecl empty
+  // TypeAliasTemplateDecl empty
+  bool VisitTemplateTemplateParmDecl(TemplateTemplateParmDecl *D);
   // TODO: UsingDecl
   // TODO: UsingShadowDecl
   // TODO: ObjCMethodDecl
@@ -559,8 +559,9 @@ bool ASTPrinter::VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D) {
   // FIXME: RAV traverses getTypeForDecl() but shouldn't
 
   // FIXME: move into RAV?
-  TraverseDeclarationNameInfo(
-      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  if (D->getDeclName())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
@@ -695,8 +696,28 @@ bool ASTPrinter::VisitParmVarDecl(ParmVarDecl *D) {
 
 bool ASTPrinter::VisitNonTypeTemplateParmDecl(NonTypeTemplateParmDecl *D) {
   // FIXME: move into RAV?
-  TraverseDeclarationNameInfo(
-      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  if (D->getDeclName())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitRedeclarableTemplateDecl(RedeclarableTemplateDecl *D) {
+  // TODO: VisitRedeclarable()
+  // TODO: getInstantiatedFromMemberTemplate()
+  // TODO: isMemberSpecialization()
+  // TODO: getIdentifierNamespace()
+  return true;
+}
+
+bool ASTPrinter::VisitTemplateTemplateParmDecl(TemplateTemplateParmDecl *D) {
+  // TODO: getDepth()
+  // TODO: getPosition()
+  // TODO: defaultArgumentWasInherited()
+  // TODO: isParameterPack()
+  if (D->getDeclName())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
