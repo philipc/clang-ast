@@ -8,17 +8,14 @@ class A {
 // CHECK-NEXT:     DeclarationName test1
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T1
-// CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T2
-// CHECK-NEXT:     TemplateTypeParmType
 template<typename T1, typename T2> class test1;
 
 // CHECK-NEXT: ClassTemplatePartialSpecializationDecl class
 // CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T1
-// CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:   TemplateArgument
 // CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:   TemplateArgument
@@ -30,17 +27,14 @@ template<typename T1> class test1<T1, bool>;
 // CHECK-NEXT:     DeclarationName test2
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T1
-// CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T2
-// CHECK-NEXT:     TemplateTypeParmType
 template<typename T1, typename T2> class test2;
 
 // CHECK-NEXT: ClassTemplatePartialSpecializationDecl class
 // CHECK-NEXT:   DeclarationName test2
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T1
-// CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:   TemplateArgument
 // CHECK-NEXT:     TemplateTypeParmType
 // CHECK-NEXT:   TemplateArgument

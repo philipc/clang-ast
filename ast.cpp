@@ -556,8 +556,6 @@ bool ASTPrinter::VisitTemplateTypeParmDecl(TemplateTypeParmDecl *D) {
   // TODO: wasDeclaredWithTypename()
   // TODO: defaultArgumentWasInherited()
 
-  // FIXME: RAV traverses getTypeForDecl() but shouldn't
-
   // FIXME: move into RAV?
   if (D->getDeclName())
     TraverseDeclarationNameInfo(

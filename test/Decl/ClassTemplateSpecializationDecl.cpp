@@ -8,7 +8,6 @@ class A {
 // CHECK-NEXT:     DeclarationName test1
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T
-// CHECK-NEXT:     TemplateTypeParmType
 template<typename T> class test1;
 
 // CHECK-NEXT: ClassTemplateSpecializationDecl class
@@ -23,7 +22,6 @@ template<> class test1<bool>;
 // CHECK-NEXT:     DeclarationName test2
 // CHECK-NEXT:   TemplateTypeParmDecl
 // CHECK-NEXT:     DeclarationName T
-// CHECK-NEXT:     TemplateTypeParmType
 template<typename T> class test2;
 
 // CHECK-NEXT: ClassTemplateSpecializationDecl class
