@@ -128,13 +128,15 @@ public:
   // TODO: ObjCImplementationDecl
   // TODO: ObjCPropertyDecl
   // TODO: ObjCCompatibleAliasDecl
-  // TODO: LinkageSpecDecl
+  bool VisitLinkageSpecDecl(LinkageSpecDecl *D);
   // TODO: ObjCPropertyImplDecl
-  // TODO: FileScopeAsmDecl
-  // TODO: AccessSpecDecl
-  // TODO: FriendDecl
+  // FileScopeAsmDecl empty
+  bool VisitAccessSpecDecl(AccessSpecDecl *D);
+  bool VisitFriendDecl(FriendDecl *D);
   // TODO: FriendTemplateDecl
-  // TODO: StaticAssertDecl
+  // TODO: StaticAssertDecl->isFailed()
+
+  // Extensions
   // TODO: BlockDecl
   // TODO: ClassScopeFunctionSpecializationDecl
   // TODO: ImportDecl
@@ -734,6 +736,30 @@ bool ASTPrinter::VisitUsingShadowDecl(UsingShadowDecl *D) {
 
   printDeclRef(D->getTargetDecl(), D->getLocation());
   // Don't traverse getDeclName(), it is just getTargetDecl()->getDeclName()
+  return true;
+}
+
+bool ASTPrinter::VisitLinkageSpecDecl(LinkageSpecDecl *D) {
+  switch (D->getLanguage()) {
+  case LinkageSpecDecl::lang_c: OS << " C"; break;
+  case LinkageSpecDecl::lang_cxx: OS << " C++"; break;
+  }
+  return true;
+}
+
+bool ASTPrinter::VisitAccessSpecDecl(AccessSpecDecl *D) {
+  switch (D->getAccess()) {
+  case AS_public: OS << " public"; break;
+  case AS_protected: OS << " protected"; break;
+  case AS_private: OS << " private"; break;
+  case AS_none: llvm_unreachable("invalid AccessSpecifier");
+  }
+  return true;
+}
+
+bool ASTPrinter::VisitFriendDecl(FriendDecl *D) {
+  // TODO: getNextFriend()
+  // TODO: isUnsupportedFriend()
   return true;
 }
 

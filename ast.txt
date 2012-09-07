@@ -1,12 +1,13 @@
 Decl = TranslationUnitDecl(Decl*)
      | NamedDecl
-     | LinkageSpecDecl
+     | LinkageSpecDecl(Decl)
      | ObjCPropertyImplDecl
-     | FileScopeAsmDecl
-     | AccessSpecDecl
-     | FriendDecl
-     | FriendTemplateDecl
-     | StaticAssertDecl
+     | FileScopeAsmDecl(StringLiteral)
+     | AccessSpecDecl()
+     | FriendDecl(Decl)
+     | FriendDecl(Type)
+     | StaticAssertDecl(Expr, StringLiteral)
+     // Extensions
      | BlockDecl
      | ClassScopeFunctionSpecializationDecl
      | ImportDecl
@@ -119,12 +120,7 @@ Stmt = Expr
      | ReturnStmt(Expr)
      | DeclStmt(Decl*)
      | SwitchCase
-
-     // GNU Extensions
      | AsmStmt
-
-     // MS Extensions
-     | MSAsmStmt
 
      // Obj-C statements
      | ObjCAtTryStmt
@@ -148,6 +144,9 @@ Stmt = Expr
 
 SwitchCase = CaseStmt(Expr lhs, Expr rhs, Stmt)
            | DefaultStmt(Stmt)
+
+AsmStmt = GCCAsmStmt
+        | MSAsmStmt
 
 Expr = PredefinedExpr()
      | DeclRefExpr(NestedNameSpecifier?, DeclarationName, TemplateArgument*)
