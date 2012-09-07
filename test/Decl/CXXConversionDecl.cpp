@@ -33,4 +33,3 @@ class test2 {
   // CHECK-NEXT:       CXXBoolLiteralExpr false
   operator bool() { return false; }
 };
-

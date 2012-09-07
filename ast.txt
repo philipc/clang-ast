@@ -27,8 +27,8 @@ NamedDecl = NamespaceDecl(DeclarationName?, Decl*)
           | TypeDecl
           | ValueDecl
           | TemplateDecl
-          | UsingDecl
-          | UsingShadowDecl
+          | UsingDecl(NestedNameSpecifier, DeclarationName)
+          | UsingShadowDecl(DeclRef*)
           | ObjCMethodDecl
           | ObjCContainerDecl
           | ObjCPropertyDecl
@@ -98,6 +98,8 @@ ObjCContainerDecl = ObjCCategory
 
 ObjCImpl = ObjCCategoryImpl
          | ObjCImplementation
+
+DeclarationName = DeclarationName(Type?)
 
 Stmt = Expr
      | NullStmt()

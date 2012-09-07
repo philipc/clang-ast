@@ -116,8 +116,8 @@ public:
   // ClassTemplateDecl empty
   // TypeAliasTemplateDecl empty
   bool VisitTemplateTemplateParmDecl(TemplateTemplateParmDecl *D);
-  // TODO: UsingDecl
-  // TODO: UsingShadowDecl
+  bool VisitUsingDecl(UsingDecl *D);
+  bool VisitUsingShadowDecl(UsingShadowDecl *D);
   // TODO: ObjCMethodDecl
   // TODO: ObjCContainerDecl
   // TODO: ObjCCategoryDecl
@@ -713,9 +713,27 @@ bool ASTPrinter::VisitTemplateTemplateParmDecl(TemplateTemplateParmDecl *D) {
   // TODO: getPosition()
   // TODO: defaultArgumentWasInherited()
   // TODO: isParameterPack()
+
+  // FIXME: move into RAV?
   if (D->getDeclName())
     TraverseDeclarationNameInfo(
         DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  return true;
+}
+
+bool ASTPrinter::VisitUsingDecl(UsingDecl *D) {
+  // TODO: FirstUsingShadow.getPointer()
+  // TODO: isTypeName()
+  return true;
+}
+
+bool ASTPrinter::VisitUsingShadowDecl(UsingShadowDecl *D) {
+  // TODO: getTargetDecl()
+  // TODO: UsingOrNextShadow
+  // TODO: Context.getInstantiatedFromUsingShadowDecl(D)
+
+  printDeclRef(D->getTargetDecl(), D->getLocation());
+  // Don't traverse getDeclName(), it is just getTargetDecl()->getDeclName()
   return true;
 }
 
@@ -941,6 +959,31 @@ bool ASTPrinter::TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
   ++Indent;
   printIndent();
   OS << "DeclarationName";
+#if 0
+  // TODO: display in verbose mode
+  switch (NameInfo.getName().getNameKind()) {
+  case DeclarationName::CXXConstructorName:
+    OS << " CXXConstructorName"; break;
+  case DeclarationName::CXXDestructorName:
+    OS << " CXXDestructorName"; break;
+  case DeclarationName::CXXConversionFunctionName:
+    OS << " CXXConversionFunctionName"; break;
+  case DeclarationName::Identifier:
+    OS << " Identifier"; break;
+  case DeclarationName::ObjCZeroArgSelector:
+    OS << " ObjCZeroArgSelector"; break;
+  case DeclarationName::ObjCOneArgSelector:
+    OS << " ObjCOneArgSelector"; break;
+  case DeclarationName::ObjCMultiArgSelector:
+    OS << " ObjCMultiArgSelector"; break;
+  case DeclarationName::CXXOperatorName:
+    OS << " CXXOperatorName"; break;
+  case DeclarationName::CXXLiteralOperatorName:
+    OS << " CXXLiteralOperatorName"; break;
+  case DeclarationName::CXXUsingDirective:
+    OS << " CXXUsingDirective"; break;
+  }
+#endif
   printSourceRange(NameInfo.getSourceRange());
   OS << ' ';
   NameInfo.getName().printName(OS);
