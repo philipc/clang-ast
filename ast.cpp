@@ -193,9 +193,9 @@ public:
   bool VisitUnaryOperator(UnaryOperator *E);
   bool VisitOffsetOfExpr(OffsetOfExpr *E);
   bool VisitUnaryExprOrTypeTraitExpr(UnaryExprOrTypeTraitExpr *E);
-  // TODO: ArraySubscriptExpr
-  // TODO: CallExpr
-  // TODO: MemberExpr
+  // ArraySubscriptExpr empty
+  // CallExpr empty
+  bool VisitMemberExpr(MemberExpr *E);
   // TODO: CastExpr
   // TODO: BinaryOperator
   // TODO: CompoundAssignOperator
@@ -889,6 +889,16 @@ bool ASTPrinter::VisitUnaryOperator(UnaryOperator *E) {
 bool ASTPrinter::VisitOffsetOfExpr(OffsetOfExpr *E) {
   // TODO: getComponent(getNumComponents())
   // TODO: getIndexExpr(getNUmExpressions)
+  return true;
+}
+
+bool ASTPrinter::VisitMemberExpr(MemberExpr *E) {
+  // TODO: hadMultipleCandidates()
+  // TODO: getFoundDecl()
+  // TODO: getType()
+  // TODO: getValueKind()
+  // TODO: getObjectKind()
+  // TODO: isArrow()
   return true;
 }
 

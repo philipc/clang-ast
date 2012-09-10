@@ -161,9 +161,9 @@ Expr = PredefinedExpr()
      | OffsetOfExpr(Type, Expr)
      | UnaryExprOrTypeTraitExpr(Type)
      | UnaryExprOrTypeTraitExpr(Expr)
-     | ArraySubscriptExpr
-     | CallExpr
-     | MemberExpr
+     | ArraySubscriptExpr(Expr lhs, Expr rhs)
+     | CallExpr(Expr callee, Expr* arg)
+     | MemberExpr(Expr?, NestedNameSpecifier?, DeclarationName, TemplateArgument*)
      | CastExpr
      | BinaryOperator
      | AbstractConditionalOperator
