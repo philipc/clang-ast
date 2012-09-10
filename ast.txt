@@ -132,9 +132,10 @@ Stmt = Expr
      | ObjCAutoreleasePoolStmt
 
      // C++ statments
-     | CXXCatchStmt
-     | CXXTryStmt
-     | CXXForRangeStmt
+     | CXXCatchStmt(VarDecl?, Stmt)
+     | CXXTryStmt(CompoundStmt, CXXCatchStmt*)
+     | CXXForRangeStmt(VarDecl loopvar, Expr range, Stmt body)
+     | CXXForRangeStmt(DeclStmt range, DeclStmt beginend, Expr cond, Expr inc, DeclStmt loopvar, Stmt body) // Desugared
 
      // Microsoft Extensions.
      | SEHTryStmt
@@ -145,7 +146,7 @@ Stmt = Expr
 SwitchCase = CaseStmt(Expr lhs, Expr rhs, Stmt)
            | DefaultStmt(Stmt)
 
-AsmStmt = GCCAsmStmt
+AsmStmt = GCCAsmStmt(StringLiteral, StringLiteral* output, StringLiteral* input, StringLiteral* clobber, Expr* output, Expr* input);
         | MSAsmStmt
 
 Expr = PredefinedExpr()

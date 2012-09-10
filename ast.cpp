@@ -162,11 +162,8 @@ public:
   // SwitchCase empty
   // CaseStmt empty
   // DefaultStmt empty
-
-  // GNU Extensions
-  // TODO: AsmStmt
-
-  // MS Extensions
+  // AsmStmt empty
+  bool VisitGCCAsmStmt(GCCAsmStmt *S);
   // TODO: MSAsmStmt
 
   // Obj-C statements
@@ -179,9 +176,9 @@ public:
   // TODO: ObjCAutoreleasePoolStmt
 
   // C++ statments
-  // TODO: CXXCatchStmt
-  // TODO: CXXTryStmt
-  // TODO: CXXForRangeStmt
+  // CXXCatchStmt empty
+  // CXXTryStmt empty
+  // CXXForRangeStmt empty
 
   // Expressions
   bool VisitExpr(Expr *E);
@@ -804,6 +801,14 @@ bool ASTPrinter::VisitGotoStmt(GotoStmt *S) {
 
 bool ASTPrinter::VisitReturnStmt(ReturnStmt *S) {
   // TODO: getNRVOCandidate()
+  return true;
+}
+
+bool ASTPrinter::VisitGCCAsmStmt(GCCAsmStmt *S) {
+  // TODO: isVolatile()
+  // TODO: isSimple()
+  // TODO: getOutputIdentifier()
+  // TODO: getInputIdentifier()
   return true;
 }
 
