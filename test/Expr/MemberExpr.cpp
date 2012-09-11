@@ -91,7 +91,7 @@ struct A {
     this->A::f1<int>();
 
     // CHECK-NEXT:     CallExpr
-    // CHECK-NEXT:       ImplicitCastExpr
+    // CHECK-NEXT:       ImplicitCastExpr FunctionToPointerDecay
     // CHECK-NEXT:         DeclRefExpr
     // CHECK-NEXT:           DeclarationName f2
     // CHECK-NEXT:           TemplateArgument
@@ -99,7 +99,7 @@ struct A {
     f2<int>();
 
     // CHECK-NEXT:     CallExpr
-    // CHECK-NEXT:       ImplicitCastExpr
+    // CHECK-NEXT:       ImplicitCastExpr FunctionToPointerDecay
     // CHECK-NEXT:         MemberExpr
     // CHECK-NEXT:           DeclarationName f2
     // CHECK-NEXT:           TemplateArgument
@@ -108,7 +108,7 @@ struct A {
     this->f2<int>();
 
     // CHECK-NEXT:     CallExpr
-    // CHECK-NEXT:       ImplicitCastExpr
+    // CHECK-NEXT:       ImplicitCastExpr FunctionToPointerDecay
     // CHECK-NEXT:         DeclRefExpr
     // CHECK-NEXT:           NestedNameSpecifier A::
     // CHECK-NEXT:             RecordType A
@@ -118,7 +118,7 @@ struct A {
     A::f2<int>();
 
     // CHECK-NEXT:     CallExpr
-    // CHECK-NEXT:       ImplicitCastExpr
+    // CHECK-NEXT:       ImplicitCastExpr FunctionToPointerDecay
     // CHECK-NEXT:         MemberExpr
     // CHECK-NEXT:           NestedNameSpecifier A::
     // CHECK-NEXT:             RecordType A

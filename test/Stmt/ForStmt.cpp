@@ -20,11 +20,11 @@ void test() {
 // CHECK-NEXT:         VarDecl
 // CHECK-NEXT:           DeclarationName j
 // CHECK-NEXT:           BuiltinType int
-// CHECK-NEXT:           ImplicitCastExpr
+// CHECK-NEXT:           ImplicitCastExpr LValueToRValue
 // CHECK-NEXT:             DeclRefExpr
 // CHECK-NEXT:               DeclarationName i
-// CHECK-NEXT:       ImplicitCastExpr
-// CHECK-NEXT:         ImplicitCastExpr
+// CHECK-NEXT:       ImplicitCastExpr IntegralToBoolean
+// CHECK-NEXT:         ImplicitCastExpr LValueToRValue
 // CHECK-NEXT:           DeclRefExpr
 // CHECK-NEXT:             DeclarationName j
 // CHECK-NEXT:       UnaryOperator

@@ -4,11 +4,11 @@
 // CHECK-NEXT:   DeclarationName test1
 // CHECK-NEXT: EnumConstantDecl
 // CHECK-NEXT:   DeclarationName test2
-// CHECK-NEXT:   ImplicitCastExpr
+// CHECK-NEXT:   ImplicitCastExpr IntegralCast
 // CHECK-NEXT:     IntegerLiteral 0
 // CHECK-NEXT: EnumConstantDecl
 // CHECK-NEXT:   DeclarationName test3
-// CHECK-NEXT:   ImplicitCastExpr
+// CHECK-NEXT:   ImplicitCastExpr IntegralCast
 // CHECK-NEXT:     DeclRefExpr
 // CHECK-NEXT:       DeclarationName test1
 enum A {

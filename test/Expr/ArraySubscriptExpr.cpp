@@ -14,24 +14,24 @@ void test1() {
   // CHECK-NEXT:         DeclarationName p
   // CHECK-NEXT:         PointerType
   // CHECK-NEXT:           BuiltinType int
-  // CHECK-NEXT:         ImplicitCastExpr
+  // CHECK-NEXT:         ImplicitCastExpr NullToPointer
   // CHECK-NEXT:           IntegerLiteral 0
   int *p = 0;
 
   // CHECK-NEXT:     ArraySubscriptExpr
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName p
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName i
   p[i];
 
   // CHECK-NEXT:     ArraySubscriptExpr
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName i
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName p
   i[p];

@@ -196,13 +196,13 @@ public:
   // ArraySubscriptExpr empty
   // CallExpr empty
   bool VisitMemberExpr(MemberExpr *E);
-  // TODO: CastExpr
+  bool VisitCastExpr(CastExpr *E);
   // TODO: BinaryOperator
   // TODO: CompoundAssignOperator
   // TODO: AbstractConditionalOperator
   // TODO: ConditionalOperator
   // TODO: BinaryConditionalOperator
-  // TODO: ImplicitCastExpr
+  // ImplicitCastExpr empty
   // TODO: ExplicitCastExpr
   // TODO: CStyleCastExpr
   // TODO: CompoundLiteralExpr
@@ -899,6 +899,12 @@ bool ASTPrinter::VisitMemberExpr(MemberExpr *E) {
   // TODO: getValueKind()
   // TODO: getObjectKind()
   // TODO: isArrow()
+  return true;
+}
+
+bool ASTPrinter::VisitCastExpr(CastExpr *E) {
+  OS << ' ' << E->getCastKindName();
+  // TODO: path
   return true;
 }
 

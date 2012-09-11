@@ -254,7 +254,7 @@ CallExpr = CallExpr
          | UserDefinedLiteral
          | CUDAKernelCallExpr
 
-CastExpr = ImplicitCastExpr
+CastExpr = ImplicitCastExpr(Expr)
          | ExplicitCastExpr
          | ObjCBridgedCastExpr
 

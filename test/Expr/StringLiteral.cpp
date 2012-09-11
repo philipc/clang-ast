@@ -2,8 +2,7 @@
 
 // CHECK: VarDecl
 // CHECK-NEXT:   DeclarationName test1
-// CHECK-NEXT:   PointerType
+// CHECK-NEXT:   IncompleteArrayType
 // CHECK-NEXT:     BuiltinType char
-// CHECK-NEXT:   ImplicitCastExpr
-// CHECK-NEXT:     StringLiteral "val"
-const char *test1 = "val";
+// CHECK-NEXT:   StringLiteral "val"
+const char test1[] = "val";

@@ -39,10 +39,10 @@ int theFunction(int x) {
 // CHECK-NEXT:   CompoundStmt
 // CHECK-NEXT:     ReturnStmt
 // CHECK-NEXT:       BinaryOperator
-// CHECK-NEXT:         ImplicitCastExpr
+// CHECK-NEXT:         ImplicitCastExpr LValueToRValue
 // CHECK-NEXT:           DeclRefExpr
 // CHECK-NEXT:             DeclarationName x
-// CHECK-NEXT:         ImplicitCastExpr
+// CHECK-NEXT:         ImplicitCastExpr LValueToRValue
 // CHECK-NEXT:           DeclRefExpr
 // CHECK-NEXT:             DeclarationName x
 // CHECK-NOT: FunctionDecl

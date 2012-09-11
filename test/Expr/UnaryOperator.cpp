@@ -14,7 +14,7 @@ void test1() {
   // CHECK-NEXT:         DeclarationName p
   // CHECK-NEXT:         PointerType
   // CHECK-NEXT:           BuiltinType int
-  // CHECK-NEXT:         ImplicitCastExpr
+  // CHECK-NEXT:         ImplicitCastExpr NullToPointer
   // CHECK-NEXT:           IntegerLiteral 0
   int *p = 0;
 
@@ -44,7 +44,7 @@ void test1() {
   &i;
 
   // CHECK-NEXT:     UnaryOperator *
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName p
   *p;

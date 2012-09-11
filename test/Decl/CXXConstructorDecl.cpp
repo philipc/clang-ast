@@ -50,12 +50,12 @@ class test3 : public A {
   // CHECK-NEXT:     CXXCtorInitializer 
   // CHECK-NEXT:       RecordType A
   // CHECK-NEXT:       CXXConstructExpr
-  // CHECK-NEXT:         ImplicitCastExpr
+  // CHECK-NEXT:         ImplicitCastExpr NoOp
   // CHECK-NEXT:           DeclRefExpr
   // CHECK-NEXT:             DeclarationName a
   // CHECK-NEXT:     CXXCtorInitializer 
   // CHECK-NEXT:       FieldDeclRef I
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName i
   // CHECK-NEXT:     CompoundStmt

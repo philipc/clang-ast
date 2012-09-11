@@ -27,7 +27,7 @@ void test() {
   // CHECK-NEXT:       StringLiteral "%eax"
   // CHECK-NEXT:       DeclRefExpr
   // CHECK-NEXT:         DeclarationName b
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr LValueToRValue
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName a
   asm("movl %1, %%eax;"

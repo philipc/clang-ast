@@ -5,18 +5,16 @@ void f(...);
 // CHECK: CompoundStmt
 void test1() {
   // CHECK-NEXT:     CallExpr
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr FunctionToPointerDecay
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName f
   f();
 
   // CHECK-NEXT:     CallExpr
-  // CHECK-NEXT:       ImplicitCastExpr
+  // CHECK-NEXT:       ImplicitCastExpr FunctionToPointerDecay
   // CHECK-NEXT:         DeclRefExpr
   // CHECK-NEXT:           DeclarationName f
-  // CHECK-NEXT:       ImplicitCastExpr
-  // CHECK-NEXT:         CXXBoolLiteralExpr true
-  // CHECK-NEXT:       ImplicitCastExpr
-  // CHECK-NEXT:         CXXBoolLiteralExpr false
-  f(true, false);
+  // CHECK-NEXT:       IntegerLiteral 0
+  // CHECK-NEXT:       IntegerLiteral 1
+  f(0, 1);
 }

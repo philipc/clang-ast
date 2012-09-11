@@ -29,7 +29,7 @@ void test() {
 // CHECK-NEXT:           DeclarationName b
 // CHECK-NEXT:           BuiltinType bool
 // CHECK-NEXT:           CXXBoolLiteralExpr true
-// CHECK-NEXT:       ImplicitCastExpr
+// CHECK-NEXT:       ImplicitCastExpr LValueToRValue
 // CHECK-NEXT:         DeclRefExpr
 // CHECK-NEXT:           DeclarationName b
 // CHECK-NEXT:       NullStmt

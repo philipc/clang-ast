@@ -17,7 +17,7 @@ void test() {
 // CHECK-NEXT:           BuiltinType void
 // CHECK-NEXT:         AddrLabelExpr
 // CHECK-NEXT:     IndirectGotoStmt
-// CHECK-NEXT:       ImplicitCastExpr
-// CHECK-NEXT:         ImplicitCastExpr
+// CHECK-NEXT:       ImplicitCastExpr NoOp
+// CHECK-NEXT:         ImplicitCastExpr LValueToRValue
 // CHECK-NEXT:           DeclRefExpr
 // CHECK-NEXT:             DeclarationName p
