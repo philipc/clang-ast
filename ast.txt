@@ -258,14 +258,14 @@ CastExpr = ImplicitCastExpr(Expr)
          | ExplicitCastExpr
          | ObjCBridgedCastExpr
 
-ExplicitCastExpr = CStyleCastExpr
+ExplicitCastExpr = CStyleCastExpr(Type, Expr)
                  | CXXNamedCastExpr
-                 | CXXFunctionalCastExpr
+                 | CXXFunctionalCastExpr(Type, Expr)
 
-CXXNamedCastExpr = CXXStaticCastExpr
-                 | CXXDynamicCastExpr
-                 | CXXReinterpretCastExpr
-                 | CXXConstCastExpr
+CXXNamedCastExpr = CXXStaticCastExpr(Type, Expr)
+                 | CXXDynamicCastExpr(Type, Expr)
+                 | CXXReinterpretCastExpr(Type, Expr)
+                 | CXXConstCastExpr(Type, Expr)
 
 CXXConstructExpr = CXXConstructExpr
                  | CXXTemporaryObjectExpr

@@ -203,8 +203,8 @@ public:
   // TODO: ConditionalOperator
   // TODO: BinaryConditionalOperator
   // ImplicitCastExpr empty
-  // TODO: ExplicitCastExpr
-  // TODO: CStyleCastExpr
+  // ExplicitCastExpr empty
+  // CStyleCastExpr empty
   // TODO: CompoundLiteralExpr
   // TODO: ExtVectorElementExpr
   // TODO: InitListExpr
@@ -227,12 +227,12 @@ public:
   // C++ Expressions.
   // TODO: CXXOperatorCallExpr
   // TODO: CXXMemberCallExpr
-  // TODO: CXXNamedCastExpr
-  // TODO: CXXStaticCastExpr
-  // TODO: CXXDynamicCastExpr
-  // TODO: CXXReinterpretCastExpr
-  // TODO: CXXConstCastExpr
-  // TODO: CXXFunctionalCastExpr
+  // CXXNamedCastExpr empty
+  // CXXStaticCastExpr empty
+  // CXXDynamicCastExpr empty
+  // CXXReinterpretCastExpr empty
+  // CXXConstCastExpr empty
+  // CXXFunctionalCastExpr empty
   // TODO: CXXTypeidExpr
   // TODO: UserDefinedLiteral
   bool VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr *E);
