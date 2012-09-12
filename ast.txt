@@ -242,11 +242,11 @@ Expr = PredefinedExpr()
      // OpenCL Extensions.
      | AsTypeExpr
 
-BinaryOperator = BinaryOperator
-               | CompoundAssignOperator
+BinaryOperator = BinaryOperator(Expr, Expr)
+               | CompoundAssignOperator(Expr, Expr)
 
-AbstractConditionalOperator = ConditionalOperator
-                            | BinaryConditionalOperator
+AbstractConditionalOperator = ConditionalOperator(Expr cond, Expr lhs, Expr rhs)
+                            | BinaryConditionalOperator(Expr common, Expr cond, Expr lhs, Expr rhs)
 
 CallExpr = CallExpr
          | CXXOperatorCallExpr

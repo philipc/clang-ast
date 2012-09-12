@@ -25,7 +25,7 @@ public:
 // CHECK-NEXT:           BuiltinType int <7:17>
 // CHECK-NEXT:       CompoundStmt <7:24-9:3>
 // CHECK-NEXT:         ReturnStmt <8:5-16>
-// CHECK-NEXT:           BinaryOperator <8:12-16>
+// CHECK-NEXT:           BinaryOperator + <8:12-16>
 // CHECK-NEXT:             ImplicitCastExpr LValueToRValue <8:12>
 // CHECK-NEXT:               DeclRefExpr <8:12>
 // CHECK-NEXT:                 DeclarationName x <8:12>

@@ -197,11 +197,11 @@ public:
   // CallExpr empty
   bool VisitMemberExpr(MemberExpr *E);
   bool VisitCastExpr(CastExpr *E);
-  // TODO: BinaryOperator
-  // TODO: CompoundAssignOperator
-  // TODO: AbstractConditionalOperator
-  // TODO: ConditionalOperator
-  // TODO: BinaryConditionalOperator
+  bool VisitBinaryOperator(BinaryOperator *E);
+  bool VisitCompoundAssignOperator(CompoundAssignOperator *E);
+  // AbstractConditionalOperator empty
+  // ConditionalOperator empty
+  // BinaryConditionalOperator empty
   // ImplicitCastExpr empty
   // ExplicitCastExpr empty
   // CStyleCastExpr empty
@@ -292,7 +292,7 @@ public:
   // Clang Extensions.
   // TODO: ShuffleVectorExpr
   // TODO: BlockExpr
-  // TODO: OpaqueValueExpr
+  // OpaqueValueExpr empty
 
   // Microsoft Extensions.
   // TODO: CXXUuidofExpr
@@ -905,6 +905,17 @@ bool ASTPrinter::VisitMemberExpr(MemberExpr *E) {
 bool ASTPrinter::VisitCastExpr(CastExpr *E) {
   OS << ' ' << E->getCastKindName();
   // TODO: path
+  return true;
+}
+
+bool ASTPrinter::VisitBinaryOperator(BinaryOperator *E) {
+  OS << ' ' << BinaryOperator::getOpcodeStr(E->getOpcode());
+  return true;
+}
+
+bool ASTPrinter::VisitCompoundAssignOperator(CompoundAssignOperator *E) {
+  // TODO: getComputationLHSType()
+  // TODO: getComputationResultType()
   return true;
 }
 
