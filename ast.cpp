@@ -205,7 +205,8 @@ public:
   // ImplicitCastExpr empty
   // ExplicitCastExpr empty
   // CStyleCastExpr empty
-  // TODO: CompoundLiteralExpr
+  bool TraverseCompoundLiteralExpr(CompoundLiteralExpr *E);
+  bool VisitCompoundLiteralExpr(CompoundLiteralExpr *E);
   // TODO: ExtVectorElementExpr
   // TODO: InitListExpr
   // TODO: DesignatedInitExpr
@@ -916,6 +917,25 @@ bool ASTPrinter::VisitBinaryOperator(BinaryOperator *E) {
 bool ASTPrinter::VisitCompoundAssignOperator(CompoundAssignOperator *E) {
   // TODO: getComputationLHSType()
   // TODO: getComputationResultType()
+  return true;
+}
+
+bool ASTPrinter::TraverseCompoundLiteralExpr(CompoundLiteralExpr *E) {
+  VisitorBase::TraverseCompoundLiteralExpr(E);
+  // FIXME: move into RAV
+  TypeLoc TL = E->getTypeSourceInfo()->getTypeLoc();
+  if (ElaboratedTypeLoc *ElabTL = dyn_cast<ElaboratedTypeLoc>(&TL)) {
+    TypeLoc NamedTL = ElabTL->getNamedTypeLoc();
+    TagTypeLoc *TagTL = dyn_cast<TagTypeLoc>(&NamedTL);
+    if (TagTL && TagTL->isDefinition()) {
+      TraverseDecl(TagTL->getDecl());
+    }
+  }
+  return true;
+}
+
+bool ASTPrinter::VisitCompoundLiteralExpr(CompoundLiteralExpr *E) {
+  // TODO: isFileScope()
   return true;
 }
 
