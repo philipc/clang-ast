@@ -207,9 +207,9 @@ public:
   // CStyleCastExpr empty
   bool TraverseCompoundLiteralExpr(CompoundLiteralExpr *E);
   bool VisitCompoundLiteralExpr(CompoundLiteralExpr *E);
-  // TODO: ExtVectorElementExpr
-  // TODO: InitListExpr
-  // TODO: DesignatedInitExpr
+  // TODO: ExtVectorElementExpr (attribute ext_vector_type)
+  bool VisitInitListExpr(InitListExpr *E);
+  bool VisitDesignatedInitExpr(DesignatedInitExpr *E);
   // TODO: ImplicitValueInitExpr
   // TODO: ParenListExpr
   // TODO: VAArgExpr
@@ -937,6 +937,35 @@ bool ASTPrinter::TraverseCompoundLiteralExpr(CompoundLiteralExpr *E) {
 
 bool ASTPrinter::VisitCompoundLiteralExpr(CompoundLiteralExpr *E) {
   // TODO: isFileScope()
+  return true;
+}
+
+bool ASTPrinter::VisitInitListExpr(InitListExpr *E) {
+  // TODO: option to display semantic form
+  // TODO: getArrayFiller()
+  // TODO: getInitializedFieldInUnion()
+  // TODO: initializesStdInitializerList()
+  return true;
+}
+
+bool ASTPrinter::VisitDesignatedInitExpr(DesignatedInitExpr *E) {
+  // TODO: usesGNUSyntax()
+
+  // FIXME: move into RAV?
+  for (DesignatedInitExpr::designators_iterator D = E->designators_begin(),
+                                             DEnd = E->designators_end();
+       D != DEnd; ++D) {
+    if (D->isFieldDesignator()) {
+      if (FieldDecl *Field = D->getField()) {
+        printDeclRef(Field, D->getFieldLoc());
+      } else {
+        TraverseDeclarationNameInfo(
+            DeclarationNameInfo(D->getFieldName(), D->getFieldLoc()));
+      }
+    } else {
+      // TODO: getFirstExprIndex()
+    }
+  }
   return true;
 }
 

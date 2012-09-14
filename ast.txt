@@ -167,10 +167,10 @@ Expr = PredefinedExpr()
      | CastExpr
      | BinaryOperator
      | AbstractConditionalOperator
-     | CompoundLiteralExpr
+     | CompoundLiteralExpr(Decl?, Type, Expr)
      | ExtVectorElementExpr
-     | InitListExpr
-     | DesignatedInitExpr
+     | InitListExpr(Expr*)
+     | DesignatedInitExpr(Designator*, Expr)
      | ImplicitValueInitExpr
      | ParenListExpr
      | VAArgExpr
@@ -273,6 +273,9 @@ CXXConstructExpr = CXXConstructExpr
 OverloadExpr = UnresolvedLookupExpr
              | UnresolvedMemberExpr
 
+Designator = FieldDeclRef
+           | Expr
+ 
 Type = BuiltinType()
      | FunctionType
      | RecordType(Identifier)
