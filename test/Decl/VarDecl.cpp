@@ -1,4 +1,4 @@
-// RUN: ast -f test "%s" 2>&1 | FileCheck %s
+// RUN: ast -i -f test "%s" 2>&1 | FileCheck %s
 
 // CHECK: VarDecl
 // CHECK-NEXT:   DeclarationName test1
@@ -55,3 +55,19 @@ int A::test7;
 // CHECK-NEXT:   BuiltinType int
 // CHECK-NEXT:   IntegerLiteral 0
 int A::test8 = 0;
+
+// CHECK-NEXT: FunctionDecl
+// CHECK-NEXT:   DeclarationName test9
+// CHECK-NEXT:   FunctionProtoType
+// CHECK-NEXT:     BuiltinType void
+// CHECK-NEXT:   CompoundStmt
+// CHECK-NEXT:     DeclStmt
+// CHECK-NEXT:       VarDecl
+// CHECK-NEXT:         ElaboratedType
+// CHECK-NEXT:           RecordType <anon>
+// CHECK-NEXT:         CXXConstructExpr
+// FIXME: the VarDecl shouldn't be implicit
+// FIXME: should traverse the RecordDecl too
+void test9() {
+  union { int i; };
+}

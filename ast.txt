@@ -81,9 +81,9 @@ FieldDecl = FieldDecl(DeclarationName? name, Type type, Expr? init)
           | ObjCIvarDecl
           | ObjCAtDefsFieldDecl
 
-VarDecl = VarDecl(DeclarationName, NestedNameSpecifier?, Type, Expr?)
+VarDecl = VarDecl(DeclarationName?, NestedNameSpecifier?, Type, Expr?)
         | ImplicitParamDecl(DeclarationName, Type)
-        | ParmVarDecl(DeclarationName, Type, Expr?)
+        | ParmVarDecl(DeclarationName?, Type, Expr?)
 
 TemplateDecl = RedeclarableTemplateDecl
              | TemplateTemplateParmDecl(DeclarationName? name, Decl* parm)

@@ -7,7 +7,6 @@ void test() {
 // CHECK: CompoundStmt
 // CHECK-NEXT:     DeclStmt
 // CHECK-NEXT:       VarDecl
-// CHECK-NEXT:         DeclarationName 
 // CHECK-NEXT:         ElaboratedType
 // CHECK-NEXT:           RecordType <anon>
 // CHECK-NEXT:         CXXConstructExpr

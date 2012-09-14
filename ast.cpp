@@ -676,8 +676,9 @@ bool ASTPrinter::VisitVarDecl(VarDecl *D) {
   // TODO: isInitICE()
 
   // FIXME: move into RAV?
-  TraverseDeclarationNameInfo(
-      DeclarationNameInfo(D->getDeclName(), D->getLocation()));
+  if (D->getDeclName())
+    TraverseDeclarationNameInfo(
+        DeclarationNameInfo(D->getDeclName(), D->getLocation()));
   return true;
 }
 
