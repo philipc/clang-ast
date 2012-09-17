@@ -212,7 +212,7 @@ public:
   bool VisitDesignatedInitExpr(DesignatedInitExpr *E);
   // TODO: ImplicitValueInitExpr
   // ParenListExpr empty
-  // TODO: VAArgExpr
+  // VAArgExpr empty
   // TODO: GenericSelectionExpr
   // TODO: PseudoObjectExpr
 

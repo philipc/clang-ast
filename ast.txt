@@ -173,7 +173,7 @@ Expr = PredefinedExpr()
      | DesignatedInitExpr(Designator*, Expr)
      | ImplicitValueInitExpr
      | ParenListExpr(Expr*)
-     | VAArgExpr
+     | VAArgExpr(Expr, Type)
      | GenericSelectionExpr
      | PseudoObjectExpr
      | AtomicExpr
