@@ -213,7 +213,7 @@ public:
   // TODO: ImplicitValueInitExpr
   // ParenListExpr empty
   // VAArgExpr empty
-  // TODO: GenericSelectionExpr
+  // GenericSelectionExpr: TODO: isResultIndex()
   // TODO: PseudoObjectExpr
 
   // Atomic expressions
