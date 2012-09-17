@@ -1,4 +1,4 @@
-// RUN: ast -f test -- -std=c++11 -Wno-warn-unused "%s" 2>&1 | FileCheck %s
+// RUN: ast -f test -- -std=c++11 -Wno-unused "%s" 2>&1 | FileCheck %s
 
 struct S {
   float f;

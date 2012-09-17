@@ -1,4 +1,4 @@
-// RUN: ast -f test -- -Wno-unused-value "%s" 2>&1 | FileCheck %s
+// RUN: ast -f test -- -Wno-unused "%s" 2>&1 | FileCheck %s
 
 int i;
 namespace A {
