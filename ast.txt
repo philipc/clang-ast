@@ -180,9 +180,9 @@ Expr = PredefinedExpr()
 
      // GNU Extensions.
      | AddrLabelExpr(LabelDeclRef)
-     | StmtExpr
-     | ChooseExpr
-     | GNUNullExpr
+     | StmtExpr(CompoundStmt)
+     | ChooseExpr(Expr cond, Expr lhs, Expr rhs)
+     | GNUNullExpr()
 
      // C++ Expressions.
      | CXXTypeidExpr

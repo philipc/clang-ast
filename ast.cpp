@@ -221,9 +221,9 @@ public:
 
   // GNU Extensions.
   bool VisitAddrLabelExpr(AddrLabelExpr *E);
-  // TODO: StmtExpr
-  // TODO: ChooseExpr
-  // TODO: GNUNullExpr
+  // StmtExpr empty
+  // ChooseExpr empty
+  // GNUNullExpr empty
 
   // C++ Expressions.
   // TODO: CXXOperatorCallExpr
