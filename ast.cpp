@@ -311,11 +311,13 @@ public:
   bool VisitRecordType(RecordType *T);
   // TODO: Type
 
-  // TODO: Attr
-
   bool TraverseTypeLoc(TypeLoc TL);
   bool VisitTypeLoc(TypeLoc TL);
   bool VisitQualifiedTypeLoc(QualifiedTypeLoc TL);
+  bool TraverseSubstTemplateTypeParmTypeLoc(SubstTemplateTypeParmTypeLoc TL);
+  // TODO: TypeLoc
+
+  // TODO: Attr
 
   bool TraverseNestedNameSpecifier(NestedNameSpecifier *NNS);
   bool TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc NNS);
@@ -1030,6 +1032,13 @@ bool ASTPrinter::VisitTypeLoc(TypeLoc TL) {
 
 bool ASTPrinter::VisitQualifiedTypeLoc(QualifiedTypeLoc TL) {
   printSourceRange(TL.getSourceRange());
+  return true;
+}
+
+bool ASTPrinter::TraverseSubstTemplateTypeParmTypeLoc(
+    SubstTemplateTypeParmTypeLoc TL) {
+  VisitorBase::TraverseSubstTemplateTypeParmTypeLoc(TL);
+  TraverseType(TL.getTypePtr()->getReplacementType());
   return true;
 }
 
