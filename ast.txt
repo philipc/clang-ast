@@ -179,7 +179,7 @@ Expr = PredefinedExpr()
      | AtomicExpr(Expr*)
 
      // GNU Extensions.
-     | AddrLabelExpr
+     | AddrLabelExpr(LabelDeclRef)
      | StmtExpr
      | ChooseExpr
      | GNUNullExpr

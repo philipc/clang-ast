@@ -220,7 +220,7 @@ public:
   bool VisitAtomicExpr(AtomicExpr *E);
 
   // GNU Extensions.
-  // TODO: AddrLabelExpr
+  bool VisitAddrLabelExpr(AddrLabelExpr *E);
   // TODO: StmtExpr
   // TODO: ChooseExpr
   // TODO: GNUNullExpr
@@ -981,6 +981,11 @@ bool ASTPrinter::VisitAtomicExpr(AtomicExpr *E) {
     break;
 #include <clang/Basic/Builtins.def>
   }
+  return true;
+}
+
+bool ASTPrinter::VisitAddrLabelExpr(AddrLabelExpr *E) {
+  printDeclRef(E->getLabel(), E->getLabelLoc());
   return true;
 }
 

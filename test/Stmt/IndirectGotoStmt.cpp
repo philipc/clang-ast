@@ -16,6 +16,7 @@ void test() {
 // CHECK-NEXT:         PointerType
 // CHECK-NEXT:           BuiltinType void
 // CHECK-NEXT:         AddrLabelExpr
+// CHECK-NEXT:           LabelDeclRef l
 // CHECK-NEXT:     IndirectGotoStmt
 // CHECK-NEXT:       ImplicitCastExpr NoOp
 // CHECK-NEXT:         ImplicitCastExpr LValueToRValue
