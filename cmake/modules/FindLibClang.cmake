@@ -9,9 +9,8 @@ execute_process(
   OUTPUT_VARIABLE LibClang_INCLUDE_DIR)
 
 find_library(LibClang_LIBRARY NAMES clang)
-find_library(LibClangTooling_LIBRARY NAMES clangTooling)
 
-set(LibClang_LIBRARIES ${LibClangTooling_LIBRARY} ${LibClang_LIBRARY})
+set(LibClang_LIBRARIES ${LibClang_LIBRARY})
 set(LibClang_INCLUDE_DIRS ${LibClang_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
