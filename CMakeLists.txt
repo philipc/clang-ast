@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-if(${AST_STANDLONE})
+if(${CLANG_AST_STANDLONE})
   include(CMakeLists.standalone)
   return()
 endif()
