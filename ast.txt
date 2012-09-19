@@ -176,7 +176,7 @@ Expr = PredefinedExpr()
      | VAArgExpr(Expr, Type)
      | GenericSelectionExpr(Expr, Type*, Expr*)
      | PseudoObjectExpr
-     | AtomicExpr
+     | AtomicExpr(Expr*)
 
      // GNU Extensions.
      | AddrLabelExpr

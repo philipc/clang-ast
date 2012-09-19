@@ -217,7 +217,7 @@ public:
   // TODO: PseudoObjectExpr
 
   // Atomic expressions
-  // TODO: AtomicExpr
+  bool VisitAtomicExpr(AtomicExpr *E);
 
   // GNU Extensions.
   // TODO: AddrLabelExpr
@@ -967,6 +967,19 @@ bool ASTPrinter::VisitDesignatedInitExpr(DesignatedInitExpr *E) {
     } else {
       // TODO: getFirstExprIndex()
     }
+  }
+  return true;
+}
+
+bool ASTPrinter::VisitAtomicExpr(AtomicExpr *E) {
+  OS << ' ';
+  switch (E->getOp()) {
+#define BUILTIN(ID, TYPE, ATTRS)
+#define ATOMIC_BUILTIN(ID, TYPE, ATTRS) \
+  case AtomicExpr::AO ## ID: \
+    OS << #ID; \
+    break;
+#include <clang/Basic/Builtins.def>
   }
   return true;
 }
