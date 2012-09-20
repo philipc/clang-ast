@@ -1,3 +1,10 @@
+//===----------------------------------------------------------------------===//
+//
+// This file implements a tool that parses a C/C++ file using libclang,
+// and prints the resulting AST.
+//
+//===----------------------------------------------------------------------===//
+
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Regex.h"
 #include "clang/AST/ASTConsumer.h"
@@ -14,6 +21,10 @@ using namespace clang;
 using namespace clang::tooling;
 using namespace llvm;
 
+/// \brief RAV wrapper to filter the traversal of the AST.
+///
+/// The supplied string is used as a regex to match the name of NamedDecls,
+/// and only matching nodes are passed on to the wrapped visitor.
 template<typename T>
 class ASTFilter : public RecursiveASTVisitor<ASTFilter<T> > {
 public:
@@ -51,6 +62,7 @@ private:
   llvm::Regex *Filter;
 };
 
+/// \brief Options for ASTPrinter that are set by the user.
 class ASTPrinterOptions {
 public:
   ASTPrinterOptions() {}
@@ -60,6 +72,7 @@ public:
   std::string FilterString;
 };
 
+/// \brief An AST consumer that uses RAV to traverse the AST and print it.
 class ASTPrinter : public ASTConsumer, public RecursiveASTVisitor<ASTPrinter> {
 public:
   typedef RecursiveASTVisitor<ASTPrinter> RAV;
@@ -327,22 +340,42 @@ public:
   bool TraverseConstructorInitializer(CXXCtorInitializer *Init);
 
 private:
+  void setSourceRange(SourceRange R);
+  void printLocation(SourceLocation Loc, bool PrintLine);
   void printNewline();
   void printIndent();
+
   void printDeclRef(NamedDecl *D, SourceLocation Loc);
   void printIdentifier(NamedDecl *D);
-  void printLocation(SourceLocation Loc, bool PrintLine);
-  void printLocation(SourceLocation Loc);
-  void printSourceRange(SourceRange R);
 
+  /// \brief All AST traversal is wrapped in a filter.
   ASTFilter<ASTPrinter> Filter;
+
+  /// \brief The context for the current translation unit.
   ASTContext *Context;
+
+  /// \brief The stream to print the AST to.
   raw_ostream &OS;
+
+  /// \brief Current indentation level; 0 means left margin.
   unsigned Indent;
+
+  /// \brief True if we've partially printed a line.
   bool NeedNewline;
+
+  /// \brief Valid if we have a location corresponding to the current node.
+  ///
+  /// This is set while traversing the node, and printed just before the
+  /// new line.
   SourceRange NeedLoc;
+
+  /// \brief The filename of the last location that was printed.
   const char *LastLocFilename;
+
+  /// \brief The line number of the last location that was printed.
   unsigned LastLocLine;
+
+  /// \brief Printing options set by the user.
   const ASTPrinterOptions &Options;
 };
 
@@ -371,7 +404,7 @@ bool ASTPrinter::TraverseDecl(Decl *D) {
 bool ASTPrinter::VisitDecl(Decl *D) {
   printIndent();
   OS << D->getDeclKindName() << "Decl";
-  printSourceRange(D->getSourceRange());
+  setSourceRange(D->getSourceRange());
   // TODO: getDeclContext()
   // TODO: getLexicalDeclContext()
   // TODO: isInvalidDecl()
@@ -774,7 +807,7 @@ bool ASTPrinter::TraverseStmt(Stmt *S) {
 bool ASTPrinter::VisitStmt(Stmt *S) {
   printIndent();
   OS << S->getStmtClassName();
-  printSourceRange(S->getSourceRange());
+  setSourceRange(S->getSourceRange());
   return true;
 }
 
@@ -1030,9 +1063,7 @@ bool ASTPrinter::VisitBuiltinType(BuiltinType *T) {
 }
 
 bool ASTPrinter::VisitRecordType(RecordType *T) {
-  // TODO: traverse into the RecordDecl instead
-  RecordDecl *D = T->getDecl();
-  printIdentifier(D);
+  printIdentifier(T->getDecl());
   return true;
 }
 
@@ -1044,12 +1075,12 @@ bool ASTPrinter::TraverseTypeLoc(TypeLoc TL) {
 }
 
 bool ASTPrinter::VisitTypeLoc(TypeLoc TL) {
-  printSourceRange(TL.getSourceRange());
+  setSourceRange(TL.getSourceRange());
   return true;
 }
 
 bool ASTPrinter::VisitQualifiedTypeLoc(QualifiedTypeLoc TL) {
-  printSourceRange(TL.getSourceRange());
+  setSourceRange(TL.getSourceRange());
   return true;
 }
 
@@ -1081,7 +1112,7 @@ bool ASTPrinter::TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc NNS) {
   ++Indent;
   printIndent();
   OS << "NestedNameSpecifier";
-  printSourceRange(NNS.getSourceRange());
+  setSourceRange(NNS.getSourceRange());
   OS << ' ';
   NNS.getNestedNameSpecifier()->print(OS, Context->getPrintingPolicy());
   bool Result = RAV::TraverseNestedNameSpecifierLoc(NNS);
@@ -1119,7 +1150,7 @@ bool ASTPrinter::TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
     OS << " CXXUsingDirective"; break;
   }
 #endif
-  printSourceRange(NameInfo.getSourceRange());
+  setSourceRange(NameInfo.getSourceRange());
   OS << ' ';
   NameInfo.getName().printName(OS);
   bool Result = RAV::TraverseDeclarationNameInfo(NameInfo);
@@ -1140,7 +1171,7 @@ bool ASTPrinter::TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc) 
   ++Indent;
   printIndent();
   OS << "TemplateArgument";
-  printSourceRange(ArgLoc.getSourceRange());
+  setSourceRange(ArgLoc.getSourceRange());
   bool Result = RAV::TraverseTemplateArgumentLoc(ArgLoc);
   --Indent;
   return Result;
@@ -1154,7 +1185,7 @@ bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
   ++Indent;
   printIndent();
   OS << "CXXCtorInitializer";
-  printSourceRange(Init->getSourceRange());
+  setSourceRange(Init->getSourceRange());
   if (Init->isBaseInitializer())
     TraverseTypeLoc(Init->getTypeSourceInfo()->getTypeLoc());
   else if (Init->isAnyMemberInitializer())
@@ -1164,47 +1195,21 @@ bool ASTPrinter::TraverseConstructorInitializer(CXXCtorInitializer *Init) {
   return true;
 }
 
-void ASTPrinter::printNewline() {
-  if (NeedLoc.isValid()) {
-    OS << " <";
-    printLocation(NeedLoc.getBegin(), true);
-    if (NeedLoc.getBegin() != NeedLoc.getEnd()) {
-      OS << "-";
-      printLocation(NeedLoc.getEnd(), false);
-    }
-    OS << ">";
-    NeedLoc = SourceRange();
-  }
-  if (NeedNewline) {
-    OS << '\n';
-    NeedNewline = false;
-  }
+/// \brief Stores a source range for printing at the end of the current line.
+void ASTPrinter::setSourceRange(SourceRange R) {
+  if (!Options.EnableLoc)
+    return;
+  NeedLoc = R;
 }
 
-void ASTPrinter::printIndent() {
-  printNewline();
-  for (unsigned i = 1; i < Indent; ++i)
-    OS << "  ";
-  NeedNewline = true;
-}
-
-// FIXME: move DeclRef traversal to RAV?
-void ASTPrinter::printDeclRef(NamedDecl *D, SourceLocation Loc) {
-  ++Indent;
-  printIndent();
-  OS << D->getDeclKindName() << "DeclRef";
-  printIdentifier(D);
-  printLocation(Loc);
-  --Indent;
-}
-
-void ASTPrinter::printIdentifier(NamedDecl *D) {
-  if (D->getIdentifier())
-    OS << ' ' << D->getNameAsString();
-  else
-    OS << " <anon>";
-}
-
+/// \brief Prints a source location.
+///
+/// By default, skips printing the filename and line number if they
+/// are the same as the previously printed location.
+///
+/// \param Loc The location to print.
+///
+/// \param PrintLine Force printing of the line number.
 void ASTPrinter::printLocation(SourceLocation Loc, bool PrintLine) {
   // Based on StmtDumper::DumpLocation
   SourceLocation SpellingLoc = Context->getSourceManager().getSpellingLoc(Loc);
@@ -1226,16 +1231,49 @@ void ASTPrinter::printLocation(SourceLocation Loc, bool PrintLine) {
   LastLocLine = Line;
 }
 
-void ASTPrinter::printLocation(SourceLocation Loc) {
-  if (!Options.EnableLoc)
-    return;
-  NeedLoc = Loc;
+/// \brief Prints the location and newline if needed, otherwise does nothing.
+void ASTPrinter::printNewline() {
+  if (NeedLoc.isValid()) {
+    OS << " <";
+    printLocation(NeedLoc.getBegin(), true);
+    if (NeedLoc.getBegin() != NeedLoc.getEnd()) {
+      OS << "-";
+      printLocation(NeedLoc.getEnd(), false);
+    }
+    OS << ">";
+    NeedLoc = SourceRange();
+  }
+  if (NeedNewline) {
+    OS << '\n';
+    NeedNewline = false;
+  }
 }
 
-void ASTPrinter::printSourceRange(SourceRange R) {
-  if (!Options.EnableLoc)
-    return;
-  NeedLoc = R;
+/// \brief Prints the indentation at the beginning of a line.
+///
+/// Also finishes printing the previous line if needed.
+void ASTPrinter::printIndent() {
+  printNewline();
+  for (unsigned i = 1; i < Indent; ++i)
+    OS << "  ";
+  NeedNewline = true;
+}
+
+// FIXME: move DeclRef traversal to RAV?
+void ASTPrinter::printDeclRef(NamedDecl *D, SourceLocation Loc) {
+  ++Indent;
+  printIndent();
+  OS << D->getDeclKindName() << "DeclRef";
+  printIdentifier(D);
+  setSourceRange(Loc);
+  --Indent;
+}
+
+void ASTPrinter::printIdentifier(NamedDecl *D) {
+  if (D->getIdentifier())
+    OS << ' ' << D->getNameAsString();
+  else
+    OS << " <anon>";
 }
 
 class ASTPrinterAction : public ASTFrontendAction {
@@ -1251,7 +1289,7 @@ private:
   const ASTPrinterOptions &Options;
 };
 
-bool runTool(cl::list<std::string> Argv, FrontendAction *ToolAction) {
+static bool runTool(cl::list<std::string> Argv, FrontendAction *ToolAction) {
   std::vector<std::string> CommandLine;
   CommandLine.push_back("clang-tool");
   CommandLine.push_back("-fsyntax-only");
@@ -1262,22 +1300,22 @@ bool runTool(cl::list<std::string> Argv, FrontendAction *ToolAction) {
   return Invocation.run();
 }
 
-cl::opt<bool> EnableLoc(
+static cl::opt<bool> EnableLoc(
     "l",
     cl::desc("Enable source locations"),
     cl::Optional);
 
-cl::opt<bool> EnableImplicit(
+static cl::opt<bool> EnableImplicit(
     "i",
     cl::desc("Enable implicit code"),
     cl::Optional);
 
-cl::opt<std::string> FilterString(
+static cl::opt<std::string> FilterString(
     "f",
     cl::desc("Filter named declarations"),
     cl::Optional);
 
-cl::list<std::string> Argv(
+static cl::list<std::string> Argv(
     cl::Positional,
     cl::desc("Compiler arguments"));
 
