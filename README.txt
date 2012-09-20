@@ -26,7 +26,7 @@ There are two methods of building.
 - Build and install libclang.
 - Configure and build clang-ast by running:
 	cmake -D CLANG_AST_STANDLONE=1 .
-	build
+	make
 
 RUNNING:
 
