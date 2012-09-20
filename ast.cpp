@@ -17,9 +17,9 @@
 #endif
 #include "clang/Tooling/Tooling.h"
 
+namespace cl = llvm::cl;
 using namespace clang;
 using namespace clang::tooling;
-using namespace llvm;
 
 /// \brief RAV wrapper to filter the traversal of the AST.
 ///
@@ -34,7 +34,7 @@ public:
     : Visitor(Visitor), Filter(NULL) {
       if (!FilterString.empty()) {
         std::string Error;
-        Filter = new Regex(FilterString);
+        Filter = new llvm::Regex(FilterString);
         if (!Filter->isValid(Error))
           llvm::report_fatal_error("malformed filter expression: "
               + FilterString + ": " + Error);
