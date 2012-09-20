@@ -17,7 +17,7 @@ using namespace llvm;
 template<typename T>
 class ASTFilter : public RecursiveASTVisitor<ASTFilter<T> > {
 public:
-  typedef RecursiveASTVisitor<ASTFilter> VisitorBase;
+  typedef RecursiveASTVisitor<ASTFilter> RAV;
 
   ASTFilter(T &Visitor, StringRef FilterString)
     : Visitor(Visitor), Filter(NULL) {
@@ -37,7 +37,7 @@ public:
   bool TraverseDecl(Decl *D) {
     if (!Filter || Filter->match(getName(D)))
       return Visitor.TraverseDecl(D);
-    return VisitorBase::TraverseDecl(D);
+    return RAV::TraverseDecl(D);
   }
 
 private:
@@ -62,7 +62,7 @@ public:
 
 class ASTPrinter : public ASTConsumer, public RecursiveASTVisitor<ASTPrinter> {
 public:
-  typedef RecursiveASTVisitor<ASTPrinter> VisitorBase;
+  typedef RecursiveASTVisitor<ASTPrinter> RAV;
 
   explicit ASTPrinter(raw_ostream &OS, const ASTPrinterOptions &Options);
   virtual void HandleTranslationUnit(ASTContext &Context);
@@ -360,7 +360,7 @@ void ASTPrinter::HandleTranslationUnit(ASTContext &Context) {
 
 bool ASTPrinter::TraverseDecl(Decl *D) {
   ++Indent;
-  bool Result = VisitorBase::TraverseDecl(D);
+  bool Result = RAV::TraverseDecl(D);
   --Indent;
   // Finish off the line now in case this was the top level.
   // Currently only Decl can appear at the top level.
@@ -526,10 +526,10 @@ bool ASTPrinter::VisitCXXRecordDecl(CXXRecordDecl *D) {
 }
 
 bool ASTPrinter::TraverseClassTemplateSpecializationDecl(ClassTemplateSpecializationDecl *D) {
-  VisitorBase::TraverseClassTemplateSpecializationDecl(D);
+  RAV::TraverseClassTemplateSpecializationDecl(D);
 
   // FIXME: move into RAV
-  // VisitorBase::TraverseCXXRecordHelper(D);
+  // RAV::TraverseCXXRecordHelper(D);
   if (D->isCompleteDefinition()) {
     for (CXXRecordDecl::base_class_iterator I = D->bases_begin(),
         E = D->bases_end();
@@ -575,7 +575,7 @@ bool ASTPrinter::VisitEnumConstantDecl(EnumConstantDecl *D) {
 }
 
 bool ASTPrinter::TraverseIndirectFieldDecl(IndirectFieldDecl *D) {
-  VisitorBase::TraverseIndirectFieldDecl(D);
+  RAV::TraverseIndirectFieldDecl(D);
 
   for (IndirectFieldDecl::chain_iterator
        I = D->chain_begin(),
@@ -766,7 +766,7 @@ bool ASTPrinter::VisitFriendDecl(FriendDecl *D) {
 
 bool ASTPrinter::TraverseStmt(Stmt *S) {
   ++Indent;
-  bool Result = VisitorBase::TraverseStmt(S);
+  bool Result = RAV::TraverseStmt(S);
   --Indent;
   return Result;
 }
@@ -924,7 +924,7 @@ bool ASTPrinter::VisitCompoundAssignOperator(CompoundAssignOperator *E) {
 }
 
 bool ASTPrinter::TraverseCompoundLiteralExpr(CompoundLiteralExpr *E) {
-  VisitorBase::TraverseCompoundLiteralExpr(E);
+  RAV::TraverseCompoundLiteralExpr(E);
   // FIXME: move into RAV
   TypeLoc TL = E->getTypeSourceInfo()->getTypeLoc();
   if (ElaboratedTypeLoc *ElabTL = dyn_cast<ElaboratedTypeLoc>(&TL)) {
@@ -1013,7 +1013,7 @@ bool ASTPrinter::VisitCXXBoolLiteralExpr(CXXBoolLiteralExpr *E) {
 
 bool ASTPrinter::TraverseType(QualType T) {
   ++Indent;
-  bool Result = VisitorBase::TraverseType(T);
+  bool Result = RAV::TraverseType(T);
   --Indent;
   return Result;
 }
@@ -1038,7 +1038,7 @@ bool ASTPrinter::VisitRecordType(RecordType *T) {
 
 bool ASTPrinter::TraverseTypeLoc(TypeLoc TL) {
   ++Indent;
-  bool Result = VisitorBase::TraverseTypeLoc(TL);
+  bool Result = RAV::TraverseTypeLoc(TL);
   --Indent;
   return Result;
 }
@@ -1055,7 +1055,7 @@ bool ASTPrinter::VisitQualifiedTypeLoc(QualifiedTypeLoc TL) {
 
 bool ASTPrinter::TraverseSubstTemplateTypeParmTypeLoc(
     SubstTemplateTypeParmTypeLoc TL) {
-  VisitorBase::TraverseSubstTemplateTypeParmTypeLoc(TL);
+  RAV::TraverseSubstTemplateTypeParmTypeLoc(TL);
   TraverseType(TL.getTypePtr()->getReplacementType());
   return true;
 }
@@ -1069,7 +1069,7 @@ bool ASTPrinter::TraverseNestedNameSpecifier(NestedNameSpecifier *NNS) {
   OS << "NestedNameSpecifier ";
   // FIXME: no need to print this once everything is handled?
   NNS->print(OS, Context->getPrintingPolicy());
-  bool Result = VisitorBase::TraverseNestedNameSpecifier(NNS);
+  bool Result = RAV::TraverseNestedNameSpecifier(NNS);
   --Indent;
   return Result;
 }
@@ -1084,7 +1084,7 @@ bool ASTPrinter::TraverseNestedNameSpecifierLoc(NestedNameSpecifierLoc NNS) {
   printSourceRange(NNS.getSourceRange());
   OS << ' ';
   NNS.getNestedNameSpecifier()->print(OS, Context->getPrintingPolicy());
-  bool Result = VisitorBase::TraverseNestedNameSpecifierLoc(NNS);
+  bool Result = RAV::TraverseNestedNameSpecifierLoc(NNS);
   --Indent;
   return Result;
 }
@@ -1122,7 +1122,7 @@ bool ASTPrinter::TraverseDeclarationNameInfo(DeclarationNameInfo NameInfo) {
   printSourceRange(NameInfo.getSourceRange());
   OS << ' ';
   NameInfo.getName().printName(OS);
-  bool Result = VisitorBase::TraverseDeclarationNameInfo(NameInfo);
+  bool Result = RAV::TraverseDeclarationNameInfo(NameInfo);
   --Indent;
   return Result;
 }
@@ -1131,7 +1131,7 @@ bool ASTPrinter::TraverseTemplateArgument(const TemplateArgument &Arg) {
   ++Indent;
   printIndent();
   OS << "TemplateArgument";
-  bool Result = VisitorBase::TraverseTemplateArgument(Arg);
+  bool Result = RAV::TraverseTemplateArgument(Arg);
   --Indent;
   return Result;
 }
@@ -1141,7 +1141,7 @@ bool ASTPrinter::TraverseTemplateArgumentLoc(const TemplateArgumentLoc &ArgLoc) 
   printIndent();
   OS << "TemplateArgument";
   printSourceRange(ArgLoc.getSourceRange());
-  bool Result = VisitorBase::TraverseTemplateArgumentLoc(ArgLoc);
+  bool Result = RAV::TraverseTemplateArgumentLoc(ArgLoc);
   --Indent;
   return Result;
 }
