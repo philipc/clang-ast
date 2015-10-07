@@ -1,5 +1,9 @@
 Clang AST Printer
 
+WARNING: This code is no longer maintained, and most likely does not work
+with current versions of clang. The functionality is now built into clang.
+See 'clang -Xclang -ast-dump'.
+
 DESCRIPTION:
 
 Use libclang to parse a C/C++ program and print the resulting AST.
